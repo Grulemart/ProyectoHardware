@@ -7,10 +7,10 @@
 
 //marcar que ya se ha realizado la jugada
 void entrada_inicializar(volatile uint8_t entrada[ALIGN_8]) {
-		entrada[0] = 0; //nueva
-		entrada[1] = 0; //fila
-		entrada[2] = 0; //columna
-		entrada[3] = 0; //color
+		entrada[0] = 153; //nueva
+		entrada[1] = 153; //fila
+		entrada[2] = 153; //columna
+		entrada[3] = 153; //color
 }
 
 //hay nueva jugada? (alguien ha modificado asincronamente el contenido de memoria) 

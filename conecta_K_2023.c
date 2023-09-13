@@ -53,15 +53,13 @@ conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color
 void conecta_K_test_cargar_tablero(TABLERO *t)
 {
 	#include "tablero_test.h"	
-
-	//for... for... tablero_insertar_color...
-
+	
 	for (uint8_t i = 0; i < NUM_FILAS; i++) {
 		for (uint8_t j = 0; j < NUM_COLUMNAS; j++) {
 			tablero_insertar_color(t, i, j, tablero_test[i][j]);
 		}
 	}
-	
+	//tablero_test[i][j]
 }
 
 // funcion que visualiza en "pantalla" el contenido de las 7 primeras filas y columnas 
@@ -78,6 +76,7 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 {
 	
+	// TODO: OPTIMIZAR ESTA PARTE DEL CODIGO
 	for (uint8_t i = 1; i <= NUM_COLUMNAS; i++) {
 		pantalla[0][i] = 0xC0 + i;
 	}
@@ -87,14 +86,16 @@ void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 	}
 	
 	for (uint8_t j = 0; j < NUM_FILAS; j++) {
-	
 		for (uint8_t i = 0; i < NUM_COLUMNAS; i++) {
 			CELDA celda_aux = tablero_leer_celda(t, i, j);
 			if (celda_vacia(celda_aux)) {
 				pantalla[i+1][j+1] = 0; // 0 en HEXADECIMAL
 			} else {
-				if (celda_blanca(celda_aux)) pantalla[i+1][j+1] = 17; // 11 en HEXADECIMAL
-				if (celda_negra(celda_aux)) pantalla[i+1][j+1] = 33; // 22 en HEXADECIMAL
+				if (celda_color(celda_aux) == 1) {
+					pantalla[i+1][j+1] = 17; // 11 en HEXADECIMAL
+				}	else {
+					pantalla[i+1][j+1] = 34; // 22 en HEXADECIMAL
+				}
 			}
 		}
 	}
@@ -111,7 +112,7 @@ int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, ui
 
 void conecta_K_jugar(void){
 	// new, row, column, colour, padding to prevent desalinating to 8 bytes
-	static volatile uint8_t entrada[8] = {0, 0, 0, 0, 0, 0, 0, 0 }; //jugada, fila, columna, color, ...
+	static volatile uint8_t entrada[8] = {99, 0, 0, 99, 0, 0, 0, 88 }; //jugada, fila, columna, color, ...
 	// 8x8 intentando que este alineada para que se vea bien en memoria
 	static uint8_t salida[8][8];
 	
