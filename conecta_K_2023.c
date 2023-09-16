@@ -52,14 +52,24 @@ conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color
 // 0: casilla vacia, 1:ficha jugador uno, 2: ficha jugador dos
 void conecta_K_test_cargar_tablero(TABLERO *t)
 {
-	#include "tablero_test.h"	
+	
+	// No se almacena en memoria estática y por lo tanto no se añade al principio del programa
+	uint8_t 
+	tablero_test[7][7] =
+	{
+	0, 1, 0, 0, 0, 2, 0,
+	1, 1, 0, 0, 0, 2, 2,
+	0, 0, 1, 0, 2, 0, 0,
+	0, 0, 0, 0, 0, 2, 0,
+	0, 0, 2, 0, 0, 0, 0,
+	2, 2, 0, 1, 0, 1, 1,
+	0, 2, 0, 0, 0, 1, 0};
 	
 	for (uint8_t i = 0; i < NUM_FILAS; i++) {
 		for (uint8_t j = 0; j < NUM_COLUMNAS; j++) {
 			tablero_insertar_color(t, i, j, tablero_test[i][j]);
 		}
 	}
-	//tablero_test[i][j]
 }
 
 // funcion que visualiza en "pantalla" el contenido de las 7 primeras filas y columnas 
@@ -112,7 +122,7 @@ int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, ui
 
 void conecta_K_jugar(void){
 	// new, row, column, colour, padding to prevent desalinating to 8 bytes
-	static volatile uint8_t entrada[8] = {99, 0, 0, 99, 0, 0, 0, 88 }; //jugada, fila, columna, color, ...
+	static volatile uint8_t entrada[8] = {0, 0, 0, 0, 0, 0, 0, 0 }; //jugada, fila, columna, color, ...
 	// 8x8 intentando que este alineada para que se vea bien en memoria
 	static uint8_t salida[8][8];
 	
@@ -120,6 +130,7 @@ void conecta_K_jugar(void){
 
 	uint8_t row, column, colour;
 
+	
 	tablero_inicializar(&cuadricula);
 
 	conecta_K_test_cargar_tablero(&cuadricula);
@@ -128,7 +139,7 @@ void conecta_K_jugar(void){
 	entrada_inicializar(entrada);
 	
 	while (1){
-		while (entrada_nueva(entrada) == 0){};
+1		while (entrada_nueva(entrada) == 0){};
 		entrada_leer(entrada, &row, &column, &colour);
 		//validada la entrada en rango, mirar color valido?
 		if(tablero_fila_valida(row) && tablero_columna_valida(column) && tablero_color_valido(colour)){	
@@ -151,4 +162,3 @@ void conecta_K_jugar(void){
 		entrada_inicializar (entrada);
 	}
 }
-
