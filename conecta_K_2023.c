@@ -1,6 +1,11 @@
 #include "conecta_K_2023.h"
 #include "entrada.h"
 
+enum { VACIO = 0,   // 00 en hexadecimal
+    BLANCO = 17,    // 11 en hexadecimal
+    NEGRO = 34			// 22 en hexadecimal
+};
+
 // devuelve la longitud de la línea más larga en un determinado sentido
 uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
@@ -54,6 +59,7 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 {
 	
 	// No se almacena en memoria estática y por lo tanto no se añade al principio del programa
+	// Alineación más conveniente para tests
 	uint8_t 
 	tablero_test[7][7] =
 	{
@@ -72,6 +78,20 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 	}
 }
 
+// funcion que visualiza la indexacion de columnas y filas
+// solo es necesaria que se ejecute una vez por codigo
+void conecta_K_visualizar_cuadricula(uint8_t pantalla[8][8]) {
+	
+	for (uint8_t i = 1; i <= NUM_COLUMNAS; i++) {
+		pantalla[0][i] = 0xC0 + i;
+	}
+	
+	for (uint8_t i = 1; i <= NUM_COLUMNAS; i++) {
+		pantalla[i][0] = 0xF0 + i;
+	}
+	
+}
+
 // funcion que visualiza en "pantalla" el contenido de las 7 primeras filas y columnas 
 // de las m*n del tablero en juego (suponemos que m y n son >= 7 siempre)
 // en memoria se deberia ver algo tal que asi:
@@ -86,25 +106,16 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 {
 	
-	// TODO: OPTIMIZAR ESTA PARTE DEL CODIGO
-	for (uint8_t i = 1; i <= NUM_COLUMNAS; i++) {
-		pantalla[0][i] = 0xC0 + i;
-	}
-	
-	for (uint8_t i = 1; i <= NUM_COLUMNAS; i++) {
-		pantalla[i][0] = 0xF0 + i;
-	}
-	
 	for (uint8_t j = 0; j < NUM_FILAS; j++) {
 		for (uint8_t i = 0; i < NUM_COLUMNAS; i++) {
 			CELDA celda_aux = tablero_leer_celda(t, i, j);
 			if (celda_vacia(celda_aux)) {
-				pantalla[i+1][j+1] = 0; // 0 en HEXADECIMAL
+				pantalla[i+1][j+1] = VACIO;
 			} else {
 				if (celda_color(celda_aux) == 1) {
-					pantalla[i+1][j+1] = 17; // 11 en HEXADECIMAL
+					pantalla[i+1][j+1] = BLANCO;
 				}	else {
-					pantalla[i+1][j+1] = 34; // 22 en HEXADECIMAL
+					pantalla[i+1][j+1] = NEGRO;
 				}
 			}
 		}
@@ -134,12 +145,13 @@ void conecta_K_jugar(void){
 	tablero_inicializar(&cuadricula);
 
 	conecta_K_test_cargar_tablero(&cuadricula);
+	conecta_K_visualizar_cuadricula(salida);
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 
 	entrada_inicializar(entrada);
 	
 	while (1){
-1		while (entrada_nueva(entrada) == 0){};
+		while (entrada_nueva(entrada) == 0){};
 		entrada_leer(entrada, &row, &column, &colour);
 		//validada la entrada en rango, mirar color valido?
 		if(tablero_fila_valida(row) && tablero_columna_valida(column) && tablero_color_valido(colour)){	
