@@ -5,48 +5,49 @@ r2 columna
 r3 color
 
 variables locales
-r4 N_DELTAS
-r5 deltas_fila 
-r6 deltas_columna
-r7 i
-r8 linea
-r9 long_linea
+r4 deltas_fila[i] 
+r5 deltas_columna[i]
+r6 i
+r7 linea
+r8 long_linea
 
-mov r4, #4
-ldr r5, 
-ldr r6, 
-mov r7, #0
-mov r8, #FALSE
-mov r9, #0
+N_DELTAS EQU 4
+TRUE EQU 1
+FALSE EQU 0
+deltas_fila DCD 0,-1,-1,1
+deltas_columna DCD -1,0,-1,-1
 
+push{r4-r11,lr} //Guardamos los registros preservados
+
+mov r6,#0 //i = 0
 FOR	cmp r7, r4
 	bge NOT_FOUND
 	cmp r8, #FALSE
 	bne NOT_FOUND
 	
 	
-	ldr r10, r5 + r7	// r10 = deltas_fila[i]
-	ldr r11, r5 + r7	// r11 = deltas_columna[i]
-	push{r0}	// Guardamos t
-	push {r10,r11}	// Pasamos los argumentos por la pila
+	ldr r4, [deltas_fila, r6] //r4 = deltas_fila[i]
+    ldr r5, [deltas_columna, r6] // r5 = deltas_columna[i]
+	push{r0-r5}	// Guardamos t y pasamos los argumentos por la pila
+
 	bl conecta_k_buscar_alimento_c
-	mov r9, r0	//long_linea = conecta_k_buscar_alimento_c(...)
-	pop{r0}	// Recuperamos t
-	cmp r9, r4	//long_linea >= N_DELTAS
+
+	mov r8, r0	//long_linea = conecta_k_buscar_alimento_c(...)
+	pop{r0-r5}	// Recuperamos t y los argumnetos
+	cmp r8, r4	//long_linea >= N_DELTAS
 	bge FOUND
 	
-	sub r1,r1,r5	//fila-deltas_fila[i]
-	sub r2,r2,r6	//columna-deltas_columna[i]
+	sub r1,r1,r4	//fila-deltas_fila[i]
+	sub r2,r2,r5	//columna-deltas_columna[i]
 
-	ldr r10, r5 + r7	// r10 = deltas_fila[i]
-	ldr r11, r5 + r7	// r11 = deltas_columna[i]
-	sub r10, r10,r10 lsl#1	// r10 = -r10
-	sub r11, r11, r11 lsl#1	//r11 = -r11
-	push {r0}	//Guardamos t
-	push {r10, r11}
+	ldr r9, r5 + r7	    // r9 = deltas_fila[i]
+	ldr r10, r5 + r7	// r10 = deltas_columna[i]
+	sub r9, r10,r10 lsl#1	// r9 = -r9
+	sub r10, r11, r11 lsl#1	//r10 = -r10
+	push {r0-r4, r9, r10}	//Guardamos argumentos no preservados
 	bl conecta_k_buscar_alimento_c
 	add r9, r9, r0	// long_linea + conecta_k_buscar_alimento_c(...)
-	pop {r0} // Recuperamos t
+	pop {r0-r4, r9, r10} // Recuperamos t
 	cmp r9, r4
 	bge FOUND
 
@@ -58,5 +59,5 @@ NOT_FOUND	mov r8, #FALSE
 
 FOUND 	mov r8, #TRUE
 
-DONE 	pop {pc}
+DONE 	pop {r4-r11,pc}
 	
