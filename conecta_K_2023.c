@@ -6,6 +6,10 @@ enum { VACIO = 0,   // 00 en hexadecimal
     NEGRO = 34			// 22 en hexadecimal
 };
 
+extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila,
+	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
+	delta_columna);
+
 // devuelve la longitud de la línea más larga en un determinado sentido
 uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
@@ -45,6 +49,33 @@ conecta_K_hay_linea_c_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color
        }
        // buscar sentido inverso
        long_linea += conecta_K_buscar_alineamiento_c(t, fila-deltas_fila[i],
+	       columna-deltas_columna[i], color, -deltas_fila[i], -deltas_columna[i]);
+       linea = long_linea >= K_SIZE;
+   }
+   return linea;
+}
+
+// devuelve true si encuentra una línea de longitud mayor o igual a _K
+uint8_t
+conecta_K_hay_linea_c_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
+{
+	 enum { N_DELTAS = 4};
+   int8_t deltas_fila[N_DELTAS] = {0, -1, -1, 1};
+   int8_t deltas_columna[N_DELTAS] = {-1, 0, -1, -1};
+   unsigned int i = 0;
+   uint8_t linea = FALSE;
+   uint8_t long_linea = 0;
+
+   // buscar linea en fila, columna y 2 diagonales
+   for(i=0; (i < N_DELTAS) && (linea == FALSE); ++i) {
+       // buscar sentido
+       long_linea = conecta_K_buscar_alineamiento_arm(t, fila, columna, color, deltas_fila[i], deltas_columna[i]);
+       linea = long_linea >= K_SIZE;
+       if (linea) {
+         continue;
+       }
+       // buscar sentido inverso
+       long_linea += conecta_K_buscar_alineamiento_arm(t, fila-deltas_fila[i],
 	       columna-deltas_columna[i], color, -deltas_fila[i], -deltas_columna[i]);
        linea = long_linea >= K_SIZE;
    }
