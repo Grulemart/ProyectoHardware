@@ -1,0 +1,259 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000         
+    2 00000000         ;  4 argumentos:
+    3 00000000         ; r0 t
+    4 00000000         ; r1 fila
+    5 00000000         ; r2 columna 
+    6 00000000         ; r3 color
+    7 00000000         
+    8 00000000         ;  Variables locales:
+    9 00000000         ; r4 deltas_fila[i] 
+   10 00000000         ; r5 deltas_columna[i]
+   11 00000000         ; r6 i
+   12 00000000         ; r7 linea
+   13 00000000         ; r8 long_linea
+   14 00000000         
+   15 00000000                 AREA             Datos, DATA, READWRITE
+   16 00000000         
+   17 00000000 00000004 
+                       N_DELTAS
+                               EQU              4
+   18 00000000 00000001 
+                       TRUE    EQU              1
+   19 00000000 00000000 
+                       FALSE   EQU              0
+   20 00000000         
+   21 00000000 00000000 
+              FFFFFFFF 
+              FFFFFFFF 
+              00000001 deltas_fila
+                               DCD              0,-1,-1,1
+   22 00000010 FFFFFFFF 
+              00000000 
+              FFFFFFFF 
+              FFFFFFFF deltas_columna
+                               DCD              -1,0,-1,-1
+   23 00000020         
+   24 00000020                 AREA             Codigo, CODE, READONLY
+   25 00000000                 IMPORT           conecta_K_buscar_alineamiento_c
+   26 00000000         
+   27 00000000 E92D4FF0        push{r4-r11,lr}              ; Guardamos los reg
+                                                            istros preservados
+   28 00000004         
+   29 00000004 E3A06000        mov              r6, #0      ; i = 0
+   30 00000008 E1570004 
+                       FOR     cmp              r7, r4
+   31 0000000C AA000019        bge              NOT_FOUND
+   32 00000010 E3580000        cmp              r8, #FALSE
+   33 00000014 1A000017        bne              NOT_FOUND
+   34 00000018         
+   35 00000018 E59F5068        ldr              r5, =deltas_fila
+   36 0000001C E7954006        ldr              r4, [r5, r6] ; r4 = deltas_fila
+                                                            [i]
+   37 00000020 E59F5064        ldr              r5, =deltas_columna
+   38 00000024 E7955006        ldr              r5, [r5, r6] ; r5 = deltas_colu
+                                                            mna[i]
+   39 00000028         
+   40 00000028 E92D003F        push{r0-r5}                  ; Guardamos t y pas
+                                                            amos los argumentos
+                                                             por la pila
+   41 0000002C         
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   42 0000002C EBFFFFFE        bl               conecta_K_buscar_alineamiento_c
+   43 00000030         
+   44 00000030 E1A08000        mov              r8, r0      ; long_linea = cone
+                                                            cta_k_buscar_alimen
+                                                            to_c(...)
+   45 00000034 E8BD003F        pop{r0-r5}                   ; Recuperamos t y l
+                                                            os argumnetos
+   46 00000038 E1580004        cmp              r8, r4      ; long_linea >= N_D
+                                                            ELTAS
+   47 0000003C AA00000F        bge              FOUND
+   48 00000040         
+   49 00000040 E0411004        sub              r1,r1,r4    ; fila-deltas_fila[
+                                                            i]
+   50 00000044 E0422005        sub              r2,r2,r5    ; columna-deltas_co
+                                                            lumna[i]
+   51 00000048         
+   52 00000048 E7959007        ldr              r9, [r5, r7] ; r9 = deltas_fila
+                                                            [i]
+   53 0000004C E795A007        ldr              r10, [r5, r7] ; r10 = deltas_co
+                                                            lumna[i]
+   54 00000050 E04A908A        sub              r9, r10, r10, lsl #1 ; r9 = -r9
+                                                            
+   55 00000054 E04BA08B        sub              r10, r11, r11, lsl #1 
+                                                            ; r10 = -r10
+   56 00000058 E92D061F        push             {r0-r4, r9, r10} ; Guardamos ar
+                                                            gumentos no preserv
+                                                            ados
+   57 0000005C EBFFFFFE        bl               conecta_K_buscar_alineamiento_c
+   58 00000060 E0899000        add              r9, r9, r0  ; long_linea + cone
+                                                            cta_k_buscar_alimen
+                                                            to_c(...)
+   59 00000064 E8BD061F        pop              {r0-r4, r9, r10} 
+                                                            ; Recuperamos t
+   60 00000068 E1590004        cmp              r9, r4
+   61 0000006C AA000003        bge              FOUND
+   62 00000070         
+   63 00000070 E2877001        add              r7, r7, #1  ; ++i
+   64 00000074 EAFFFFE3        b                FOR
+   65 00000078         
+   66 00000078 E3A08000 
+                       NOT_FOUND
+                               mov              r8, #FALSE
+   67 0000007C EA000000        b                DONE
+   68 00000080         
+   69 00000080 E3A08001 
+                       FOUND   mov              r8, #TRUE
+   70 00000084         
+   71 00000084 E8BD8FF0 
+                       DONE    pop              {r4-r11,pc}
+   72 00000088         
+   73 00000088                 END
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
+bjects\conecta_k_hay_linea_c_arm_file.d -o.\objects\conecta_k_hay_linea_c_arm_f
+ile.o -IC:\Keil_v5\ARM\RV31\INC -IC:\Keil_v5\ARM\CMSIS\Include -IC:\Keil_v5\ARM
+\INC\Philips --predefine="__EVAL SETA 1" --predefine="__UVISION_VERSION SETA 52
+6" --list=.\listings\conecta_k_hay_linea_c_arm_file.lst conecta_K_hay_linea_c_a
+rm_file.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Datos 00000000
+
+Symbol: Datos
+   Definitions
+      At line 15 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      None
+Comment: Datos unused
+deltas_columna 00000010
+
+Symbol: deltas_columna
+   Definitions
+      At line 22 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 37 in file conecta_K_hay_linea_c_arm_file.s
+Comment: deltas_columna used once
+deltas_fila 00000000
+
+Symbol: deltas_fila
+   Definitions
+      At line 21 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 35 in file conecta_K_hay_linea_c_arm_file.s
+Comment: deltas_fila used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+Codigo 00000000
+
+Symbol: Codigo
+   Definitions
+      At line 24 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      None
+Comment: Codigo unused
+DONE 00000084
+
+Symbol: DONE
+   Definitions
+      At line 71 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 67 in file conecta_K_hay_linea_c_arm_file.s
+Comment: DONE used once
+FOR 00000008
+
+Symbol: FOR
+   Definitions
+      At line 30 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 64 in file conecta_K_hay_linea_c_arm_file.s
+Comment: FOR used once
+FOUND 00000080
+
+Symbol: FOUND
+   Definitions
+      At line 69 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 47 in file conecta_K_hay_linea_c_arm_file.s
+      At line 61 in file conecta_K_hay_linea_c_arm_file.s
+
+NOT_FOUND 00000078
+
+Symbol: NOT_FOUND
+   Definitions
+      At line 66 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 31 in file conecta_K_hay_linea_c_arm_file.s
+      At line 33 in file conecta_K_hay_linea_c_arm_file.s
+
+5 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+FALSE 00000000
+
+Symbol: FALSE
+   Definitions
+      At line 19 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 32 in file conecta_K_hay_linea_c_arm_file.s
+      At line 66 in file conecta_K_hay_linea_c_arm_file.s
+
+N_DELTAS 00000004
+
+Symbol: N_DELTAS
+   Definitions
+      At line 17 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      None
+Comment: N_DELTAS unused
+TRUE 00000001
+
+Symbol: TRUE
+   Definitions
+      At line 18 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 69 in file conecta_K_hay_linea_c_arm_file.s
+Comment: TRUE used once
+3 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+conecta_K_buscar_alineamiento_c 00000000
+
+Symbol: conecta_K_buscar_alineamiento_c
+   Definitions
+      At line 25 in file conecta_K_hay_linea_c_arm_file.s
+   Uses
+      At line 42 in file conecta_K_hay_linea_c_arm_file.s
+      At line 57 in file conecta_K_hay_linea_c_arm_file.s
+
+1 symbol
+346 symbols in table
