@@ -1,5 +1,6 @@
 --cpu ARM7TDMI
 ".\objects\startup.o"
+".\objects\conecta_k_buscar_alineamiento_arm_file.o"
 ".\objects\conecta_k_2023.o"
 ".\objects\main.o"
 ".\objects\entrada.o"

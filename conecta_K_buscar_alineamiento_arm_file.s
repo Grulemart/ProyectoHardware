@@ -1,13 +1,17 @@
+; Autor Álvaro López
 
-AREA	codigo,CODE,READONLY
-    EXPORT conecta_K_buscar_alineamiento_arm
-		             
+	PRESERVE8
+	AREA datos, DATA, READWRITE
+                 
 ERROR EQU 1
 EXITO EQU 0
 MAX_FILA EQU 7
 MAX_COLUMNA EQU 7
 MAX_NO_CERO EQU 6
 MAX_TAMANYO_T_COLUMNAS EQU 49
+
+	AREA codigo, CODE
+	EXPORT conecta_K_buscar_alineamiento_arm
 					 
 conecta_K_buscar_alineamiento_arm	ldr r4, [SP, #24]	; Cogemos de la pila el argumento delta_fila
 	ldr r5, [SP, #28]	; Cogemos de la pila el argumento delta_culumna
@@ -51,7 +55,7 @@ FIN	cmp r9, #EXITO
 	add r1, r1, r4	; delta_fila + 1
 	add r2, r2, r5	; delta_columna + 1
 	
-	bl conecta_k_buscar_alimento_arm
+	bl conecta_K_buscar_alineamiento_arm
 
 	add r0, r0, #1 ; 1 + conecta_k_buscar_alimento_arm 
 	pop {r4-r9, pc} ; Recuperamos registros
