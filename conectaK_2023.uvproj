@@ -436,6 +436,11 @@
               <FileType>2</FileType>
               <FilePath>.\conecta_K_hay_linea_arm_c_file.s</FilePath>
             </File>
+            <File>
+              <FileName>conecta_K_buscar_alineamiento_arm_file.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\conecta_K_buscar_alineamiento_arm_file.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

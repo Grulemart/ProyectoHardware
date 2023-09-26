@@ -124,6 +124,12 @@ ARM Macro Assembler    Page 2
    76 00000080         
    77 00000080                 END
               00000000 
+
+
+
+ARM Macro Assembler    Page 3 
+
+
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --apcs=interwork --depend=.\o
 bjects\conecta_k_hay_linea_c_arm_file.d -o.\objects\conecta_k_hay_linea_c_arm_f
@@ -190,7 +196,7 @@ Symbol: DONE
    Uses
       At line 71 in file conecta_K_hay_linea_c_arm_file.s
 Comment: DONE used once
-FOR 00000008
+FOR 0000000C
 
 Symbol: FOR
    Definitions
@@ -246,8 +252,8 @@ Symbol: N_DELTAS
    Definitions
       At line 18 in file conecta_K_hay_linea_c_arm_file.s
    Uses
-      None
-Comment: N_DELTAS unused
+      At line 36 in file conecta_K_hay_linea_c_arm_file.s
+Comment: N_DELTAS used once
 TRUE 00000001
 
 Symbol: TRUE

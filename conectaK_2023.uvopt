@@ -137,18 +137,66 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>83</LineNumber>
+          <LineNumber>31</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>688</Address>
+          <Address>560</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\conecta_K_hay_linea_arm_c_file.s</Filename>
+          <Filename>.\conecta_K_hay_linea_c_arm_file.s</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\conecta_K_2023\conecta_K_hay_linea_arm_c_file.s\83</Expression>
+          <Expression>\\conecta_K_2023\conecta_K_hay_linea_c_arm_file.s\31</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>163</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>1684</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\conecta_K_2023.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\conecta_K_2023\conecta_K_2023.c\163</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>164</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>1708</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\conecta_K_2023.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\conecta_K_2023\conecta_K_2023.c\164</Expression>
+        </Bp>
+        <Bp>
+          <Number>3</Number>
+          <Type>0</Type>
+          <LineNumber>190</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>1236</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\conecta_K_2023.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\conecta_K_2023\conecta_K_2023.c\190</Expression>
         </Bp>
       </Breakpoint>
       <MemoryWindow1>
@@ -196,7 +244,7 @@
         <aSer3>0</aSer3>
         <eProf>0</eProf>
         <aLa>0</aLa>
-        <aPa1>0</aPa1>
+        <aPa1>1</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
         <StkLoc>0</StkLoc>
@@ -241,6 +289,18 @@
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>2</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\conecta_K_hay_linea_c_arm_file.s</PathWithFileName>
+      <FilenameWithoutPath>conecta_K_hay_linea_c_arm_file.s</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>1</GroupNumber>
+      <FileNumber>3</FileNumber>
       <FileType>2</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
