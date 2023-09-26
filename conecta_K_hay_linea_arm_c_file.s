@@ -46,7 +46,7 @@ for							cmp r7, #FALSE ; linea == FALSE
 							cmp r6, #N_DELTAS ; i < N_DELTAS
 							bge not_found
 							
-							ldr r4, [r9, r6, lsl #2] ; r4 = deltas_fila[i]
+							ldr r4, [r9, r6, lsl #2] ; r4 = deltas_fila[i]	
 							ldr r5, [r10, r6, lsl #2] ; r5 = deltas_columna[i]
 							
 							push{r0-r3}	; Guardamos registros no preservados
@@ -65,7 +65,7 @@ for							cmp r7, #FALSE ; linea == FALSE
 							sub r4, r4, r4, lsl #1	; r9 = -r4
 							sub r5, r5, r5, lsl #1	; r10 = -r5
 							push {r0-r3}	; Guardamos argumentos no preservados
-							push{r4, r5}	; Pasamos los argumentos por la pila
+							push {r4, r5}	; Pasamos los argumentos por la pila
 							
 							add r1,r1,r4	; r1 = fila-deltas_fila[i]
 							add r2,r2,r5	; r2 = columna-deltas_columna[i]
@@ -73,7 +73,7 @@ for							cmp r7, #FALSE ; linea == FALSE
 							bl conecta_K_buscar_alineamiento_c
 							
 							add r8, r8, r0	; long_linea + conecta_k_buscar_alimento_c(...)
-							pop{r4,r5}	; Quitamos de la pila r4,r5 que se pasaron como argumentos
+							add SP, SP, #8	; Quitamos de la pila r4,r5 que se pasaron como argumentos
 											; No hacemos pop por que no se necesitan
 							pop {r0-r3} ; Recuperamos los registros no preservados
 							cmp r8, #K_SIZE ; long_linea >= K_SIZE

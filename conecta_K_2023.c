@@ -161,12 +161,13 @@ int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila,
 										uint8_t columna, uint8_t color, uint8_t pantalla[8][8]){
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
 	uint8_t resultado_c_c = conecta_K_hay_linea_c_c(t, fila, columna, color);
-	// uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
+	uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
 	uint8_t resultado_arm_c = conecta_K_hay_linea_arm_c(t, fila, columna, color);
 	// if(resultado_c_c != resultado_c_arm) while (1);
+	if (resultado_c_c != resultado_c_arm){
+		pantalla[0][0] = 239;
 	if (resultado_c_c != resultado_arm_c){
-		pantalla[0][0] = 255;
-		while (1);
+		pantalla[0][0] = pantalla[0][0] + 16;
 	}
 	return resultado_c_c;
 }
@@ -188,7 +189,7 @@ void conecta_K_jugar(void){
 	conecta_K_visualizar_cuadricula(salida);
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 	
-	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3, colour, salida);
+	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3, 1, salida);
 	
 	while(1);
 	

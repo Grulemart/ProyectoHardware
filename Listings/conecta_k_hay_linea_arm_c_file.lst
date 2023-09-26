@@ -76,7 +76,7 @@ ARM Macro Assembler    Page 2
    47 00000020 AA000017        bge              not_found
    48 00000024         
    49 00000024 E7994106        ldr              r4, [r9, r6, lsl #2] ; r4 = del
-                                                            tas_fila[i]
+                                                            tas_fila[i] 
    50 00000028 E79A5106        ldr              r5, [r10, r6, lsl #2] ; r5 = de
                                                             ltas_columna[i]
    51 0000002C         
@@ -107,7 +107,7 @@ ARM Macro Assembler    Page 2
    66 00000050 E0455085        sub              r5, r5, r5, lsl #1 ; r10 = -r5
    67 00000054 E92D000F        push             {r0-r3}     ; Guardamos argumen
                                                             tos no preservados
-   68 00000058 E92D0030        push{r4,         r5}         ; Pasamos los argum
+   68 00000058 E92D0030        push             {r4, r5}    ; Pasamos los argum
                                                             entos por la pila
    69 0000005C         
    70 0000005C E0811004        add              r1,r1,r4    ; r1 = fila-deltas_
@@ -120,7 +120,7 @@ ARM Macro Assembler    Page 2
    75 00000068 E0888000        add              r8, r8, r0  ; long_linea + cone
                                                             cta_k_buscar_alimen
                                                             to_c(...)
-   76 0000006C E8BD0030        pop{r4,r5}                   ; Quitamos de la pi
+   76 0000006C E28DD008        add              SP, SP, #8  ; Quitamos de la pi
                                                             la r4,r5 que se pas
                                                             aron como argumento
                                                             s
