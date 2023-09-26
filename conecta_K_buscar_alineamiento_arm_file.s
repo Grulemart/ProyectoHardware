@@ -33,7 +33,7 @@ MAX_TAMANYO_T_COLUMNAS EQU 49
 					 
 conecta_K_buscar_alineamiento_arm	
 									mov r12, SP
-									push{r4-r10,r11,lr}
+									push{r4-r11,lr}
 									sub r11,r12, #4
 									ldr r4, [r11, #4]	; Cogemos de la pila el argumento delta_fila
 									ldr r5, [r11, #8]	; Cogemos de la pila el argumento delta_culumna
@@ -73,7 +73,7 @@ done
 									ldrb r7, [r0, r7]    ; Cargamos en r8 el valor t->no_ceros[fila][col]
 									and r7, r7, #3 
 									cmp r7, r3			; t->no_ceros[fila][col] == color
-									bne ERROR
+									bne errortag
 									
 									mov r9, #EXITO	
 									b final_tablero_buscar_color
@@ -95,18 +95,18 @@ final_tablero_buscar_color			cmp r9, #EXITO
 									add r1, r1, r4	; delta_fila + 1
 									add r2, r2, r5	; delta_columna + 1
 									
-									push{r0-r9}
+									push{r0-r9,lr}
 									
 									bl conecta_K_buscar_alineamiento_arm
 									
 									mov r10, r0
-									pop{r0-r9}
+									pop{r0-r9,lr}
 
 									add r0, r10, #1 ; 1 + conecta_k_buscar_alimento_arm 
-									pop {r4-r9, pc} ; Recuperamos registros
+									pop {r4-r11, pc} ; Recuperamos registros
 
 retorno_0	
 									mov r0, #0
-									pop {r4-r9,pc} ; Recuperamos registros
+									pop {r4-r11,pc} ; Recuperamos registros
 	
 	END
