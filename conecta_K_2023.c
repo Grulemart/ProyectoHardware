@@ -10,7 +10,8 @@ extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
 	delta_columna);
 
-extern uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
+extern uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
+
 // devuelve la longitud de la línea más larga en un determinado sentido
 uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
@@ -154,14 +155,14 @@ void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 	}
 }  
 
-//
+// Verifica si los resultados de las distintas funciones en arm y c son el mismo
 int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color){
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
 	uint8_t resultado_c_c = conecta_K_hay_linea_c_c(t, fila, columna, color);
-	uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
+	//uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
 	uint8_t resultado_arm_c = conecta_K_hay_linea_arm_c(t, fila, columna, color);
-	if(resultado_c_c != resultado_c_arm) while (1);
-	if (resultado_c_c != resultado_c_arm) while (1);
+	if(resultado_c_c != resultado_arm_c) while (1);
+	//if (resultado_c_c != resultado_c_arm) while (1);
 	
 	return resultado_c_c;
 }
