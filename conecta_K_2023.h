@@ -44,6 +44,6 @@ uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t
  * declaración funciones internas conecta_K
  */
 
-int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
+int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color, uint8_t pantalla[8][8]);
 
 #endif /* CONECTA_K_H_2023 */

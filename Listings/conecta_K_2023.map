@@ -12,6 +12,8 @@ Section Cross References
     startup.o(.text) refers (Special) to heapauxi.o(.text) for __use_two_region_memory
     startup.o(.text) refers to startup.o(HEAP) for Heap_Mem
     startup.o(.text) refers to startup.o(STACK) for Stack_Mem
+    conecta_k_hay_linea_arm_c_file.o(Codigo) refers to conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c) for conecta_K_buscar_alineamiento_c
+    conecta_k_hay_linea_arm_c_file.o(Codigo) refers to conecta_k_hay_linea_arm_c_file.o(Datos) for deltas_fila
     conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c) refers to tablero.o(i.tablero_buscar_color) for tablero_buscar_color
     conecta_k_2023.o(i.conecta_K_hay_linea_c_arm) refers to conecta_k_buscar_alineamiento_arm_file.o(codigo) for conecta_K_buscar_alineamiento_arm
     conecta_k_2023.o(i.conecta_K_hay_linea_c_c) refers to conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c) for conecta_K_buscar_alineamiento_c
@@ -19,19 +21,13 @@ Section Cross References
     conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(i.conecta_K_test_cargar_tablero) for conecta_K_test_cargar_tablero
     conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(i.conecta_K_visualizar_cuadricula) for conecta_K_visualizar_cuadricula
     conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(i.conecta_K_visualizar_tablero) for conecta_K_visualizar_tablero
-    conecta_k_2023.o(i.conecta_K_jugar) refers to entrada.o(i.entrada_inicializar) for entrada_inicializar
-    conecta_k_2023.o(i.conecta_K_jugar) refers to entrada.o(i.entrada_nueva) for entrada_nueva
-    conecta_k_2023.o(i.conecta_K_jugar) refers to entrada.o(i.entrada_leer) for entrada_leer
-    conecta_k_2023.o(i.conecta_K_jugar) refers to tablero.o(i.tablero_leer_celda) for tablero_leer_celda
-    conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(i.celda_vacia) for celda_vacia
-    conecta_k_2023.o(i.conecta_K_jugar) refers to tablero.o(i.tablero_insertar_color) for tablero_insertar_color
     conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(i.conecta_K_verificar_K_en_linea) for conecta_K_verificar_K_en_linea
     conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(.bss) for salida
-    conecta_k_2023.o(i.conecta_K_jugar) refers to conecta_k_2023.o(.data) for entrada
     conecta_k_2023.o(i.conecta_K_test_cargar_tablero) refers to rt_memcpy_w.o(.text) for __aeabi_memcpy4
     conecta_k_2023.o(i.conecta_K_test_cargar_tablero) refers to tablero.o(i.tablero_insertar_color) for tablero_insertar_color
     conecta_k_2023.o(i.conecta_K_test_cargar_tablero) refers to conecta_k_2023.o(.constdata) for .constdata
-    conecta_k_2023.o(i.conecta_K_verificar_K_en_linea) refers to conecta_k_2023.o(i.conecta_K_hay_linea_c_arm) for conecta_K_hay_linea_c_arm
+    conecta_k_2023.o(i.conecta_K_verificar_K_en_linea) refers to conecta_k_2023.o(i.conecta_K_hay_linea_c_c) for conecta_K_hay_linea_c_c
+    conecta_k_2023.o(i.conecta_K_verificar_K_en_linea) refers to conecta_k_hay_linea_arm_c_file.o(Codigo) for conecta_K_hay_linea_arm_c
     conecta_k_2023.o(i.conecta_K_visualizar_tablero) refers to tablero.o(i.tablero_leer_celda) for tablero_leer_celda
     conecta_k_2023.o(i.conecta_K_visualizar_tablero) refers to conecta_k_2023.o(i.celda_vacia) for celda_vacia
     main.o(i.main) refers to conecta_k_2023.o(i.conecta_K_jugar) for conecta_K_jugar
@@ -159,13 +155,16 @@ Removing Unused input sections from the image.
 
     Removing startup.o(RESET), (272 bytes).
     Removing conecta_k_buscar_alineamiento_arm_file.o(datos), (0 bytes).
-    Removing conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c), (120 bytes).
-    Removing conecta_k_2023.o(i.conecta_K_hay_linea_c_c), (320 bytes).
+    Removing conecta_k_buscar_alineamiento_arm_file.o(codigo), (144 bytes).
+    Removing conecta_k_2023.o(i.conecta_K_hay_linea_c_arm), (320 bytes).
+    Removing conecta_k_2023.o(.data), (8 bytes).
+    Removing entrada.o(i.entrada_inicializar), (24 bytes).
+    Removing entrada.o(i.entrada_leer), (36 bytes).
+    Removing entrada.o(i.entrada_nueva), (12 bytes).
     Removing tablero.o(i.tablero_borrar_celda), (160 bytes).
-    Removing tablero.o(i.tablero_buscar_color), (164 bytes).
     Removing tablero.o(i.tablero_insertar_celda), (216 bytes).
 
-7 unused section(s) (total 1252 bytes) removed from the image.
+10 unused section(s) (total 1192 bytes) removed from the image.
 
 ==============================================================================
 
@@ -175,10 +174,8 @@ Adding Veneers to the image
     Adding AT veneer (8 bytes, Inline) for call to '__rt_lib_shutdown' from rtexit2.o(.ARM.Collect$$rtexit$$00000003).
     Adding TA veneer (4 bytes, Inline) for call to '__rt_exit' from exit.o(.text).
     Adding AT veneer (8 bytes, Inline) for call to '_sys_exit' from rtexit2.o(.ARM.Collect$$rtexit$$00000004).
-    Adding AT veneer (12 bytes, Long) for call to '[Anonymous Symbol]' from conecta_k_buscar_alineamiento_arm_file.o(codigo).
-    Adding AT veneer (12 bytes, Long) for call to '[Anonymous Symbol]' from conecta_k_buscar_alineamiento_arm_file.o(codigo).
 
-6 Veneer(s) (total 52 bytes) added to the image.
+4 Veneer(s) (total 28 bytes) added to the image.
 
 ==============================================================================
 
@@ -191,58 +188,59 @@ Image Symbol Table
     !!!main                                  0x00000000   Section        8  __main.o(!!!main)
     [Anonymous Symbol]                       0x00000001   Thumb Code     0  conecta_k_buscar_alineamiento_arm_file.o ABSOLUTE
     [Anonymous Symbol]                       0x00000001   Thumb Code     0  conecta_k_buscar_alineamiento_arm_file.o ABSOLUTE
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
-    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit1.o ABSOLUTE
     ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit2.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardinit3.o ABSOLUTE
+    ../clib/angel/boardlib.s                 0x00000000   Number         0  boardshut.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_copy.o ABSOLUTE
     ../clib/angel/handlers.s                 0x00000000   Number         0  __scatter_zi.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
-    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry2.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  __rtentry4.o ABSOLUTE
+    ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit.o ABSOLUTE
     ../clib/angel/kernel.s                   0x00000000   Number         0  rtexit2.o ABSOLUTE
     ../clib/angel/rt.s                       0x00000000   Number         0  rt_raise.o ABSOLUTE
     ../clib/angel/scatter.s                  0x00000000   Number         0  __scatter.o ABSOLUTE
     ../clib/angel/startup.s                  0x00000000   Number         0  __main.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
-    ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
     ../clib/angel/sys.s                      0x00000000   Number         0  sys_stackheap_outer.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  indicate_semi.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  use_no_semi.o ABSOLUTE
+    ../clib/angel/sys.s                      0x00000000   Number         0  libspace.o ABSOLUTE
+    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_exit.o ABSOLUTE
     ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_wrch.o ABSOLUTE
-    ../clib/angel/sysapp.c                   0x00000000   Number         0  sys_command.o ABSOLUTE
+    ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  argv_veneer.o ABSOLUTE
     ../clib/armsys.c                         0x00000000   Number         0  no_argv.o ABSOLUTE
-    ../clib/armsys.c                         0x00000000   Number         0  _get_argv_nomalloc.o ABSOLUTE
     ../clib/heapalloc.c                      0x00000000   Number         0  hrguard.o ABSOLUTE
     ../clib/heapaux.c                        0x00000000   Number         0  heapauxi.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
-    ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libshutdown.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libinit2.o ABSOLUTE
     ../clib/libinit.s                        0x00000000   Number         0  libinit.o ABSOLUTE
+    ../clib/libinit.s                        0x00000000   Number         0  libshutdown2.o ABSOLUTE
     ../clib/memcpset.s                       0x00000000   Number         0  rt_memcpy_w.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_general.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  __raise.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_exit.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_abrt_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_fpe_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_outer.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_rtred_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_stak_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_pvfn_inner.o ABSOLUTE
-    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_cppl_inner.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_formal.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_segv_inner.o ABSOLUTE
     ../clib/signal.c                         0x00000000   Number         0  defsig_other.o ABSOLUTE
+    ../clib/signal.c                         0x00000000   Number         0  defsig_rtmem_inner.o ABSOLUTE
     ../clib/signal.s                         0x00000000   Number         0  defsig.o ABSOLUTE
     ../clib/stdlib.c                         0x00000000   Number         0  exit.o ABSOLUTE
     ../fplib/fpinit.s                        0x00000000   Number         0  fpinit.o ABSOLUTE
     Startup.s                                0x00000000   Number         0  startup.o ABSOLUTE
     conecta_K_2023.c                         0x00000000   Number         0  conecta_k_2023.o ABSOLUTE
     conecta_K_buscar_alineamiento_arm_file.s 0x00000000   Number         0  conecta_k_buscar_alineamiento_arm_file.o ABSOLUTE
+    conecta_K_hay_linea_arm_c_file.s         0x00000000   Number         0  conecta_k_hay_linea_arm_c_file.o ABSOLUTE
     dc.s                                     0x00000000   Number         0  dc.o ABSOLUTE
     entrada.c                                0x00000000   Number         0  entrada.o ABSOLUTE
     main.c                                   0x00000000   Number         0  main.o ABSOLUTE
@@ -300,25 +298,22 @@ Image Symbol Table
     .text                                    0x00000220   Section        0  sys_exit.o(.text)
     .text                                    0x0000022c   Section        4  use_no_semi.o(.text)
     .text                                    0x00000230   Section        0  indicate_semi.o(.text)
-    $Ven$AT$L$$                              0x00000230   ARM Code      12  anon$$obj.o(Veneer$$Code)
-    $Ven$AT$L$$                              0x0000023c   ARM Code      12  anon$$obj.o(Veneer$$Code)
-    codigo                                   0x00000248   Section      144  conecta_k_buscar_alineamiento_arm_file.o(codigo)
-    i.celda_inicializar                      0x000002d8   Section        0  tablero.o(i.celda_inicializar)
-    celda_inicializar                        0x000002d8   ARM Code      12  tablero.o(i.celda_inicializar)
-    i.celda_vacia                            0x000002e4   Section        0  conecta_k_2023.o(i.celda_vacia)
-    celda_vacia                              0x000002e4   ARM Code      16  conecta_k_2023.o(i.celda_vacia)
-    i.celda_vacia                            0x000002f4   Section        0  tablero.o(i.celda_vacia)
-    celda_vacia                              0x000002f4   ARM Code      16  tablero.o(i.celda_vacia)
-    i.conecta_K_hay_linea_c_arm              0x00000304   Section        0  conecta_k_2023.o(i.conecta_K_hay_linea_c_arm)
-    i.conecta_K_jugar                        0x00000444   Section        0  conecta_k_2023.o(i.conecta_K_jugar)
-    i.conecta_K_test_cargar_tablero          0x00000590   Section        0  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
-    i.conecta_K_verificar_K_en_linea         0x0000060c   Section        0  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
-    i.conecta_K_visualizar_cuadricula        0x00000644   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_cuadricula)
-    i.conecta_K_visualizar_tablero           0x0000068c   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
-    i.entrada_inicializar                    0x00000748   Section        0  entrada.o(i.entrada_inicializar)
-    i.entrada_leer                           0x00000760   Section        0  entrada.o(i.entrada_leer)
-    i.entrada_nueva                          0x00000784   Section        0  entrada.o(i.entrada_nueva)
-    i.main                                   0x00000790   Section        0  main.o(i.main)
+    Codigo                                   0x00000230   Section      156  conecta_k_hay_linea_arm_c_file.o(Codigo)
+    i.celda_inicializar                      0x000002cc   Section        0  tablero.o(i.celda_inicializar)
+    celda_inicializar                        0x000002cc   ARM Code      12  tablero.o(i.celda_inicializar)
+    i.celda_vacia                            0x000002d8   Section        0  conecta_k_2023.o(i.celda_vacia)
+    celda_vacia                              0x000002d8   ARM Code      16  conecta_k_2023.o(i.celda_vacia)
+    i.celda_vacia                            0x000002e8   Section        0  tablero.o(i.celda_vacia)
+    celda_vacia                              0x000002e8   ARM Code      16  tablero.o(i.celda_vacia)
+    i.conecta_K_buscar_alineamiento_c        0x000002f8   Section        0  conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c)
+    i.conecta_K_hay_linea_c_c                0x00000370   Section        0  conecta_k_2023.o(i.conecta_K_hay_linea_c_c)
+    i.conecta_K_jugar                        0x000004b0   Section        0  conecta_k_2023.o(i.conecta_K_jugar)
+    i.conecta_K_test_cargar_tablero          0x00000500   Section        0  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
+    i.conecta_K_verificar_K_en_linea         0x0000057c   Section        0  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
+    i.conecta_K_visualizar_cuadricula        0x000005e8   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_cuadricula)
+    i.conecta_K_visualizar_tablero           0x00000630   Section        0  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
+    i.main                                   0x000006ec   Section        0  main.o(i.main)
+    i.tablero_buscar_color                   0x000006f8   Section        0  tablero.o(i.tablero_buscar_color)
     i.tablero_columna_valida                 0x0000079c   Section        0  tablero.o(i.tablero_columna_valida)
     tablero_columna_valida                   0x0000079c   ARM Code      28  tablero.o(i.tablero_columna_valida)
     i.tablero_fila_valida                    0x000007b8   Section        0  tablero.o(i.tablero_fila_valida)
@@ -327,16 +322,17 @@ Image Symbol Table
     i.tablero_insertar_color                 0x00000830   Section        0  tablero.o(i.tablero_insertar_color)
     i.tablero_leer_celda                     0x00000948   Section        0  tablero.o(i.tablero_leer_celda)
     .constdata                               0x000009e0   Section       49  conecta_k_2023.o(.constdata)
-    .data                                    0x40000000   Section        8  conecta_k_2023.o(.data)
-    entrada                                  0x40000000   Data           8  conecta_k_2023.o(.data)
-    .bss                                     0x40000008   Section       64  conecta_k_2023.o(.bss)
-    salida                                   0x40000008   Data          64  conecta_k_2023.o(.bss)
-    .bss                                     0x40000048   Section       96  libspace.o(.bss)
-    HEAP                                     0x400000a8   Section        0  startup.o(HEAP)
-    STACK                                    0x400000a8   Section     1160  startup.o(STACK)
-    Heap_Mem                                 0x400000a8   Data           0  startup.o(HEAP)
-    Stack_Mem                                0x400000a8   Data        1024  startup.o(STACK)
-    Stack_Top                                0x40000530   Data           0  startup.o(STACK)
+    Datos                                    0x40000000   Section       32  conecta_k_hay_linea_arm_c_file.o(Datos)
+    deltas_fila                              0x40000000   Data          16  conecta_k_hay_linea_arm_c_file.o(Datos)
+    deltas_columna                           0x40000010   Data          16  conecta_k_hay_linea_arm_c_file.o(Datos)
+    .bss                                     0x40000020   Section       64  conecta_k_2023.o(.bss)
+    salida                                   0x40000020   Data          64  conecta_k_2023.o(.bss)
+    .bss                                     0x40000060   Section       96  libspace.o(.bss)
+    HEAP                                     0x400000c0   Section        0  startup.o(HEAP)
+    STACK                                    0x400000c0   Section     1160  startup.o(STACK)
+    Heap_Mem                                 0x400000c0   Data           0  startup.o(HEAP)
+    Stack_Mem                                0x400000c0   Data        1024  startup.o(STACK)
+    Stack_Top                                0x40000548   Data           0  startup.o(STACK)
 
     Global Symbols
 
@@ -440,24 +436,23 @@ Image Symbol Table
     __I$use$semihosting                      0x0000022c   ARM Code       0  use_no_semi.o(.text)
     __use_no_semihosting_swi                 0x0000022c   ARM Code       4  use_no_semi.o(.text)
     __semihosting_library_function           0x00000230   ARM Code       0  indicate_semi.o(.text)
-    conecta_K_buscar_alineamiento_arm        0x00000248   ARM Code       4  conecta_k_buscar_alineamiento_arm_file.o(codigo)
-    conecta_K_hay_linea_c_arm                0x00000304   ARM Code     312  conecta_k_2023.o(i.conecta_K_hay_linea_c_arm)
-    conecta_K_jugar                          0x00000444   ARM Code     324  conecta_k_2023.o(i.conecta_K_jugar)
-    conecta_K_test_cargar_tablero            0x00000590   ARM Code     120  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
-    conecta_K_verificar_K_en_linea           0x0000060c   ARM Code      56  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
-    conecta_K_visualizar_cuadricula          0x00000644   ARM Code      72  conecta_k_2023.o(i.conecta_K_visualizar_cuadricula)
-    conecta_K_visualizar_tablero             0x0000068c   ARM Code     188  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
-    entrada_inicializar                      0x00000748   ARM Code      24  entrada.o(i.entrada_inicializar)
-    entrada_leer                             0x00000760   ARM Code      36  entrada.o(i.entrada_leer)
-    entrada_nueva                            0x00000784   ARM Code      12  entrada.o(i.entrada_nueva)
-    main                                     0x00000790   ARM Code      12  main.o(i.main)
+    conecta_K_hay_linea_arm_c                0x00000230   ARM Code       4  conecta_k_hay_linea_arm_c_file.o(Codigo)
+    conecta_K_buscar_alineamiento_c          0x000002f8   ARM Code     120  conecta_k_2023.o(i.conecta_K_buscar_alineamiento_c)
+    conecta_K_hay_linea_c_c                  0x00000370   ARM Code     312  conecta_k_2023.o(i.conecta_K_hay_linea_c_c)
+    conecta_K_jugar                          0x000004b0   ARM Code      76  conecta_k_2023.o(i.conecta_K_jugar)
+    conecta_K_test_cargar_tablero            0x00000500   ARM Code     120  conecta_k_2023.o(i.conecta_K_test_cargar_tablero)
+    conecta_K_verificar_K_en_linea           0x0000057c   ARM Code     108  conecta_k_2023.o(i.conecta_K_verificar_K_en_linea)
+    conecta_K_visualizar_cuadricula          0x000005e8   ARM Code      72  conecta_k_2023.o(i.conecta_K_visualizar_cuadricula)
+    conecta_K_visualizar_tablero             0x00000630   ARM Code     188  conecta_k_2023.o(i.conecta_K_visualizar_tablero)
+    main                                     0x000006ec   ARM Code      12  main.o(i.main)
+    tablero_buscar_color                     0x000006f8   ARM Code     164  tablero.o(i.tablero_buscar_color)
     tablero_inicializar                      0x000007d4   ARM Code      92  tablero.o(i.tablero_inicializar)
     tablero_insertar_color                   0x00000830   ARM Code     280  tablero.o(i.tablero_insertar_color)
     tablero_leer_celda                       0x00000948   ARM Code     152  tablero.o(i.tablero_leer_celda)
     Region$$Table$$Base                      0x00000a14   Number         0  anon$$obj.o(Region$$Table)
     Region$$Table$$Limit                     0x00000a34   Number         0  anon$$obj.o(Region$$Table)
-    __libspace_start                         0x40000048   Data          96  libspace.o(.bss)
-    __temporary_stack_top$libspace           0x400000a8   Data           0  libspace.o(.bss)
+    __libspace_start                         0x40000060   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x400000c0   Data           0  libspace.o(.bss)
 
 
 
@@ -467,114 +462,111 @@ Memory Map of the image
 
   Image Entry point : 0x00000000
 
-  Load Region LR_1 (Base: 0x00000000, Size: 0x00000a3c, Max: 0xffffffff, ABSOLUTE)
+  Load Region LR_1 (Base: 0x00000000, Size: 0x00000a54, Max: 0xffffffff, ABSOLUTE)
 
     Execution Region ER_RO (Exec base: 0x00000000, Load base: 0x00000000, Size: 0x00000a34, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x00000000   0x00000000   0x00000008   Code   RO          224  * !!!main             c_t.l(__main.o)
-    0x00000008   0x00000008   0x0000003c   Code   RO          383    !!!scatter          c_t.l(__scatter.o)
-    0x00000044   0x00000044   0x00000028   Code   RO          385    !!handler_copy      c_t.l(__scatter_copy.o)
-    0x0000006c   0x0000006c   0x0000002c   Code   RO          387    !!handler_zi        c_t.l(__scatter_zi.o)
-    0x00000098   0x00000098   0x00000008   Ven    RO          251    .ARM.Collect$$libinit$$00000000  c_t.l(libinit.o)
-    0x000000a0   0x000000a0   0x00000002   Code   RO          251    .ARM.Collect$$libinit$$00000000  c_t.l(libinit.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          258    .ARM.Collect$$libinit$$00000002  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          260    .ARM.Collect$$libinit$$00000004  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          263    .ARM.Collect$$libinit$$0000000A  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          265    .ARM.Collect$$libinit$$0000000C  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          267    .ARM.Collect$$libinit$$0000000E  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          270    .ARM.Collect$$libinit$$00000011  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          272    .ARM.Collect$$libinit$$00000013  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          274    .ARM.Collect$$libinit$$00000015  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          276    .ARM.Collect$$libinit$$00000017  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          278    .ARM.Collect$$libinit$$00000019  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          280    .ARM.Collect$$libinit$$0000001B  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          282    .ARM.Collect$$libinit$$0000001D  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          284    .ARM.Collect$$libinit$$0000001F  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          286    .ARM.Collect$$libinit$$00000021  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          288    .ARM.Collect$$libinit$$00000023  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          290    .ARM.Collect$$libinit$$00000025  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          294    .ARM.Collect$$libinit$$0000002C  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          296    .ARM.Collect$$libinit$$0000002E  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          298    .ARM.Collect$$libinit$$00000030  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x00000000   Code   RO          300    .ARM.Collect$$libinit$$00000032  c_t.l(libinit2.o)
-    0x000000a2   0x000000a2   0x0000000c   Code   RO          301    .ARM.Collect$$libinit$$00000033  c_t.l(libinit2.o)
+    0x00000000   0x00000000   0x00000008   Code   RO          228  * !!!main             c_t.l(__main.o)
+    0x00000008   0x00000008   0x0000003c   Code   RO          387    !!!scatter          c_t.l(__scatter.o)
+    0x00000044   0x00000044   0x00000028   Code   RO          389    !!handler_copy      c_t.l(__scatter_copy.o)
+    0x0000006c   0x0000006c   0x0000002c   Code   RO          391    !!handler_zi        c_t.l(__scatter_zi.o)
+    0x00000098   0x00000098   0x00000008   Ven    RO          255    .ARM.Collect$$libinit$$00000000  c_t.l(libinit.o)
+    0x000000a0   0x000000a0   0x00000002   Code   RO          255    .ARM.Collect$$libinit$$00000000  c_t.l(libinit.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          262    .ARM.Collect$$libinit$$00000002  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          264    .ARM.Collect$$libinit$$00000004  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          267    .ARM.Collect$$libinit$$0000000A  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          269    .ARM.Collect$$libinit$$0000000C  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          271    .ARM.Collect$$libinit$$0000000E  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          274    .ARM.Collect$$libinit$$00000011  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          276    .ARM.Collect$$libinit$$00000013  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          278    .ARM.Collect$$libinit$$00000015  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          280    .ARM.Collect$$libinit$$00000017  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          282    .ARM.Collect$$libinit$$00000019  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          284    .ARM.Collect$$libinit$$0000001B  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          286    .ARM.Collect$$libinit$$0000001D  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          288    .ARM.Collect$$libinit$$0000001F  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          290    .ARM.Collect$$libinit$$00000021  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          292    .ARM.Collect$$libinit$$00000023  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          294    .ARM.Collect$$libinit$$00000025  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          298    .ARM.Collect$$libinit$$0000002C  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          300    .ARM.Collect$$libinit$$0000002E  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          302    .ARM.Collect$$libinit$$00000030  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x00000000   Code   RO          304    .ARM.Collect$$libinit$$00000032  c_t.l(libinit2.o)
+    0x000000a2   0x000000a2   0x0000000c   Code   RO          305    .ARM.Collect$$libinit$$00000033  c_t.l(libinit2.o)
     0x000000ae   0x000000ae   0x00000002   PAD
-    0x000000b0   0x000000b0   0x00000008   Ven    RO          321    .ARM.Collect$$libshutdown$$00000000  c_t.l(libshutdown.o)
-    0x000000b8   0x000000b8   0x00000004   Code   RO          321    .ARM.Collect$$libshutdown$$00000000  c_t.l(libshutdown.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          334    .ARM.Collect$$libshutdown$$00000002  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          336    .ARM.Collect$$libshutdown$$00000004  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          339    .ARM.Collect$$libshutdown$$00000007  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          342    .ARM.Collect$$libshutdown$$0000000A  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          344    .ARM.Collect$$libshutdown$$0000000C  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000000   Code   RO          347    .ARM.Collect$$libshutdown$$0000000F  c_t.l(libshutdown2.o)
-    0x000000bc   0x000000bc   0x00000006   Code   RO          348    .ARM.Collect$$libshutdown$$00000010  c_t.l(libshutdown2.o)
+    0x000000b0   0x000000b0   0x00000008   Ven    RO          325    .ARM.Collect$$libshutdown$$00000000  c_t.l(libshutdown.o)
+    0x000000b8   0x000000b8   0x00000004   Code   RO          325    .ARM.Collect$$libshutdown$$00000000  c_t.l(libshutdown.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          338    .ARM.Collect$$libshutdown$$00000002  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          340    .ARM.Collect$$libshutdown$$00000004  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          343    .ARM.Collect$$libshutdown$$00000007  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          346    .ARM.Collect$$libshutdown$$0000000A  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          348    .ARM.Collect$$libshutdown$$0000000C  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000000   Code   RO          351    .ARM.Collect$$libshutdown$$0000000F  c_t.l(libshutdown2.o)
+    0x000000bc   0x000000bc   0x00000006   Code   RO          352    .ARM.Collect$$libshutdown$$00000010  c_t.l(libshutdown2.o)
     0x000000c2   0x000000c2   0x00000002   PAD
-    0x000000c4   0x000000c4   0x00000000   Code   RO          226    .ARM.Collect$$rtentry$$00000000  c_t.l(__rtentry.o)
-    0x000000c4   0x000000c4   0x00000000   Code   RO          228    .ARM.Collect$$rtentry$$00000002  c_t.l(__rtentry2.o)
-    0x000000c4   0x000000c4   0x00000008   Code   RO          240    .ARM.Collect$$rtentry$$00000004  c_t.l(__rtentry4.o)
-    0x000000cc   0x000000cc   0x00000000   Code   RO          230    .ARM.Collect$$rtentry$$00000009  c_t.l(__rtentry2.o)
-    0x000000cc   0x000000cc   0x00000004   Code   RO          231    .ARM.Collect$$rtentry$$0000000A  c_t.l(__rtentry2.o)
-    0x000000d0   0x000000d0   0x00000000   Code   RO          233    .ARM.Collect$$rtentry$$0000000C  c_t.l(__rtentry2.o)
-    0x000000d0   0x000000d0   0x00000028   Code   RO          234    .ARM.Collect$$rtentry$$0000000D  c_t.l(__rtentry2.o)
-    0x000000f8   0x000000f8   0x00000004   Ven    RO          255    .ARM.Collect$$rtexit$$00000000  c_t.l(rtexit.o)
-    0x000000fc   0x000000fc   0x00000004   Code   RO          255    .ARM.Collect$$rtexit$$00000000  c_t.l(rtexit.o)
-    0x00000100   0x00000100   0x00000000   Code   RO          303    .ARM.Collect$$rtexit$$00000002  c_t.l(rtexit2.o)
-    0x00000100   0x00000100   0x00000004   Code   RO          304    .ARM.Collect$$rtexit$$00000003  c_t.l(rtexit2.o)
-    0x00000104   0x00000104   0x00000008   Code   RO          305    .ARM.Collect$$rtexit$$00000004  c_t.l(rtexit2.o)
+    0x000000c4   0x000000c4   0x00000000   Code   RO          230    .ARM.Collect$$rtentry$$00000000  c_t.l(__rtentry.o)
+    0x000000c4   0x000000c4   0x00000000   Code   RO          232    .ARM.Collect$$rtentry$$00000002  c_t.l(__rtentry2.o)
+    0x000000c4   0x000000c4   0x00000008   Code   RO          244    .ARM.Collect$$rtentry$$00000004  c_t.l(__rtentry4.o)
+    0x000000cc   0x000000cc   0x00000000   Code   RO          234    .ARM.Collect$$rtentry$$00000009  c_t.l(__rtentry2.o)
+    0x000000cc   0x000000cc   0x00000004   Code   RO          235    .ARM.Collect$$rtentry$$0000000A  c_t.l(__rtentry2.o)
+    0x000000d0   0x000000d0   0x00000000   Code   RO          237    .ARM.Collect$$rtentry$$0000000C  c_t.l(__rtentry2.o)
+    0x000000d0   0x000000d0   0x00000028   Code   RO          238    .ARM.Collect$$rtentry$$0000000D  c_t.l(__rtentry2.o)
+    0x000000f8   0x000000f8   0x00000004   Ven    RO          259    .ARM.Collect$$rtexit$$00000000  c_t.l(rtexit.o)
+    0x000000fc   0x000000fc   0x00000004   Code   RO          259    .ARM.Collect$$rtexit$$00000000  c_t.l(rtexit.o)
+    0x00000100   0x00000100   0x00000000   Code   RO          307    .ARM.Collect$$rtexit$$00000002  c_t.l(rtexit2.o)
+    0x00000100   0x00000100   0x00000004   Code   RO          308    .ARM.Collect$$rtexit$$00000003  c_t.l(rtexit2.o)
+    0x00000104   0x00000104   0x00000008   Code   RO          309    .ARM.Collect$$rtexit$$00000004  c_t.l(rtexit2.o)
     0x0000010c   0x0000010c   0x00000020   Code   RO            4    .text               startup.o
-    0x0000012c   0x0000012c   0x00000064   Code   RO          220    .text               c_t.l(rt_memcpy_w.o)
-    0x00000190   0x00000190   0x00000006   Code   RO          222    .text               c_t.l(heapauxi.o)
+    0x0000012c   0x0000012c   0x00000064   Code   RO          224    .text               c_t.l(rt_memcpy_w.o)
+    0x00000190   0x00000190   0x00000006   Code   RO          226    .text               c_t.l(heapauxi.o)
     0x00000196   0x00000196   0x00000002   PAD
-    0x00000198   0x00000198   0x00000060   Code   RO          242    .text               c_t.l(sys_stackheap_outer.o)
-    0x000001f8   0x000001f8   0x00000014   Code   RO          244    .text               c_t.l(exit.o)
-    0x0000020c   0x0000020c   0x0000000c   Code   RO          252    .text               c_t.l(libspace.o)
-    0x00000218   0x00000218   0x00000008   Ven    RO          313    .text               c_t.l(sys_exit.o)
-    0x00000220   0x00000220   0x0000000c   Code   RO          313    .text               c_t.l(sys_exit.o)
-    0x0000022c   0x0000022c   0x00000004   Code   RO          324    .text               c_t.l(use_no_semi.o)
-    0x00000230   0x00000230   0x00000000   Code   RO          326    .text               c_t.l(indicate_semi.o)
-    0x00000230   0x00000230   0x0000000c   Ven    RO          393    Veneer$$Code        anon$$obj.o
-    0x0000023c   0x0000023c   0x0000000c   Ven    RO          394    Veneer$$Code        anon$$obj.o
-    0x00000248   0x00000248   0x00000090   Code   RO           12    codigo              conecta_k_buscar_alineamiento_arm_file.o
-    0x000002d8   0x000002d8   0x0000000c   Code   RO          144    i.celda_inicializar  tablero.o
-    0x000002e4   0x000002e4   0x00000010   Code   RO           15    i.celda_vacia       conecta_k_2023.o
-    0x000002f4   0x000002f4   0x00000010   Code   RO          145    i.celda_vacia       tablero.o
-    0x00000304   0x00000304   0x00000140   Code   RO           17    i.conecta_K_hay_linea_c_arm  conecta_k_2023.o
-    0x00000444   0x00000444   0x0000014c   Code   RO           19    i.conecta_K_jugar   conecta_k_2023.o
-    0x00000590   0x00000590   0x0000007c   Code   RO           20    i.conecta_K_test_cargar_tablero  conecta_k_2023.o
-    0x0000060c   0x0000060c   0x00000038   Code   RO           21    i.conecta_K_verificar_K_en_linea  conecta_k_2023.o
-    0x00000644   0x00000644   0x00000048   Code   RO           22    i.conecta_K_visualizar_cuadricula  conecta_k_2023.o
-    0x0000068c   0x0000068c   0x000000bc   Code   RO           23    i.conecta_K_visualizar_tablero  conecta_k_2023.o
-    0x00000748   0x00000748   0x00000018   Code   RO          120    i.entrada_inicializar  entrada.o
-    0x00000760   0x00000760   0x00000024   Code   RO          121    i.entrada_leer      entrada.o
-    0x00000784   0x00000784   0x0000000c   Code   RO          122    i.entrada_nueva     entrada.o
-    0x00000790   0x00000790   0x0000000c   Code   RO          102    i.main              main.o
-    0x0000079c   0x0000079c   0x0000001c   Code   RO          148    i.tablero_columna_valida  tablero.o
-    0x000007b8   0x000007b8   0x0000001c   Code   RO          149    i.tablero_fila_valida  tablero.o
-    0x000007d4   0x000007d4   0x0000005c   Code   RO          150    i.tablero_inicializar  tablero.o
-    0x00000830   0x00000830   0x00000118   Code   RO          152    i.tablero_insertar_color  tablero.o
-    0x00000948   0x00000948   0x00000098   Code   RO          153    i.tablero_leer_celda  tablero.o
-    0x000009e0   0x000009e0   0x00000031   Data   RO           25    .constdata          conecta_k_2023.o
+    0x00000198   0x00000198   0x00000060   Code   RO          246    .text               c_t.l(sys_stackheap_outer.o)
+    0x000001f8   0x000001f8   0x00000014   Code   RO          248    .text               c_t.l(exit.o)
+    0x0000020c   0x0000020c   0x0000000c   Code   RO          256    .text               c_t.l(libspace.o)
+    0x00000218   0x00000218   0x00000008   Ven    RO          317    .text               c_t.l(sys_exit.o)
+    0x00000220   0x00000220   0x0000000c   Code   RO          317    .text               c_t.l(sys_exit.o)
+    0x0000022c   0x0000022c   0x00000004   Code   RO          328    .text               c_t.l(use_no_semi.o)
+    0x00000230   0x00000230   0x00000000   Code   RO          330    .text               c_t.l(indicate_semi.o)
+    0x00000230   0x00000230   0x0000009c   Code   RO           16    Codigo              conecta_k_hay_linea_arm_c_file.o
+    0x000002cc   0x000002cc   0x0000000c   Code   RO          148    i.celda_inicializar  tablero.o
+    0x000002d8   0x000002d8   0x00000010   Code   RO           19    i.celda_vacia       conecta_k_2023.o
+    0x000002e8   0x000002e8   0x00000010   Code   RO          149    i.celda_vacia       tablero.o
+    0x000002f8   0x000002f8   0x00000078   Code   RO           20    i.conecta_K_buscar_alineamiento_c  conecta_k_2023.o
+    0x00000370   0x00000370   0x00000140   Code   RO           22    i.conecta_K_hay_linea_c_c  conecta_k_2023.o
+    0x000004b0   0x000004b0   0x00000050   Code   RO           23    i.conecta_K_jugar   conecta_k_2023.o
+    0x00000500   0x00000500   0x0000007c   Code   RO           24    i.conecta_K_test_cargar_tablero  conecta_k_2023.o
+    0x0000057c   0x0000057c   0x0000006c   Code   RO           25    i.conecta_K_verificar_K_en_linea  conecta_k_2023.o
+    0x000005e8   0x000005e8   0x00000048   Code   RO           26    i.conecta_K_visualizar_cuadricula  conecta_k_2023.o
+    0x00000630   0x00000630   0x000000bc   Code   RO           27    i.conecta_K_visualizar_tablero  conecta_k_2023.o
+    0x000006ec   0x000006ec   0x0000000c   Code   RO          106    i.main              main.o
+    0x000006f8   0x000006f8   0x000000a4   Code   RO          151    i.tablero_buscar_color  tablero.o
+    0x0000079c   0x0000079c   0x0000001c   Code   RO          152    i.tablero_columna_valida  tablero.o
+    0x000007b8   0x000007b8   0x0000001c   Code   RO          153    i.tablero_fila_valida  tablero.o
+    0x000007d4   0x000007d4   0x0000005c   Code   RO          154    i.tablero_inicializar  tablero.o
+    0x00000830   0x00000830   0x00000118   Code   RO          156    i.tablero_insertar_color  tablero.o
+    0x00000948   0x00000948   0x00000098   Code   RO          157    i.tablero_leer_celda  tablero.o
+    0x000009e0   0x000009e0   0x00000031   Data   RO           29    .constdata          conecta_k_2023.o
     0x00000a11   0x00000a11   0x00000003   PAD
-    0x00000a14   0x00000a14   0x00000020   Data   RO          381    Region$$Table       anon$$obj.o
+    0x00000a14   0x00000a14   0x00000020   Data   RO          385    Region$$Table       anon$$obj.o
 
 
-    Execution Region ER_RW (Exec base: 0x40000000, Load base: 0x00000a34, Size: 0x00000008, Max: 0xffffffff, ABSOLUTE)
-
-    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
-
-    0x40000000   0x00000a34   0x00000008   Data   RW           26    .data               conecta_k_2023.o
-
-
-    Execution Region ER_ZI (Exec base: 0x40000008, Load base: 0x00000a3c, Size: 0x00000528, Max: 0xffffffff, ABSOLUTE)
+    Execution Region ER_RW (Exec base: 0x40000000, Load base: 0x00000a34, Size: 0x00000020, Max: 0xffffffff, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x40000008        -       0x00000040   Zero   RW           24    .bss                conecta_k_2023.o
-    0x40000048        -       0x00000060   Zero   RW          253    .bss                c_t.l(libspace.o)
-    0x400000a8        -       0x00000000   Zero   RW            2    HEAP                startup.o
-    0x400000a8        -       0x00000488   Zero   RW            1    STACK               startup.o
+    0x40000000   0x00000a34   0x00000020   Data   RW           15    Datos               conecta_k_hay_linea_arm_c_file.o
+
+
+    Execution Region ER_ZI (Exec base: 0x40000020, Load base: 0x00000a54, Size: 0x00000528, Max: 0xffffffff, ABSOLUTE)
+
+    Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
+
+    0x40000020        -       0x00000040   Zero   RW           28    .bss                conecta_k_2023.o
+    0x40000060        -       0x00000060   Zero   RW          257    .bss                c_t.l(libspace.o)
+    0x400000c0        -       0x00000000   Zero   RW            2    HEAP                startup.o
+    0x400000c0        -       0x00000488   Zero   RW            1    STACK               startup.o
 
 
 ==============================================================================
@@ -584,16 +576,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-      1108         20         49          8         64      11532   conecta_k_2023.o
-       144          0          0          0          0        324   conecta_k_buscar_alineamiento_arm_file.o
-        72          0          0          0          0       1849   entrada.o
+      1028         16         49          0         64      12284   conecta_k_2023.o
+       156          8          0         32          0        308   conecta_k_hay_linea_arm_c_file.o
         12          0          0          0          0        403   main.o
         32         12          0          0       1160        268   startup.o
-       608          0          0          0          0       6360   tablero.o
+       772          0          0          0          0       7255   tablero.o
 
     ----------------------------------------------------------------------
-      2000         40         84          8       1224      20736   Object Totals
-        24          8         32          0          0          0   (incl. Generated)
+      2000         36         84         32       1224      20518   Object Totals
+         0          0         32          0          0          0   (incl. Generated)
          0          0          3          0          0          0   (incl. Padding)
 
     ----------------------------------------------------------------------
@@ -642,15 +633,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      2528         60         84          8       1320      20504   Grand Totals
-      2528         60         84          8       1320      20504   ELF Image Totals
-      2528         60         84          8          0          0   ROM Totals
+      2528         56         84         32       1320      20286   Grand Totals
+      2528         56         84         32       1320      20286   ELF Image Totals
+      2528         56         84         32          0          0   ROM Totals
 
 ==============================================================================
 
     Total RO  Size (Code + RO Data)                 2612 (   2.55kB)
-    Total RW  Size (RW Data + ZI Data)              1328 (   1.30kB)
-    Total ROM Size (Code + RO Data + RW Data)       2620 (   2.56kB)
+    Total RW  Size (RW Data + ZI Data)              1352 (   1.32kB)
+    Total ROM Size (Code + RO Data + RW Data)       2644 (   2.58kB)
 
 ==============================================================================
 

@@ -1,4 +1,3 @@
-; Autor Álvaro López
 
 	PRESERVE8
 	AREA datos, DATA, READWRITE

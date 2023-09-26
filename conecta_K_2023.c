@@ -10,7 +10,9 @@ extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
 	delta_columna);
 
-extern uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color)
+extern uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
+
+
 // devuelve la longitud de la línea más larga en un determinado sentido
 uint8_t conecta_K_buscar_alineamiento_c(TABLERO *t, uint8_t fila,
 	uint8_t columna, uint8_t color, int8_t delta_fila, int8_t
@@ -98,8 +100,8 @@ void conecta_K_test_cargar_tablero(TABLERO *t)
 	0, 1, 0, 0, 0, 2, 0,
 	1, 1, 0, 0, 0, 2, 2,
 	0, 0, 1, 0, 2, 0, 0,
-	0, 0, 0, 0, 0, 2, 0,
-	0, 0, 2, 0, 0, 0, 0,
+	0, 0, 0, 1, 0, 2, 0,
+	0, 0, 2, 0, 1, 0, 0,
 	2, 2, 0, 1, 0, 1, 1,
 	0, 2, 0, 0, 0, 1, 0};
 	
@@ -155,14 +157,17 @@ void conecta_K_visualizar_tablero(TABLERO *t, uint8_t pantalla[8][8])
 }  
 
 //
-int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color){
+int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila, 
+										uint8_t columna, uint8_t color, uint8_t pantalla[8][8]){
 	// en esta funcion es donde se debe verificar que todas las optimizaciones dan el mismo resultado
 	uint8_t resultado_c_c = conecta_K_hay_linea_c_c(t, fila, columna, color);
-	uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
+	// uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
 	uint8_t resultado_arm_c = conecta_K_hay_linea_arm_c(t, fila, columna, color);
-	if(resultado_c_c != resultado_c_arm) while (1);
-	if (resultado_c_c != resultado_c_arm) while (1);
-	
+	// if(resultado_c_c != resultado_c_arm) while (1);
+	if (resultado_c_c != resultado_arm_c){
+		pantalla[0][0] = 255;
+		while (1);
+	}
 	return resultado_c_c;
 }
 
@@ -182,7 +187,11 @@ void conecta_K_jugar(void){
 	conecta_K_test_cargar_tablero(&cuadricula);
 	conecta_K_visualizar_cuadricula(salida);
 	conecta_K_visualizar_tablero(&cuadricula, salida);
-
+	
+	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3, colour, salida);
+	
+	while(1);
+	
 	entrada_inicializar(entrada);
 	
 	while (1){
@@ -195,7 +204,7 @@ void conecta_K_jugar(void){
 				//tablero_insertar tambien chequea si esta libre esa celda o no...
 				if(tablero_insertar_color(&cuadricula, row, column, colour) == EXITO) {
 					conecta_K_visualizar_tablero(&cuadricula, salida);
-					if(conecta_K_verificar_K_en_linea(&cuadricula, row, column, colour)) {
+					if(conecta_K_verificar_K_en_linea(&cuadricula, row, column, colour, salida)) {
 						while(1); // equivaldria a K_linea encontrada, fin de partida... 
 					}
 				}
