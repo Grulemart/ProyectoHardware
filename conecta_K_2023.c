@@ -91,23 +91,16 @@ conecta_K_hay_linea_c_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t col
 // 0: casilla vacia, 1:ficha jugador uno, 2: ficha jugador dos
 void conecta_K_test_cargar_tablero(TABLERO *t)
 {
+	#include "tablero_test.h"
+	
 	
 	// No se almacena en memoria estática y por lo tanto no se añade al principio del programa
 	// Alineación más conveniente para tests
-	uint8_t 
-	tablero_test[7][7] =
-	{
-	0, 1, 0, 0, 0, 2, 0,
-	1, 1, 0, 0, 0, 2, 2,
-	0, 0, 1, 0, 2, 0, 0,
-	0, 0, 0, 1, 0, 2, 0,
-	0, 0, 2, 0, 1, 0, 0,
-	2, 2, 0, 1, 0, 1, 1,
-	0, 2, 0, 0, 0, 1, 0};
+	
 	
 	for (uint8_t i = 0; i < NUM_FILAS; i++) {
 		for (uint8_t j = 0; j < NUM_COLUMNAS; j++) {
-			tablero_insertar_color(t, i, j, tablero_test[i][j]);
+			tablero_insertar_color(t, i, j, tablero_test3[i][j]);
 		}
 	}
 }
@@ -190,7 +183,7 @@ void conecta_K_jugar(void){
 	conecta_K_visualizar_cuadricula(salida);
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 	
-	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3, 1, salida);
+	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3 , 1, salida);
 	
 	while(1);
 	
