@@ -35,6 +35,7 @@ conecta_K_buscar_alineamiento_arm
 									mov r12, SP
 									push{r4-r11,lr}
 									sub r11,r12, #4
+									; Cogen los valores 0 y -1 (delta fila y columna)
 									ldr r4, [r11, #4]	; Cogemos de la pila el argumento delta_fila
 									ldr r5, [r11, #8]	; Cogemos de la pila el argumento delta_culumna
 
@@ -46,11 +47,11 @@ conecta_K_buscar_alineamiento_arm
 									bgt errortag
 										
 									
-									mov r6,#0				; col = 0
+									mov r6, #0				; col = 0
 for									cmp r6, #MAX_NO_CERO
 									bge done
 
-									mov r10, #MAX_COLUMNA
+									mov r10, #6		 ; Max No ceros
 									mul r7, r1, r10  ;
 									add r7, r7, r6
 									ldrb r7, [r0, r7]    		; Cargamos en r7 el valor t->columnas[fila][col]
@@ -63,7 +64,7 @@ for									cmp r6, #MAX_NO_CERO
 									b for
 
 done	
-									; ???
+									; Si sale del bucle por iteraciones da error
 									cmp r6, #MAX_NO_CERO ; col == MAX_NO_CERO
 									beq errortag
 									

@@ -173,7 +173,7 @@ void conecta_K_jugar(void){
 	static uint8_t salida[8][8];
 	
 	TABLERO cuadricula;
-
+	
 	uint8_t row, column, colour;
 
 	
