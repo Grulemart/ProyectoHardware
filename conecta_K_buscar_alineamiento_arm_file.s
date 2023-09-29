@@ -27,6 +27,7 @@ MAX_COLUMNA EQU 7
 MAX_NO_CERO EQU 6
 	
 MAX_TAMANYO_T_COLUMNAS EQU 49
+	
 
 	AREA codigo, CODE
 	EXPORT conecta_K_buscar_alineamiento_arm
@@ -96,14 +97,10 @@ final_tablero_buscar_color			cmp r9, #EXITO
 									add r1, r1, r4	; delta_fila + 1
 									add r2, r2, r5	; delta_columna + 1
 									
-									push{r0-r9,lr}
-									
 									bl conecta_K_buscar_alineamiento_arm
+								
+									add r0, r0, #1 ; 1 + conecta_k_buscar_alimento_arm 
 									
-									mov r10, r0
-									pop{r0-r9,lr}
-
-									add r0, r10, #1 ; 1 + conecta_k_buscar_alimento_arm 
 									pop {r4-r11, pc} ; Recuperamos registros
 
 retorno_0	
