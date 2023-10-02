@@ -11,8 +11,8 @@
 
 ;  Otros registros usados:
 ;	r6 = col
-;	r7 = t->columnas[fila][col]
-;	r8 = t->no_ceros[fila][col]
+;	r7 = offset para acceder a t->columnas[fila][col] y t->no_ceros[fila][co
+;	r8 = t->columnas[fila][col] y t->no_ceros[fila][col]
 ;	r9 = t->no_ceros[fila][col] == color
 ;	r10 = Dirrecion de la fia
 
@@ -26,7 +26,9 @@ MAX_FILA EQU 7
 MAX_COLUMNA EQU 7
 MAX_NO_CERO EQU 6
 	
-MAX_TAMANYO_T_COLUMNAS EQU 49
+MAX_TAMANYO_T_COLUMNAS EQU 42
+	
+INVALIDA EQU 0xFF
 	
 
 	AREA codigo, CODE
@@ -35,13 +37,13 @@ MAX_TAMANYO_T_COLUMNAS EQU 49
 conecta_K_buscar_alineamiento_arm	
 
 									; Protocolo de epilogo de pila
-									mov r12, SP
+									mov IP, SP
 									push{r4-r11,lr}
-									sub r11,r12, #4
+									sub FP, IP, #4
 									
 									; Cogen los valores delta_fila y delta_columna
-									ldr r4, [r11, #4]	
-									ldr r5, [r11, #8]	
+									ldr r4, [FP, #4]	
+									ldr r5, [FP, #8]	
 
 									; Funcion tablero_buscar_color	
 									
@@ -54,19 +56,24 @@ conecta_K_buscar_alineamiento_arm
 										
 									;col = 0
 									mov r6, #0	
-
+									;r7 offset para acceder @[fila][0]
+									mov r10, #MAX_NO_CERO	; Cada fila del array tiene MAX_NO_CERO unidades
+									mul r7, r1, r10  		; Acceder a la fila del tablero
+									
 									; col < MAX_NO_CERO
 for									cmp r6, #MAX_NO_CERO
 									bge done
-
-									; columna != t->columnas[fila][col]
-									mov r10, #6		 		; Cada fila del array tiene 6 unidades
-									mul r7, r1, r10  		; Acceder a la fila del tablero
-									add r7, r7, r6			; r7 <= @[fila][col]
-									ldrb r7, [r0, r7]    	; r7 <= t->columnas[fila][col]
-									cmp r7, r2				
-				
+									
+									add r7, r7, r6			; r7 <= ofsset @[fila][col]
+									
+									ldrb r8, [r0, r7]    	; r8 <= t->columnas[fila][col]
+									
+									cmp r8, r2				; columna != t->columnas[fila][col]
 									beq done
+									
+									; Vamos a comprobar si es invalida, si no lo es vamos a done
+									cmp r8, #INVALIDA
+									beq errortag
 									
 									; ++col
 									add r6,r6,#1
@@ -78,12 +85,10 @@ done								; Si sale del bucle por iteraciones da error
 									beq errortag
 									
 									; celda_color(t->no_ceros[fila][col] == color)
-									mul r7, r1, r10						 ; Cada fila del array tiene 6 unidades
-									add r7, r7, r6						 ; Acceder a la fila del tablero
-									add r7, r7, #MAX_TAMANYO_T_COLUMNAS  ; Añadir todas la unidades de t.columnas para acceder a no_ceros
-									ldrb r7, [r0, r7]                    ; r7 <= t->no_ceros[fila][col]
-									and r7, r7, #3 						 ; Traducir celda a color
-									cmp r7, r3							 ; t->no_ceros[fila][col] == color
+									add r7, r7, #MAX_TAMANYO_T_COLUMNAS  ; Aï¿½adir todas la unidades de t.columnas para acceder a no_ceros
+									ldrb r8, [r0, r7]                    ; r7 <= t->no_ceros[fila][col]
+									and r8, r8, #3 						 ; Usamos una and para coger solo los 3 bits que nos interesan
+									cmp r8, r3							 ; t->no_ceros[fila][col] == color
 									bne errortag						 
 									
 									mov r9, #EXITO						
@@ -100,12 +105,12 @@ final_tablero_buscar_color			cmp r9, #EXITO
 									; nueva_fila = fila + delta_fila
 									; nueva_columna = columna + delta_columna
 									add r1, r1, r4	
-									and r1, #0x000000FF
-									add r2, r2, r5	
-									and r2, #0x000000FF
+									add r2, r2, r5
 									
+									push{r4, r5}
 									; return 1 + conecta_ K_buscar_alineamiento_arm(t, nueva_fila, nueva_columna, color, delta_fila, delta_columna)
 									bl conecta_K_buscar_alineamiento_arm
+									pop{r4, r5}
 									add r0, r0, #1
 									
 									pop {r4-r11, pc} ; Recuperamos registros

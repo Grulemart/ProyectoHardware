@@ -183,7 +183,7 @@ void conecta_K_jugar(void){
 	conecta_K_visualizar_cuadricula(salida);
 	conecta_K_visualizar_tablero(&cuadricula, salida);
 	
-	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3 , 1, salida);
+	conecta_K_verificar_K_en_linea(&cuadricula, 3, 3, 1, salida);
 	
 	while(1);
 	
