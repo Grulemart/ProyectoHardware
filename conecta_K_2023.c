@@ -3,7 +3,11 @@
 
 enum { VACIO = 0,   // 00 en hexadecimal
     BLANCO = 17,    // 11 en hexadecimal
-    NEGRO = 34			// 22 en hexadecimal
+    NEGRO = 34,			// 22 en hexadecimal
+		ERROR_C_ARM = 0xE1,
+		ERROR_ARM_C = 0xE2,
+		ERROR_ARM_ARM = 0xE3
+	
 };
 
 extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila,
@@ -11,6 +15,8 @@ extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila,
 	delta_columna);
 
 extern uint8_t conecta_K_hay_linea_arm_c(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
+
+extern uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
 
 
 // devuelve la longitud de la línea más larga en un determinado sentido
@@ -156,12 +162,19 @@ int conecta_K_verificar_K_en_linea(TABLERO *t, uint8_t fila,
 	uint8_t resultado_c_c = conecta_K_hay_linea_c_c(t, fila, columna, color);
 	uint8_t resultado_c_arm = conecta_K_hay_linea_c_arm(t, fila, columna, color);
 	uint8_t resultado_arm_c = conecta_K_hay_linea_arm_c(t, fila, columna, color);
-	// if(resultado_c_c != resultado_c_arm) while (1);
+	uint8_t resultado_arm_arm = conecta_K_hay_linea_arm_arm(t, fila, columna, color);
 	if (resultado_c_c != resultado_c_arm){
-		pantalla[0][0] = 240;
+		pantalla[0][0] = ERROR_C_ARM;
+		while (1);
 	}
+
 	if (resultado_c_c != resultado_arm_c){
-		pantalla[0][0] = pantalla[0][0] + 15;
+		pantalla[0][0] = ERROR_ARM_C;
+	}
+	
+	if(resultado_c_c != resultado_arm_arm){
+			pantalla[0][0] = ERROR_ARM_ARM;
+			while (1);
 	}
 	return resultado_c_c;
 }

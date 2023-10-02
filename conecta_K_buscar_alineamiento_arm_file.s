@@ -105,12 +105,12 @@ final_tablero_buscar_color			cmp r9, #EXITO
 									; nueva_fila = fila + delta_fila
 									; nueva_columna = columna + delta_columna
 									add r1, r1, r4	
-									add r2, r2, r5
+									add r2, r2, r5	
 									
 									push{r4, r5}
 									; return 1 + conecta_ K_buscar_alineamiento_arm(t, nueva_fila, nueva_columna, color, delta_fila, delta_columna)
 									bl conecta_K_buscar_alineamiento_arm
-									pop{r4, r5}
+									add SP, SP, #8
 									add r0, r0, #1
 									
 									pop {r4-r11, pc} ; Recuperamos registros
