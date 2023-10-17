@@ -4,3 +4,4 @@ void temporizador_hal_iniciar();
 void temporizador_hal_empezar();
 uint64_t temporizador_hal_leer();
 uint64_t temporizador_hal_parar();
+extern const uint64_t temporizador_hal_ticks2us;
