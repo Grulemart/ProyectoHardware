@@ -4,13 +4,15 @@
 #include "timer_hal.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
-const uint64_t temporizador_hal_ticks2us = 60;
+const uint64_t temporizador_hal_ticks2us = 1;
 
 void timer0_ISR (void) __irq;
 
 void temporizador_hal_iniciar(){
-	T0MR0 = 2^32 -1;
-	T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
+	T0PR = 59;// Configura el prescaler del timer para que un tick sea un us.
+
+	T0MR0 = 2^32 - 1;	// Configuramos el timer para que interrumpa cuando no pueda contar más ticks
+	T0MCR = 3;        // Generates an interrupt and resets the count when the value of MR0 is reached
 
   // configuration of the IRQ slot number 0 of the VIC for Timer 0 Interrupt
 	VICVectAddr0 = (unsigned long)timer0_ISR;          // set interrupt vector in 0
@@ -30,8 +32,9 @@ uint64_t temporizador_hal_leer(){
 }
 
 uint64_t temporizador_hal_parar(){
+	uint64_t ticks = timer0_int_count * T0MR0 + T0TC;
 	T0TCR = 0;															// Timer0 Disable
-	return timer0_int_count * T0MR0 + T0TC;
+	return ticks;
 }
 
 /* Timer Counter 0 Interrupt executes each 10ms @ 60 MHz CPU Clock */
