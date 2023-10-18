@@ -6,16 +6,16 @@
 static volatile uint64_t timer0_int_count = 0;
 const uint64_t temporizador_hal_ticks2us = 1;
 
-void timer0_ISR (void) __irq;
+void timer0_RSI (void) __irq;
 
 void temporizador_hal_iniciar(){
 	T0PR = 59;// Configura el prescaler del timer para que un tick sea un us.
 
-	T0MR0 = 2^32 - 1;	// Configuramos el timer para que interrumpa cuando no pueda contar más ticks
-	T0MCR = 3;        // Generates an interrupt and resets the count when the value of MR0 is reached
+	T0MR0 = 0xFFFFFFFE;	// Configuramos el timer para que interrumpa cuando no pueda contar más ticks
+	T0MCR = 0x00000003;        // Generates an interrupt and resets the count when the value of MR0 is reached
 
   // configuration of the IRQ slot number 0 of the VIC for Timer 0 Interrupt
-	VICVectAddr0 = (unsigned long)timer0_ISR;          // set interrupt vector in 0
+	VICVectAddr0 = (unsigned long)timer0_RSI;          // set interrupt vector in 0
   // 0x20 bit 5 enables vectored IRQs. 
 	// 4 is the number of the interrupt assigned. Number 4 is the Timer 0 (see table 40 of the LPC2105 user manual  
 	VICVectCntl0 = 0x20 | 4;                   
@@ -38,7 +38,7 @@ uint64_t temporizador_hal_parar(){
 }
 
 /* Timer Counter 0 Interrupt executes each 10ms @ 60 MHz CPU Clock */
-void timer0_ISR (void) __irq {
+void timer0_RSI (void) __irq {
     timer0_int_count++;
     T0IR = 1;                              // Clear interrupt flag
     VICVectAddr = 0;                            // Acknowledge Interrupt
