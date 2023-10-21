@@ -4,7 +4,13 @@
 
 #include <inttypes.h>
 
-enum BOOLEAN {
+//// TODO: Cambiar esta dependencia a io_reserva cuando esté hecha
+#include "gpio_hal.h"
+#include "evento.h"
+
+typedef uint8_t BOOLEAN;
+
+enum BOOLEAN_VALUES {
 	TRUE = 1,
 	FALSE = 0
 };
@@ -13,28 +19,13 @@ enum BOOLEAN {
 const uint8_t FIFO_SIZE = 32;
 const uint8_t EVENT_TYPES = 4;
 
-// Declaracion de los ID de los eventos de interrupción
-enum ID_EVENTO {
-	VOID = 0,
-	TIMER0 = 1,
-	TIMER1 = 2,
-	GPIO = 3
-};
 
-// Declaración de tipo EVENTO_T
-typedef struct EVENTO_T {
-	
-	uint8_t ID;
-	uint8_t procesado;
-	
-} EVENTO_T;
 
-//// TODO: Cambiar tipo a GPIO_HAL_PIN_T cuando este declarado
-void FIFO_inicializar(uint8_t pin_overflow);
+void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow);
 
-void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData);
+void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData);
 
-uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData);
+uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData);
 
 uint32_t FIFO_estadisticas(uint8_t ID_evento);
 
