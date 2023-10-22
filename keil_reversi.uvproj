@@ -551,6 +551,21 @@
               <FileType>1</FileType>
               <FilePath>.\planificador.c</FilePath>
             </File>
+            <File>
+              <FileName>io_reserva.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\io_reserva.h</FilePath>
+            </File>
+            <File>
+              <FileName>gpio_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\gpio_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>gpio_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\gpio_drv.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

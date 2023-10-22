@@ -4,7 +4,6 @@
 
 #include <inttypes.h>
 
-//// TODO: Cambiar esta dependencia a io_reserva cuando esté hecha
 #include "gpio_hal.h"
 #include "evento.h"
 
