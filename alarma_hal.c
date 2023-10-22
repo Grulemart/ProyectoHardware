@@ -33,4 +33,5 @@ void timer1_RSI(void) __irq {
 	
 	//// TODO: Encolar evento en planificador con funcion callback
 	
+	
 }

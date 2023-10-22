@@ -516,6 +516,41 @@
               <FileType>5</FileType>
               <FilePath>.\timer_hal.h</FilePath>
             </File>
+            <File>
+              <FileName>alarma_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\alarma_hal.h</FilePath>
+            </File>
+            <File>
+              <FileName>alarma_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarma_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>alarma_drv.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\alarma_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>evento.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\evento.h</FilePath>
+            </File>
+            <File>
+              <FileName>alarma_drv.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarma_drv.c</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\planificador.h</FilePath>
+            </File>
+            <File>
+              <FileName>planificador.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\planificador.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

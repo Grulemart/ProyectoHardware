@@ -10,15 +10,9 @@
 
 typedef uint8_t BOOLEAN;
 
-enum BOOLEAN_VALUES {
-	TRUE = 1,
-	FALSE = 0
-};
-
 // Tamaño de la cola
 const uint8_t FIFO_SIZE = 32;
 const uint8_t EVENT_TYPES = 4;
-
 
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow);

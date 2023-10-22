@@ -10,4 +10,10 @@ enum EVENTO_T {
 	GPIO = 3
 };
 
+// Declaracion de tipo Boolean
+enum BOOLEAN {
+	TRUE = 1,
+	FALSE = 0
+};
+
 #endif
