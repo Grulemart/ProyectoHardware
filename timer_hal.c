@@ -1,18 +1,17 @@
 #include <stdint.h>
 #include <LPC210X.H>                            // LPC21XX Peripheral Registers
-#include "pulsacion.h"
 #include "timer_hal.h"
+#include "pulsacion.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
-const uint64_t temporizador_hal_ticks2us = 1;
+const uint64_t temporizador_hal_ticks2us = 15;
 
 void timer0_RSI (void) __irq;
 
 void temporizador_hal_iniciar(){
-	T0PR = 59;// Configura el prescaler del timer para que un tick sea un us.
-
-	T0MR0 = 0xFFFFFFFE;	// Configuramos el timer para que interrumpa cuando no pueda contar más ticks
-	T0MCR = 0x00000003;        // Generates an interrupt and resets the count when the value of MR0 is reached
+	timer0_int_count = 0;
+	T0MR0 = 0xFFFFFFFE;                        // Interrumpe cada 0,05ms = 150.000-1 counts
+  T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
 
   // configuration of the IRQ slot number 0 of the VIC for Timer 0 Interrupt
 	VICVectAddr0 = (unsigned long)timer0_RSI;          // set interrupt vector in 0
@@ -28,11 +27,12 @@ void temporizador_hal_empezar(){
 }
 
 uint64_t temporizador_hal_leer(){
-	return timer0_int_count * T0MR0 + T0TC;
+	return (uint64_t)T0TC;
 }
 
 uint64_t temporizador_hal_parar(){
-	uint64_t ticks = timer0_int_count * T0MR0 + T0TC;
+	uint64_t ticks;
+	ticks = (timer0_int_count * T0MR0) + T0TC;
 	T0TCR = 0;															// Timer0 Disable
 	return ticks;
 }
@@ -43,7 +43,4 @@ void timer0_RSI (void) __irq {
     T0IR = 1;                              // Clear interrupt flag
     VICVectAddr = 0;                            // Acknowledge Interrupt
 }
-
-
-
 
