@@ -38,7 +38,6 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
 		// Enciende led de overflow
 		gpio_hal_escribir(overflow, GPIO_OVERFLOW_BITS, 1);
 	}else{
-	
 		fifo[indiceUltimoEncolado] = ID_evento;
 		procesados[indiceUltimoEncolado] = FALSE;
 		auxDataArray[indiceUltimoEncolado] = auxData;
