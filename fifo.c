@@ -1,11 +1,10 @@
 
 #include "fifo.h"
-#include <stdlib.h>
 
 #define NO_HAY_EVENTO_A_PROCESAR 0
 #define HAY_EVENTO_A_PROCESAR 1
 
-static enum EVENTO_T *fifo;							  	// Dirección de memoria de vector de eventos registrados
+static enum EVENTO_T fifo[FIFO_SIZE];							  	// Dirección de memoria de vector de eventos registrados
 static uint32_t auxDataArray[FIFO_SIZE];		// Array de datos auxiliares de los eventos
 static enum BOOLEAN procesado[FIFO_SIZE];	// Array de registro de eventos procesados
 static uint32_t eventRegister[EVENT_TYPES];	// Registro de numero de eventos de un tipo producidos
@@ -18,7 +17,6 @@ void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
 	indiceUltimoEncolado = 0;
 	indiceProcesoATratar = 0;
 	
-	fifo = malloc(sizeof(enum EVENTO_T) * FIFO_SIZE);
 	for (i = 0; i < FIFO_SIZE; i++) {
 		fifo[i] = VOID;
 		procesado[i] = TRUE;
