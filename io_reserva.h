@@ -4,17 +4,17 @@
 
 #include <inttypes.h>
 
-// Enumeración para la dirección del pin
+// EnumeraciÃ³n para la direcciÃ³n del pin
 typedef enum {
     GPIO_HAL_PIN_DIR_INPUT,
     GPIO_HAL_PIN_DIR_OUTPUT
 } gpio_hal_pin_dir_t;
 
-// Tipo de datos para representación del pin GPIO
+// Tipo de datos para representaciÃ³n del pin GPIO
 typedef uint8_t  GPIO_HAL_PIN_T;
 typedef uint8_t  GPIO_HAL_PIN_BITS_T;
 
-#define GPIO_OVERFLOW 32
+#define GPIO_OVERFLOW 31
 #define GPIO_OVERFLOW_BITS 1
 
 #define GPIO_HELLO_WORLD 0
