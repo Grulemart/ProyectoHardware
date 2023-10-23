@@ -12,10 +12,12 @@ typedef enum {
 
 // Tipo de datos para representación del pin GPIO
 typedef uint8_t  GPIO_HAL_PIN_T;
+typedef uint8_t  GPIO_HAL_PIN_BITS_T;
 
 #define GPIO_OVERFLOW 32
 #define GPIO_OVERFLOW_BITS 1
 
-////TODO: Añadir más definiciones de resto de pins
+#define GPIO_HELLO_WORLD 0
+#define GPIO_HELLO_WORLD_BITS 8
 
 #endif

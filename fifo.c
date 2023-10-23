@@ -11,7 +11,7 @@ static enum BOOLEAN procesado[FIFO_SIZE];	// Array de registro de eventos proces
 static uint32_t eventRegister[EVENT_TYPES];	// Registro de numero de eventos de un tipo producidos
 static uint8_t indiceUltimoEncolado;										  // Indice de ultimo evento registrado
 static uint8_t indiceProcesoATratar;						// Indice para registrar eventos procesados
-static GPIO_HAL_PIN_T overflow;							// Pin de overflow
+static GPIO_HAL_PIN_T overflowPin;							// Pin de overflow
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
 	
@@ -32,14 +32,15 @@ void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
 	
 }
 
-void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
+void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData, uint8_t* overflow) {
 	// Se produce overflow
-	if(procesado[indiceUltimoEncolado] == FALSE)}
+	if(procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
-		gpio_hal_escribir(overflow, GPIO_OVERFLOW_BITS, 1);
+		gpio_hal_escribir(overflowPin, GPIO_OVERFLOW_BITS, 1);
+		*overflow = 1;
 	}else{
 		fifo[indiceUltimoEncolado] = ID_evento;
-		procesados[indiceUltimoEncolado] = FALSE;
+		procesado[indiceUltimoEncolado] = FALSE;
 		auxDataArray[indiceUltimoEncolado] = auxData;
 		
 		eventRegister[(uint8_t)ID_evento] += 1;
@@ -60,9 +61,10 @@ uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData) {
 	procesado[indiceProcesoATratar] = TRUE;
 	indiceProcesoATratar = (indiceProcesoATratar + 1) % FIFO_SIZE;
 	return HAY_EVENTO_A_PROCESAR;
-	}
 	
 }
+	
+
 
 uint32_t FIFO_estadisticas(uint8_t ID_evento) {
 	

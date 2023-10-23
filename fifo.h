@@ -16,7 +16,7 @@ const uint8_t EVENT_TYPES = 4;
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow);
 
-void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData);
+void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData, uint8_t *overflow);
 
 uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData);
 
