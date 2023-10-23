@@ -58,7 +58,7 @@ void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 }
 
 void timer1_RSI (void) __irq {
-    callback_function();
     T0IR = 1;                              // Clear interrupt flag
     VICVectAddr = 0;                            // Acknowledge Interrupt
+    callback_function();
 }
