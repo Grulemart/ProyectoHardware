@@ -3,9 +3,9 @@
 #include "timer_hal.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
-static volatile void (*callback_funcion)(void);
+static void (*callback_funcion)() = 0;
 void timer0_RSI (void) __irq;
-void timer1_RSI (void) __irq 
+void timer1_RSI (void) __irq; 
 void temporizador_hal_iniciar(){
 	timer0_int_count = 0;
 	T0MR0 = 0xFFFFFFFE;                        // Interrumpe cada 0,05ms = 150.000-1 counts
@@ -53,12 +53,12 @@ void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 		VICVectCntl1 = 0x20 | 5;
 		VICIntEnable = VICVectCntl1 | 0x00000020;	// Enable Timer1 Interrupt
 		T1TCR = 1;		// Timer1 enable
-		callback_function = function_callback;
+		callback_funcion = function_callback;
 	}
 }
 
 void timer1_RSI (void) __irq {
     T0IR = 1;                              // Clear interrupt flag
     VICVectAddr = 0;                            // Acknowledge Interrupt
-    callback_function();
+    callback_funcion();
 }
