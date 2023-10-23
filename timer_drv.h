@@ -4,11 +4,13 @@
 
 #include <stdint.h>
 #include "timer_hal.h"
+#include "evento.h"
 
 void temporizador_drv_iniciar(void);
 void temporizador_drv_empezar(void);
 uint64_t temporizador_drv_leer(void);
 uint64_t temporizador_drv_parar(void);
-void temporizador_drv_reloj(uint32_t periodo, void (*function_callback)());
+void temporizador_drv_reloj (uint32_t periodo, void(*funcion_encolar_evento)(), enum EVENTO_T ID_evento);
+
 
 #endif
