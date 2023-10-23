@@ -5,7 +5,8 @@
 #include "fifo.h"
 #include "timer_drv.h"
 #include "hello_world.h"
+#include <inttypes.h>
 
-void planificador();
+void planificador(void);
 
 #endif

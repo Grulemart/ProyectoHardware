@@ -9,7 +9,7 @@ static GPIO_HAL_PIN_BITS_T currentBit;
 void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits) {
 	helloWorldPin = bit;
 	helloWorldPinBits = pinBits;
-	gpio_drv_sentido(helloWorldPin, helloWorldPinBits, GPIO_HAL_PIN_DIR_OUTPUT);
+	gpio_hal_sentido(helloWorldPin, helloWorldPinBits, GPIO_HAL_PIN_DIR_OUTPUT);
 }
 
 void hello_world_tick_tack(){ 
@@ -22,7 +22,7 @@ void hello_world_tick_tack(){
 		nuevoPin = (1 << (currentBit - 1));
 	}
 	
-	gpio_drv_escribir(helloWorldPin, helloWorldPinBits, nuevoPin);
+	gpio_hal_escribir(helloWorldPin, helloWorldPinBits, nuevoPin);
 	
 	currentBit = (currentBit + 1) % helloWorldPinBits;
 	
