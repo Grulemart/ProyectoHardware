@@ -5,6 +5,7 @@
 #include "io_reserva.h"
 #include "gpio_hal.h"
 
+
 void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits);
 
 void hello_world_tick_tack(void);

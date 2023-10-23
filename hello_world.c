@@ -1,5 +1,7 @@
 
 #include "hello_world.h"
+#include "timer_drv.h"
+#include "fifo.h"
 
 static GPIO_HAL_PIN_T helloWorldPin;
 static GPIO_HAL_PIN_BITS_T helloWorldPinBits;
@@ -15,14 +17,12 @@ void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits) {
 void hello_world_tick_tack(){ 
 	
 	uint32_t nuevoPin;
+	nuevoPin = (1 << (currentBit));
 	
-	if (currentBit == 0) {
-		nuevoPin = 0;
-	} else {
-		nuevoPin = (1 << (currentBit - 1));
-	}
 	
+	//gpio_hal
 	gpio_hal_escribir(helloWorldPin, helloWorldPinBits, nuevoPin);
+	temporizador_drv_reloj(50, FIFO_encolar, TIMER1);
 	
 	currentBit = (currentBit + 1) % helloWorldPinBits;
 	

@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include "timer_hal.h"
 #include "evento.h"
+#include "fifo.h"
 
 void temporizador_drv_iniciar(void);
 void temporizador_drv_empezar(void);
