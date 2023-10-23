@@ -11,14 +11,14 @@ void timer0_RSI (void) __irq;
 void temporizador_hal_iniciar(){
 	timer0_int_count = 0;
 	T0MR0 = 0xFFFFFFFE;                        // Interrumpe cada 0,05ms = 150.000-1 counts
-  T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
+  	T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
 
   // configuration of the IRQ slot number 0 of the VIC for Timer 0 Interrupt
 	VICVectAddr0 = (unsigned long)timer0_RSI;          // set interrupt vector in 0
   // 0x20 bit 5 enables vectored IRQs. 
 	// 4 is the number of the interrupt assigned. Number 4 is the Timer 0 (see table 40 of the LPC2105 user manual  
 	VICVectCntl0 = 0x20 | 4;                   
-  VICIntEnable = VICIntEnable | 0x00000010; 		// Enable Timer0 Interrupt
+ 	VICIntEnable = VICIntEnable | 0x00000010; 		// Enable Timer0 Interrupt
 }
 
 void temporizador_hal_empezar(){
@@ -42,5 +42,14 @@ void timer0_RSI (void) __irq {
     timer0_int_count++;
     T0IR = 1;                              // Clear interrupt flag
     VICVectAddr = 0;                            // Acknowledge Interrupt
+}
+
+void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
+	T1MR0 = periodo * (uint32_t)temporizador_hal_ticks2us;
+	T1MCR = 5;
+	T1TCR = 1;
+	VICVectAddr1 = (unsigned long)function_callback;
+	VICVectCntl1 = 0x20 | 5;
+	VICIntEnable = VICVectCntl1 | 0x00000020;
 }
 

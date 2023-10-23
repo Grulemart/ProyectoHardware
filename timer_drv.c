@@ -2,7 +2,7 @@
 #include "timer_hal.h"
 #include "timer_drv.h"
 
-// Módulo del manejador o driver
+// Mï¿½dulo del manejador o driver
 
 // Inicializa el temporizador
 void temporizador_drv_iniciar() {
@@ -27,3 +27,8 @@ uint64_t temporizador_drv_parar() {
     // Detiene el temporizador hardware llamando a temporizador_hal_parar()
     return temporizador_hal_parar()/temporizador_hal_ticks2us;
 }
+
+void temporizador_drv_reloj(uint32_t periodo, void (*function_callback)()){
+    temporizador_hal_reloj(periodo, function_callback);
+}
+
