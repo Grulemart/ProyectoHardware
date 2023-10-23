@@ -18,7 +18,7 @@ void planificador(void) {
 	// Encolamos eventos a modo de prueba para helloWorld
 
 	for (i = 0; i < 20; i++) {
-		FIFO_encolar(TIMER0, (uint32_t)hello_world_tick_tack, &overflow);
+		//FIFO_encolar(TIMER0, (uint32_t)hello_world_tick_tack, &overflow);
 	}
 	
 	while(overflow != TRUE) {
@@ -30,7 +30,7 @@ void planificador(void) {
 			// Procesar evento TIMER0
 		} else if (evento == TIMER1) {
 			// Procesar evento TIMER1
-			temporizador_drv_reloj(1000, hello_world_tick_tack);
+			//temporizador_drv_reloj(1000, hello_world_tick_tack);
 		} else if (evento == GPIO) {
 			// Procesar evento GPIO
 		} else {

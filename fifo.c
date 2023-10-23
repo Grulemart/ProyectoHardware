@@ -10,12 +10,14 @@ static enum BOOLEAN procesado[FIFO_SIZE];	// Array de registro de eventos proces
 static uint32_t eventRegister[EVENT_TYPES];	// Registro de numero de eventos de un tipo producidos
 static uint8_t indiceUltimoEncolado;										  // Indice de ultimo evento registrado
 static uint8_t indiceProcesoATratar;						// Indice para registrar eventos procesados
+static GPIO_HAL_PIN_T overflowPin;
 
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
 	uint8_t i;
 	indiceUltimoEncolado = 0;
 	indiceProcesoATratar = 0;
+	overflowPin = pin_overflow;
 	
 	for (i = 0; i < FIFO_SIZE; i++) {
 		fifo[i] = VOID;
@@ -33,7 +35,7 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
 	// Se produce overflow
 	if(procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
-		gpio_hal_escribir(overflowPin, GPIO_OVERFLOW_BITS, 1);
+		gpio_hal_escribir(overflowPin, (uint8_t)1, 1);
 	}else{
 		fifo[indiceUltimoEncolado] = ID_evento;
 		procesado[indiceUltimoEncolado] = FALSE;

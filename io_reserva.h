@@ -14,7 +14,7 @@ typedef enum {
 typedef uint8_t  GPIO_HAL_PIN_T;
 typedef uint8_t  GPIO_HAL_PIN_BITS_T;
 
-#define GPIO_OVERFLOW 32
+#define GPIO_OVERFLOW 31
 #define GPIO_OVERFLOW_BITS 1
 
 #define GPIO_HELLO_WORLD 0

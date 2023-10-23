@@ -9,7 +9,7 @@ void gpio_hal_iniciar(){
 
 void gpio_hal_sentido(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, gpio_hal_pin_dir_t direccion){
 	// Verifica que los bits a configurar estén en el rango correcto
-    if (num_bits > 0 && num_bits <= 32) {
+    if(num_bits > 0 && num_bits <= 32){
         // Máscara para los bits a configurar
         uint32_t mascara = (1U << num_bits) - 1U;
         

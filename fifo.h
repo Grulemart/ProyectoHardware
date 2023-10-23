@@ -16,7 +16,7 @@ typedef uint8_t BOOLEAN;
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow);
 
-void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData, uint8_t *overflow);
+void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData);
 
 uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData);
 
