@@ -11,7 +11,7 @@ static enum BOOLEAN procesado[FIFO_SIZE];	// Array de registro de eventos proces
 static uint32_t eventRegister[EVENT_TYPES];	// Registro de numero de eventos de un tipo producidos
 static uint8_t indiceUltimoEncolado;										  // Indice de ultimo evento registrado
 static uint8_t indiceProcesoATratar;						// Indice para registrar eventos procesados
-static GPIO_HAL_PIN_T overflowPin;							// Pin de overflow
+
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
 	uint8_t i;
