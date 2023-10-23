@@ -41,13 +41,17 @@ void timer0_RSI (void) __irq {
 }
 
 void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
-	T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
-	T1MR0 = periodo;	// Interrumpe cada periodo	
-	T1MCR = 5;	//// Generates an interrupt and stops the count when the value of MR0 is reached
-	// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
-	VICVectAddr1 = (unsigned long)function_callback;	// Cuando interrumpe falla a funcion_callback
-	// 5 is the number of the interrupt assigned. Number 5 is the Timer 1 
-	VICVectCntl1 = 0x20 | 5;
-	VICIntEnable = VICVectCntl1 | 0x00000020;	// Enable Timer0 Interrupt
-	T1TCR = 1;		// Timer1 enable
+	if(periodo == 0){
+		T1TCR = 0;
+	}else{
+		T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
+		T1MR0 = periodo;	// Interrumpe cada periodo	
+		T1MCR = 3;	//// Generates an interrupt and stops the count when the value of MR0 is reached
+		// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
+		VICVectAddr1 = (unsigned long)function_callback;	// Cuando interrumpe llama a funcion_callback
+		// 5 is the number of the interrupt assigned. Number 5 is the Timer 1 
+		VICVectCntl1 = 0x20 | 5;
+		VICIntEnable = VICVectCntl1 | 0x00000020;	// Enable Timer1 Interrupt
+		T1TCR = 1;		// Timer1 enable
+	}
 }
