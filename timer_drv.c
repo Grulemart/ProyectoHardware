@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "timer_hal.h"
 #include "timer_drv.h"
+#include "fifo.h"
 
 static void (*funcionEncolarEvento)();
 static volatile enum EVENTO_T idEvento;
@@ -34,10 +35,13 @@ void callbackFunction(){
 	(*funcionEncolarEvento)(idEvento,0);
 }
 
+//// TODO: parametro inutil
+
 void temporizador_drv_reloj (uint32_t periodo, void(*funcion_encolar_evento)(), 
 	enum EVENTO_T ID_evento){
+		
 	funcionEncolarEvento = funcion_encolar_evento;
 	idEvento = ID_evento;
-	temporizador_hal_reloj(periodo, *callbackFunction);
+	temporizador_hal_reloj(periodo, callbackFunction);
 			
 }
