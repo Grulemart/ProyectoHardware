@@ -1,10 +1,8 @@
 #include <stdint.h>
 #include <LPC210X.H>                            // LPC21XX Peripheral Registers
 #include "timer_hal.h"
-#include "pulsacion.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
-const uint64_t temporizador_hal_ticks2us = 15;
 
 void timer0_RSI (void) __irq;
 
@@ -45,11 +43,13 @@ void timer0_RSI (void) __irq {
 }
 
 void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
-	T1MR0 = periodo * (uint32_t)temporizador_hal_ticks2us;
-	T1MCR = 5;
-	T1TCR = 1;
-	VICVectAddr1 = (unsigned long)function_callback;
+	T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
+	T1MR0 = periodo;	// Interrumpe cada periodo	
+	// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
+	VICVectAddr1 = (unsigned long)function_callback;	// Cuando interrumpe falla a funcion_callback
+	// 5 is the number of the interrupt assigned. Number 5 is the Timer 1 
 	VICVectCntl1 = 0x20 | 5;
-	VICIntEnable = VICVectCntl1 | 0x00000020;
+	VICIntEnable = VICVectCntl1 | 0x00000020;	// Enable Timer0 Interrupt
+	T1TCR = 1;		// Timer1 enable
 }
 

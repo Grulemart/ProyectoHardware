@@ -516,6 +516,11 @@
               <FileType>5</FileType>
               <FilePath>.\io_reserva.h</FilePath>
             </File>
+            <File>
+              <FileName>hello_world.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\hello_world.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

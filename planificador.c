@@ -11,9 +11,9 @@ void planificador() {
 	
 	// Inicialización de I/O
 	FIFO_inicializar(GPIO_OVERFLOW);
-	gpio_drv_iniciar();
+	gpio_hal_iniciar();
 	temporizador_drv_empezar();
-	iniciar_temporizador_drv_alarma(1000);	// 1000ms = 1s
+	temporizador_drv_reloj(1000);	// 1000ms = 1s
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	

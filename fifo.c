@@ -14,19 +14,18 @@ static uint8_t indiceProcesoATratar;						// Indice para registrar eventos proce
 static GPIO_HAL_PIN_T overflowPin;							// Pin de overflow
 
 void FIFO_inicializar(GPIO_HAL_PIN_T pin_overflow) {
-	
+	uint8_t i;
 	indiceUltimoEncolado = 0;
 	indiceProcesoATratar = 0;
-	overflow = pin_overflow;
 	
 	fifo = malloc(sizeof(enum EVENTO_T) * FIFO_SIZE);
-	for (uint8_t i = 0; i < FIFO_SIZE; i++) {
+	for (i = 0; i < FIFO_SIZE; i++) {
 		fifo[i] = VOID;
 		procesado[i] = TRUE;
 		auxDataArray[i] = 0;
 	}
 	
-	for (uint8_t i = 0; i < EVENT_TYPES; i++) {
+	for (i = 0; i < EVENT_TYPES; i++) {
 		eventRegister[i] = 0;
 	}
 	
@@ -37,7 +36,6 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData, uint8_t* overflow) 
 	if(procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
 		gpio_hal_escribir(overflowPin, GPIO_OVERFLOW_BITS, 1);
-		*overflow = 1;
 	}else{
 		fifo[indiceUltimoEncolado] = ID_evento;
 		procesado[indiceUltimoEncolado] = FALSE;
