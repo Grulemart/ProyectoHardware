@@ -2,7 +2,9 @@
 #include "timer_hal.h"
 #include "timer_drv.h"
 
-// M�dulo del manejador o driver
+static void (*funcionEncolarEvento)();
+static volatile enum EVENTO_T idEvento;
+// M?dulo del manejador o driver
 
 // Inicializa el temporizador
 void temporizador_drv_iniciar() {
@@ -28,7 +30,14 @@ uint64_t temporizador_drv_parar() {
     return temporizador_hal_parar()/temporizador_hal_ticks2us;
 }
 
-void temporizador_drv_reloj(uint32_t periodo, void (*function_callback)()){
-    temporizador_hal_reloj(periodo, function_callback);
+void callbackFunction(){
+	(*funcionEncolarEvento)(idEvento,0);
 }
 
+void temporizador_drv_reloj (uint32_t periodo, void(*funcion_encolar_evento)(), 
+	enum EVENTO_T ID_evento){
+	funcionEncolarEvento = funcion_encolar_evento;
+	idEvento = ID_evento;
+	temporizador_hal_reloj(periodo, *callbackFunction);
+			
+}
