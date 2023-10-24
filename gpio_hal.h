@@ -1,6 +1,8 @@
 #ifndef GPIO_HAL_H
 #define GPIO_HAL_H
 
+#include <stdint.h>
+#include "LPC210X.H"
 #include "io_reserva.h"
 
 void gpio_hal_iniciar(void);
