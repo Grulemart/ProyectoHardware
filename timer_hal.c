@@ -29,7 +29,7 @@ uint64_t temporizador_hal_leer(){
 
 uint64_t temporizador_hal_parar(){
 	T0TCR = 3;
-	T0TCR = 2;	// Timer0 Disable and reset
+	T0TCR = 0;	// Timer0 Disable and reset
 	return temporizador_hal_leer();
 }
 
