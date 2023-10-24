@@ -1,5 +1,4 @@
-#include <stdint.h>
-#include <LPC210X.H>                            // LPC21XX Peripheral Registers
+
 #include "timer_hal.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
