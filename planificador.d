@@ -10,3 +10,4 @@
 .\planificador.o: timer_hal.h
 .\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\planificador.o: hello_world.h
+.\planificador.o: power_hal.h

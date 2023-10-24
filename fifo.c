@@ -61,11 +61,6 @@ uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData) {
 	return HAY_EVENTO_A_PROCESAR;
 	
 }
-	
-void FIFO_procesar_evento(void) {
-	procesado[indiceProcesoATratar] = TRUE;
-	indiceProcesoATratar++;
-}
 
 uint32_t FIFO_estadisticas(uint8_t ID_evento) {
 	

@@ -9,7 +9,7 @@
 
 typedef uint8_t BOOLEAN;
 
-// Tamaño de la cola
+// Tamaï¿½o de la cola
 #define FIFO_SIZE 32
 #define EVENT_TYPES 4
 
@@ -21,7 +21,5 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData);
 uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData);
 
 uint32_t FIFO_estadisticas(uint8_t ID_evento);
-
-void FIFO_procesar_evento(void);
 
 #endif

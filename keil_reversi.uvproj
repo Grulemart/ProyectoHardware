@@ -351,7 +351,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>0</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>0</OneElfS>
@@ -447,16 +447,6 @@
               <FilePath>.\main.c</FilePath>
             </File>
             <File>
-              <FileName>Power_management.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Power_management.c</FilePath>
-            </File>
-            <File>
-              <FileName>Power_management.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Power_management.h</FilePath>
-            </File>
-            <File>
               <FileName>fifo.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\fifo.c</FilePath>
@@ -525,6 +515,16 @@
               <FileName>hello_world.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\hello_world.h</FilePath>
+            </File>
+            <File>
+              <FileName>power_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\power_hal.c</FilePath>
+            </File>
+            <File>
+              <FileName>power_hal.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\power_hal.h</FilePath>
             </File>
           </Files>
         </Group>

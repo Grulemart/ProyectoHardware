@@ -1,5 +1,6 @@
 
 #include "planificador.h"
+#include "power_hal.h"
 
 static uint8_t overflow = FALSE;
 static enum EVENTO_T evento;
@@ -18,7 +19,10 @@ void planificador(void) {
 	
 	while(overflow != TRUE) {
 		
-		while((FIFO_extraer(&evento, &auxData)) == 0);
+		
+		while((FIFO_extraer(&evento, &auxData)) == 0){
+			power_hal_wait();
+		}
 		
 		// Datos a procesar
 		if (evento == TIMER0) {
@@ -32,8 +36,7 @@ void planificador(void) {
 		} else {
 			// Procesar evento VOID (error)
 		}
-		
-		FIFO_procesar_evento();
+		overflow = gpio_hal_leer(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 		
 	}
 	

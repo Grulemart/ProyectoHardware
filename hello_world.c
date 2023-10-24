@@ -22,7 +22,7 @@ void hello_world_tick_tack(){
 	
 	//gpio_hal
 	gpio_hal_escribir(helloWorldPin, helloWorldPinBits, nuevoPin);
-	temporizador_drv_reloj(50, FIFO_encolar, TIMER1);
+	temporizador_drv_reloj(10000, FIFO_encolar, TIMER1);
 	
 	currentBit = (currentBit + 1) % helloWorldPinBits;
 	

@@ -9,7 +9,7 @@ void timer1_RSI (void) __irq;
 void temporizador_hal_iniciar(){
 	timer0_int_count = 0;
 	T0MR0 = 0xFFFFFFFE;                        // Interrumpe cada 0,05ms = 150.000-1 counts
-  	T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
+  T0MCR = 3;                     // Generates an interrupt and resets the count when the value of MR0 is reached
 
   // configuration of the IRQ slot number 0 of the VIC for Timer 0 Interrupt
 	VICVectAddr0 = (unsigned long)timer0_RSI;          // set interrupt vector in 0
@@ -45,7 +45,7 @@ void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 		T1TCR = 0;
 	}else{
 		T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
-		T1MR0 = periodo * 1000;	// Interrumpe cada periodo en ms
+		T1MR0 = periodo;	// Interrumpe cada periodo en ms
 		T1MCR = 3;	//// Generates an interrupt and stops the count when the value of MR0 is reached
 		// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
 		VICVectAddr1 = (unsigned long)timer1_RSI;	// Cuando interrumpe llama a funcion_callback
