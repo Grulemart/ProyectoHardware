@@ -28,7 +28,8 @@ uint64_t temporizador_hal_leer(){
 }
 
 uint64_t temporizador_hal_parar(){
-	T0TCR = 0x02;	// Timer0 Disable and reset
+	T0TCR = 3;
+	T0TCR = 2;	// Timer0 Disable and reset
 	return temporizador_hal_leer();
 }
 
@@ -41,11 +42,12 @@ void timer0_RSI (void) __irq {
 
 void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 	if(periodo == 0){
-		T1TCR = 0x02;	// Timer1 Disable and reset
+		T1TCR = 3;
+		T1TCR = 0;	// Timer1 Disable and reset
 	}else{
 		T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
 		T1MR0 = periodo;	// Interrumpe cada periodo en ms
-		T1MCR = 3;	//// Generates an interrupt and stops the count when the value of MR0 is reached
+		T1MCR = 3;	//// Generates an interrupt and resets the count when the value of MR0 is reached
 		// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
 		VICVectAddr1 = (unsigned long)timer1_RSI;	// Cuando interrumpe llama a funcion_callback
 		// 5 is the number of the interrupt assigned. Number 5 is the Timer 1 

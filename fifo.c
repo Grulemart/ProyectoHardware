@@ -9,7 +9,6 @@ static uint8_t indiceUltimoEncolado;					// Indice de ultimo evento registrado
 static uint8_t indiceProcesoATratar;					// Indice para registrar eventos procesados
 static GPIO_HAL_PIN_T overflowPin;						// Pin de overflow
 static GPIO_HAL_PIN_BITS_T overflowPinNumber;	// Numero de pines de overflow
-static uint8_t overflow;											// Estado de overflow para comunicar a planificador
 
 void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOverflowPinNumber) {
 	
@@ -17,7 +16,6 @@ void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOver
 	uint8_t i;
 	indiceUltimoEncolado = 0;
 	indiceProcesoATratar = 0;
-	overflow = FALSE;
 	
 	overflowPin = newPinOverflow;
 	overflowPinNumber = newOverflowPinNumber;
@@ -39,7 +37,6 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
 	// Se produce overflow
 	if(indiceUltimoEncolado == indiceProcesoATratar && procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
-		overflow = TRUE;
 		gpio_hal_escribir(overflowPin, overflowPinNumber, 1);
 	}else{
 		// Evento se encola como no procesado
@@ -57,10 +54,6 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
 }
 
 uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData) {
-	
-	if (overflow == TRUE) {
-		return HAY_OVERFLOW;
-	}
 	
 	if (procesado[indiceProcesoATratar] == TRUE) {
 		return NO_HAY_EVENTO_A_PROCESAR;
