@@ -25,7 +25,8 @@ void temporizador_hal_empezar(){
 }
 
 uint64_t temporizador_hal_leer(){
-	return (uint64_t)T0TC + timer0_int_count * (uint64_t)T0MR0;
+	ticks = (uint64_t)T0TC + timer0_int_count * (uint64_t)T0MR0;
+	return ticks;
 }
 
 uint64_t temporizador_hal_parar(){

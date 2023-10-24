@@ -2,7 +2,7 @@
 #include "hello_world.h"
 
 
-#define TIEMPO_ENTRE_BLINK_182 1000000 // 50000 us = 50 ms
+#define TIEMPO_ENTRE_BLINK_182 500000 
 
 static GPIO_HAL_PIN_T helloWorldPin;
 static GPIO_HAL_PIN_BITS_T helloWorldPinBits;
