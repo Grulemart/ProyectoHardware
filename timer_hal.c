@@ -2,6 +2,7 @@
 #include "timer_hal.h"
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
+static volatile uint64_t ticks = 0;
 static void (*callback_funcion)() = 0;
 void timer0_RSI (void) __irq;
 void timer1_RSI (void) __irq; 
@@ -28,9 +29,10 @@ uint64_t temporizador_hal_leer(){
 }
 
 uint64_t temporizador_hal_parar(){
+	ticks = temporizador_hal_leer();
 	T0TCR = 3;
 	T0TCR = 0;	// Timer0 Disable and reset
-	return temporizador_hal_leer();
+	return ticks;
 }
 
 /* Timer Counter 0 Interrupt executes each 10ms @ 60 MHz CPU Clock */
