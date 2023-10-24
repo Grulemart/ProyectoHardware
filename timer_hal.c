@@ -29,7 +29,7 @@ uint64_t temporizador_hal_leer(){
 }
 
 uint64_t temporizador_hal_parar(){
-	T0TCR = 0;															// Timer0 Disable
+	T0TCR = 0x02;	// Timer0 Disable and reset
 	return temporizador_hal_leer();
 }
 
@@ -42,7 +42,7 @@ void timer0_RSI (void) __irq {
 
 void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 	if(periodo == 0){
-		T1TCR = 0;
+		T1TCR = 0x02;	// Timer1 Disable and reset
 	}else{
 		T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
 		T1MR0 = periodo;	// Interrumpe cada periodo en ms
