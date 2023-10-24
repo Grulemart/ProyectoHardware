@@ -8,8 +8,7 @@
 
 void testFifoOverflow(){
 	gpio_hal_iniciar();
-	gpio_hal_sentido(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, GPIO_HAL_PIN_DIR_OUTPUT);
-	FIFO_inicializar(GPIO_OVERFLOW);
+	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 	temporizador_drv_reloj(30,FIFO_encolar, TIMER1);
 }
 
