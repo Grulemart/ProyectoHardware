@@ -1,6 +1,6 @@
 
 #include "planificador.h"
-#include "power_hal.h"
+
 
 static uint8_t overflow = FALSE;
 static enum EVENTO_T evento;
