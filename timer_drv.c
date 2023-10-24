@@ -1,7 +1,6 @@
-#include <stdint.h>
-#include "timer_hal.h"
+
 #include "timer_drv.h"
-#include "fifo.h"
+
 
 static void (*funcionEncolarEvento)();
 static volatile enum EVENTO_T idEvento;
