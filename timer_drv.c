@@ -35,11 +35,9 @@ void callbackFunction(){
 	(*funcionEncolarEvento)(idEvento,0);
 }
 
-//// TODO: parametro inutil
-
 void temporizador_drv_reloj (uint32_t periodo, void(*funcion_encolar_evento)(), 
 	enum EVENTO_T ID_evento){
-		
+	// Se inicia el temporizador y cuando este acaba se encola un nuevo evento
 	funcionEncolarEvento = funcion_encolar_evento;
 	idEvento = ID_evento;
 	temporizador_hal_reloj(periodo, callbackFunction);
