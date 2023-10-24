@@ -1,6 +1,4 @@
 #include "gpio_hal.h"
-#include <stdint.h>
-#include "LPC210X.H"
 	
 void gpio_hal_iniciar(){
 	PINSEL0 = 0x00000000;
