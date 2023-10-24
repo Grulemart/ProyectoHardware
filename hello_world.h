@@ -4,6 +4,8 @@
 
 #include "io_reserva.h"
 #include "gpio_hal.h"
+#include "timer_drv.h"
+#include "fifo.h"
 
 
 void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits);
