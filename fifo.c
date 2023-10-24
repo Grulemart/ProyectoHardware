@@ -1,6 +1,7 @@
 
 #include "fifo.h"
 
+
 static enum EVENTO_T fifo[FIFO_SIZE];					// Dirección de memoria de vector de eventos registrados
 static uint32_t auxDataArray[FIFO_SIZE];			// Array de datos auxiliares de los eventos
 static enum BOOLEAN procesado[FIFO_SIZE];			// Array de registro de eventos procesados
@@ -20,6 +21,7 @@ void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOver
 	overflowPin = newPinOverflow;
 	overflowPinNumber = newOverflowPinNumber;
 	gpio_hal_sentido(overflowPin, overflowPinNumber, GPIO_HAL_PIN_DIR_OUTPUT);
+	gpio_hal_escribir(overflowPin, overflowPinNumber, NO_HAY_OVERFLOW);
 	
 	for (i = 0; i < FIFO_SIZE; i++) {
 		fifo[i] = VOID;
@@ -37,7 +39,7 @@ void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData) {
 	// Se produce overflow
 	if(indiceUltimoEncolado == indiceProcesoATratar && procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
-		gpio_hal_escribir(overflowPin, overflowPinNumber, 1);
+		gpio_hal_escribir(overflowPin, overflowPinNumber, HAY_OVERFLOW);
 	}else{
 		// Evento se encola como no procesado
 		fifo[indiceUltimoEncolado] = ID_evento;

@@ -9,7 +9,9 @@
 
 #define NO_HAY_EVENTO_A_PROCESAR 0
 #define HAY_EVENTO_A_PROCESAR 1
-#define HAY_OVERFLOW 2
+
+#define NO_HAY_OVERFLOW 0
+#define HAY_OVERFLOW 1
 
 typedef uint8_t BOOLEAN;
 

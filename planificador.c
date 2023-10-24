@@ -2,7 +2,7 @@
 #include "planificador.h"
 
 
-static uint8_t overflow = FALSE;
+static uint8_t overflow = NO_HAY_OVERFLOW;
 static enum EVENTO_T evento;
 static uint32_t auxData;
 
@@ -14,7 +14,7 @@ void planificador(void) {
 	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
-	while(overflow != TRUE) {
+	while(overflow != HAY_OVERFLOW) {
 		
 		// Extraccion de eventos a procesar
 		while((FIFO_extraer(&evento, &auxData)) == NO_HAY_EVENTO_A_PROCESAR){
