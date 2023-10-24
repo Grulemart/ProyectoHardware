@@ -10,10 +10,8 @@ void planificador(void) {
 	
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
-	temporizador_drv_empezar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 	
-	// Inicializacion de tests
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	while(overflow != TRUE) {
