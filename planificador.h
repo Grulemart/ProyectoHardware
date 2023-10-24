@@ -6,6 +6,7 @@
 #include "timer_drv.h"
 #include "hello_world.h"
 #include <inttypes.h>
+#include "power_hal.h"
 
 void planificador(void);
 
