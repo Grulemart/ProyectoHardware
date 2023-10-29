@@ -34,6 +34,8 @@ void planificador(void) {
 		}	else if (evento == ALARMA_OVERFLOW) {
 			// Procesar overflow si hay overflow de alarmas
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
+		} else if (evento == EINT1) {
+			// Procesar evento EINT1
 		}
 
 		

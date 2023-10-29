@@ -4,6 +4,7 @@
 #define US_A_MS 1000	// Programar TIMER1 para que interrumpa cada ms
 
 static uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
+static uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
 static uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
 static enum BOOLEAN alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
 static enum EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
@@ -29,17 +30,30 @@ void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData)
 		return;
 	}
 	
-	if (alarmasActivas[indice] == FALSE){ // Hay espacio para alarmas
-		
-		alarmasActivas[indice] = TRUE;
-		alarmaEnd[indice] = (retardo >> 1) + ticks;
-		alarmaReprogramar[indice] = (retardo >> 31);
-		alarmaEvento[indice] = ID_evento;
-		alarmaAuxData[indice] = auxData;
-		
-	} else {
-		FIFO_encolar(ALARMA_OVERFLOW, 0);
+	// Iterar sobre el array de alarmas hasta encontrar una disponible
+	enum BOOLEAN no_hay_alarmas = TRUE;
+	for (uint8_t i = 0; i < MAX_ALARMAS; i++) {
+		uint8_t newIndice = (i+indice) % MAX_ALARMAS;
+		if (alarmasActivas[newIndice] == FALSE) {
+			no_hay_alarmas = FALSE;
+			indice = newIndice;
+			break;
+		}
 	}
+	
+	// Si no hay alarmas disponibles se encola evento ALARMA_OVERFLOW
+	if (no_hay_alarmas == TRUE) {
+		FIFO_encolar(ALARMA_OVERFLOW, 0);
+		return;
+	}
+	
+	// Iniciar alarma
+	alarmasActivas[indice] = TRUE;
+	alarmaRetardoInicial[indice] = (retardo >> 1);
+	alarmaEnd[indice] = alarmaRetardoInicial[indice] + ticks;
+	alarmaReprogramar[indice] = (retardo >> 31);
+	alarmaEvento[indice] = ID_evento;
+	alarmaAuxData[indice] = auxData;
 	
 }
 
@@ -55,6 +69,8 @@ void alarma_tratar_evento() {
 			if (alarmaReprogramar[i] == FALSE) {
 				// Si no se activa reprogramacion la alarma no se reactiva
 				alarmasActivas[i] = FALSE;
+			} else {
+				alarmaEnd[indice] = alarmaRetardoInicial[indice] + ticks;
 			}
 		}
 	}
