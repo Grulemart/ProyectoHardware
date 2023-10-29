@@ -526,6 +526,16 @@
               <FileType>5</FileType>
               <FilePath>.\power_hal.h</FilePath>
             </File>
+            <File>
+              <FileName>alarma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarma.c</FilePath>
+            </File>
+            <File>
+              <FileName>alarma.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\alarma.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

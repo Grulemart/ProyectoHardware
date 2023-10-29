@@ -21,13 +21,13 @@ void temporizador_drv_empezar() {
 // Lee el tiempo transcurrido en microsegundos
 uint64_t temporizador_drv_leer() {
     // Lee el tiempo en ticks utilizando temporizador_hal_leer() y lo convierte a microsegundos
-	return temporizador_hal_leer()/temporizador_hal_ticks2us;
+	return temporizador_hal_leer()/TICKS_A_US;
 }
 
 // Detiene el temporizador y devuelve el tiempo transcurrido en microsegundos
 uint64_t temporizador_drv_parar() {
     // Detiene el temporizador hardware llamando a temporizador_hal_parar()
-    return temporizador_hal_parar()/temporizador_hal_ticks2us;
+    return temporizador_hal_parar()/TICKS_A_US;
 }
 
 void callbackFunction(){

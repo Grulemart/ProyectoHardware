@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 #include <LPC210X.H>    // LPC21XX Peripheral Registers
-#define temporizador_hal_ticks2us 15;
+#define TICKS_A_US 15;
 void temporizador_hal_iniciar(void);
 void temporizador_hal_empezar(void);
 uint64_t temporizador_hal_leer(void);

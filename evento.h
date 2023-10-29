@@ -7,7 +7,9 @@ enum EVENTO_T {
 	VOID = 0,
 	TIMER0 = 1,
 	TIMER1 = 2,
-	GPIO = 3
+	GPIO = 3,
+	ALARMA = 4,
+	ALARMA_OVERFLOW = 5
 };
 
 // Declaracion de tipo Boolean

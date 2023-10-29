@@ -1,5 +1,6 @@
 
 #include "timer_hal.h"
+
 // variable para contabilizar el número de interrupciones
 static volatile uint64_t timer0_int_count = 0;
 static volatile uint64_t ticks = 0;

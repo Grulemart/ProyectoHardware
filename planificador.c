@@ -29,7 +29,15 @@ void planificador(void) {
 			hello_world_tick_tack();
 		} else if (evento == GPIO) {
 			// Procesar evento GPIO
-		} else {
+		} else if (evento == ALARMA) {
+			// Procesar evento ALARMA
+		}	else if (evento == ALARMA_OVERFLOW) {
+			// Procesar overflow si hay overflow de alarmas
+			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
+		}
+
+		
+		else {
 			// Procesar evento VOID (error)
 		}
 		
