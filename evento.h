@@ -2,7 +2,7 @@
 #ifndef __EVENTO_H__
 #define __EVENTO_H__
 
-// Declaracion de los ID de los eventos de interrupción
+// Declaracion de los ID de los eventos de interrupciÃ³n
 enum EVENTO_T {
 	VOID = 0,
 	TIMER0 = 1,
@@ -10,7 +10,7 @@ enum EVENTO_T {
 	GPIO = 3,
 	ALARMA = 4,
 	ALARMA_OVERFLOW = 5,
-	EINT1 = 6
+	BOTON_PULSADO = 6,
 };
 
 // Declaracion de tipo Boolean
