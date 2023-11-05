@@ -36,3 +36,11 @@ int sigue_pulsado(int id){
 		return 0;
 	}
 }
+
+void habilitar_interrupcion(int id){
+	if(id == BOTON_1){
+		habilitar_interrupcion_eint1();
+	}else{
+		habilitar_interrupcion_eint2();
+	}
+}
