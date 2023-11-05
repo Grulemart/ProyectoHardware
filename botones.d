@@ -9,3 +9,9 @@
 .\botones.o: gpio_hal.h
 .\botones.o: io_reserva.h
 .\botones.o: evento.h
+<<<<<<< HEAD
+=======
+.\botones.o: alarma.h
+.\botones.o: timer_drv.h
+.\botones.o: timer_hal.h
+>>>>>>> e4409097546e7d860a7962a1b794e826f1e6a246

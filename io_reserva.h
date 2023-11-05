@@ -20,4 +20,7 @@ typedef uint8_t  GPIO_HAL_PIN_BITS_T;
 #define GPIO_HELLO_WORLD 0
 #define GPIO_HELLO_WORLD_BITS 8
 
+#define GPIO_VISUALIZAR 16
+#define GPIO_VISUALIZAR_BITS 8
+
 #endif

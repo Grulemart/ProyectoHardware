@@ -8,6 +8,10 @@
 #include <inttypes.h>
 #include "power_hal.h"
 #include "alarma.h"
+#include "botones.h"
+#include "juego.h"
+#include "visualizar.h"
+#include "alarma.h"
 
 void planificador(void);
 

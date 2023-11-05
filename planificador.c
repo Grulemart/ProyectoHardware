@@ -12,7 +12,13 @@ void planificador(void) {
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 	
-	// hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	temporizador_drv_iniciar();
+	temporizador_drv_empezar();
+	
+	//hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	
+	juego_inicializar();
+	visualizar_inicializar();
 	
 	alarma_inicializar();
 	alarma_activar(BOTON_PULSADO, 10, 0);
@@ -34,11 +40,23 @@ void planificador(void) {
 		} else if (evento == ALARMA) {
 			alarma_tratar_evento();
 			// Procesar evento ALARMA
+			alarma_tratar_evento();
 		}	else if (evento == ALARMA_OVERFLOW) {
 			// Procesar overflow si hay overflow de alarmas
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
+			juego_tratar_evento(VISUALIZAR_CUENTA, 0);
+		} else if (evento == EINT2) {
+			// Procesar evento EINT2
+		} else if (evento == DEJAR_BOTON) {
+			// Comprueba a los 100ms si un boton sigue estando pulsado
+			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
+				habilitar_interrupcion((uint8_t)auxData);
+			}
+		} else if (evento == VISUALIZAR_CUENTA) {
+			// Visualiza el intervalo entre pulsaciones en ms
+			visualizar((uint8_t)auxData);
 		}
 
 		
