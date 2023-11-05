@@ -14,6 +14,7 @@
 void iniciar_botones(void);
 void pulsar_boton(int id);
 int sigue_pulsado(int id);
+void habilitar_interrupcion(int id);
 
 
 #endif
