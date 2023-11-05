@@ -11,3 +11,4 @@
 .\planificador.o: timer_hal.h
 .\planificador.o: hello_world.h
 .\planificador.o: power_hal.h
+.\planificador.o: alarma.h

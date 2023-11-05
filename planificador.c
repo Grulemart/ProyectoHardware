@@ -12,13 +12,15 @@ void planificador(void) {
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 	
-	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	// hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
+	alarma_inicializar();
+	alarma_activar(BOTON_PULSADO, 10, 0);
 	while(overflow != HAY_OVERFLOW) {
 		
 		// Extraccion de eventos a procesar
 		while((FIFO_extraer(&evento, &auxData)) == NO_HAY_EVENTO_A_PROCESAR){
-			power_hal_wait();
+			//power_hal_wait();
 		}
 		
 		// Datos a procesar
@@ -30,11 +32,12 @@ void planificador(void) {
 		} else if (evento == GPIO) {
 			// Procesar evento GPIO
 		} else if (evento == ALARMA) {
+			alarma_tratar_evento();
 			// Procesar evento ALARMA
 		}	else if (evento == ALARMA_OVERFLOW) {
 			// Procesar overflow si hay overflow de alarmas
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
-		} else if (evento == EINT1) {
+		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
 		}
 

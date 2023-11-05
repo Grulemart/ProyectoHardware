@@ -1,23 +1,22 @@
 
 #include "alarma.h"
 
-#define PERIODO_TIMER1 1	// Programar TIMER1 para que interrumpa cada 1 ms
+#define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
 
 static uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
 static uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
-static uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
-static enum BOOLEAN alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
-static enum EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
+static volatile  uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
+static uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
+static uint32_t alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
 static uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
 
 
-static uint32_t ticks;	// Ticks totales transcurridos desde inicializacion
-static uint8_t indice;  // Indice de la siguiente alarma libre
+static volatile uint32_t ticksAlarma;	// Ticks totales transcurridos desde inicializacion
 
-void alarma_inicializar() {
+
+void alarma_inicializar(void) {
 	
-	ticks = 0;
-	indice = 0;
+	ticksAlarma = 0;
 	
 	// Inicializar temporizador con interrupcion a 1ms 
 	// Cada 1ms el timer1 encolara el evento ALARMA en la cola FIFO
@@ -26,57 +25,60 @@ void alarma_inicializar() {
 }
 
 void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
-	
+	uint8_t i;
+	uint32_t mascara;
+	uint32_t retardoReal;
+	// Tratamos el cancelamiento de una alarma
 	if (retardo == 0) { // Si retardo es igual a 0 cancelar la alarma
+		for(i = 0; i < MAX_ALARMAS; i++){
+			if(alarmasActivas[i] == TRUE){
+				if(alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData){
+					alarmasActivas[i] = FALSE;
+					break;
+				}
+			}
+		}
 		return;
 	}
 	
 	// Iterar sobre el array de alarmas hasta encontrar una disponible
-	enum BOOLEAN no_hay_alarmas = TRUE;
-	for (uint8_t i = 0; i < MAX_ALARMAS; i++) {
-		uint8_t newIndice = (i+indice) % MAX_ALARMAS;
-		if (alarmasActivas[newIndice] == FALSE) {
-			no_hay_alarmas = FALSE;
-			indice = newIndice;
-			break;
+	
+	for (i = 0; i < MAX_ALARMAS; i++) {
+		if (alarmasActivas[i] == FALSE) {
+			// Iniciar alarma
+			alarmasActivas[i] = TRUE;
+			mascara = (1U << 31) - 1U; 
+			retardoReal = retardo & mascara;
+			alarmaRetardoInicial[i] = retardoReal;
+			alarmaEnd[i] = retardoReal + ticksAlarma;
+			alarmaReprogramar[i] = (retardo >> 31);
+			alarmaEvento[i] = ID_evento;
+			alarmaAuxData[i] = auxData;
+			return;
 		}
 	}
 	
 	// Si no hay alarmas disponibles se encola evento ALARMA_OVERFLOW
-	if (no_hay_alarmas == TRUE) {
-		FIFO_encolar(ALARMA_OVERFLOW, 0);
-		return;
-	}
 	
-	// Iniciar alarma
-	alarmasActivas[indice] = TRUE;
-	uint32t mascara = (1U << 32) - 1U; 
-	retardoReal = retardo & mascara;
-	alarmaRetardoInicial[indice] = (retardoReal);
-	alarmaEnd[indice] = alarmaRetardoInicial[indice] + ticks;
-	alarmaReprogramar[indice] = (retardo >> 31);
-	alarmaEvento[indice] = ID_evento;
-	alarmaAuxData[indice] = auxData;
-	
+	FIFO_encolar(ALARMA_OVERFLOW, 0);
+	return;	
 }
 
-void alarma_tratar_evento() {
-
+void alarma_tratar_evento(void) {
+	uint8_t i;
 	// Aumentar numero de ciclos
-	ticks++;
+	ticksAlarma++;
 	
 	// Comprobar que han expirado las alarmas
-	for (uint8_t i = 0; i < MAX_ALARMAS; i++) {
-		if (alarmasActivas[i] == TRUE && alarmaEnd[i] >= ticks) {
+	
+	for(i = 0; i < MAX_ALARMAS; i++){
+		if(alarmasActivas[i] == TRUE && alarmaEnd[i] <= ticksAlarma){
 			FIFO_encolar(alarmaEvento[i], alarmaAuxData[i]);
-			if (alarmaReprogramar[i] == FALSE) {
-				// Si no se activa reprogramacion la alarma no se reactiva
+			if(alarmaReprogramar[i] == TRUE){
+				alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
+			}else{
 				alarmasActivas[i] = FALSE;
-			} else {
-				alarmaEnd[indice] = alarmaRetardoInicial[indice] + ticks;
 			}
 		}
 	}
-	
 }
-

@@ -7,6 +7,7 @@
 #include "hello_world.h"
 #include <inttypes.h>
 #include "power_hal.h"
+#include "alarma.h"
 
 void planificador(void);
 
