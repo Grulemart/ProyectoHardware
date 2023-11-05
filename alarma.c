@@ -1,7 +1,7 @@
 
 #include "alarma.h"
 
-#define US_A_MS 1000	// Programar TIMER1 para que interrumpa cada ms
+#define PERIODO_TIMER1 1	// Programar TIMER1 para que interrumpa cada 1 ms
 
 static uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
 static uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
@@ -20,8 +20,9 @@ void alarma_inicializar() {
 	indice = 0;
 	
 	// Inicializar temporizador con interrupcion a 1ms 
-	// y tratar la funcion alarma_tratar_evento en cada interrupcion
-	temporizador_hal_reloj(US_A_MS, alarma_tratar_evento);
+	// Cada 1ms el timer1 encolara el evento ALARMA en la cola FIFO
+	temporizador_drv_reloj(PERIODO_TIMER1, FIFO_encolar, ALARMA);
+
 }
 
 void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {

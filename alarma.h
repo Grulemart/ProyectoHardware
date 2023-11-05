@@ -3,7 +3,7 @@
 #define __ALARMA_H__
 
 #include "evento.h"
-#include "timer_hal.h"
+#include "timer_drv.h"
 #include "fifo.h"
 
 #define MAX_ALARMAS 4
