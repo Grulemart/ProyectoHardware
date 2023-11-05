@@ -64,12 +64,12 @@ int eint2_activada(void) {
 	return 1;
 }
 
-habilitar_interrupcion_eint1(void){
+void habilitar_interrupcion_eint1(void){
 	VICVectCntl2 = 0x20 | 15; // 0x20 bit 5 enables vectored IRQs 15 is the number of the interrupt eint1
 	VICIntEnable = VICIntEnable |  0x00008000;	// Enable EXTINT1 Interrupt
 }
 
-habilitar_interrupcion_eint2(void){
+void habilitar_interrupcion_eint2(void){
 	VICVectCntl3 = 0x20 | 16; // 0x20 bit 5 enables vectored IRQs 15 is the number of the interrupt eint1
 	VICIntEnable = VICIntEnable |  0x00010000;	// Enable EXTINT1 Interrupt
 }
