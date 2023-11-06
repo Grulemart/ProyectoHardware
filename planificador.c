@@ -5,6 +5,7 @@
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
+static uint64_t vecesPulsado = 0;
 
 void planificador(void) {
 	
@@ -12,21 +13,21 @@ void planificador(void) {
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 	
+	
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
+	iniciar_botones();
 	
 	//hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	//juego_inicializar();
 	//visualizar_inicializar();
 	
-	alarma_inicializar();
-	alarma_activar(BOTON_PULSADO, 10, 0);
 	while(overflow != HAY_OVERFLOW) {
 		
 		// Extraccion de eventos a procesar
 		while((FIFO_extraer(&evento, &auxData)) == NO_HAY_EVENTO_A_PROCESAR){
-			//power_hal_wait();
+			power_hal_wait();
 		}
 		
 		// Datos a procesar
@@ -46,10 +47,9 @@ void planificador(void) {
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
-			juego_tratar_evento(VISUALIZAR_CUENTA, 0);
-		} else if (evento == EINT2) {
-			// Procesar evento EINT2
-		} else if (evento == DEJAR_BOTON) {
+			vecesPulsado++;
+			//juego_tratar_evento(VISUALIZAR_CUENTA, 0);
+		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
 			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
 				habilitar_interrupcion((uint8_t)auxData);

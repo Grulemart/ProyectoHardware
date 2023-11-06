@@ -45,23 +45,29 @@ void iniciar_ext2(int id){
 }
 
 int eint1_activada(void){
+	int bit;
+	// Hacemos clear del bit 2 si el pin esta en low level no debería dejar hacer el clear
+	EXTINT |= 0x2; // 
 	// Cogemos el bit 2 que corresponde a eint2
-	int bit = (EXTINT >> 1) & 1;
-	// Si bit es 1 entonces no esta activado sino si que lo esta
+	bit = (EXTINT >> 1) & 1;
+	// Si bit sigues estando activado 1 entonces el pin sigue en low level
 	if(bit == 1){
-		return 0;
+		return TRUE;
 	}
-	return 1;
+	return FALSE;
 }
 
 int eint2_activada(void) {
+	int bit;
+	// Hacemos clear del bit 3 si el pin esta en low level no debería dejar hacer el clear
+	EXTINT |= 0x4; // 
 	// Cogemos el bit 2 que corresponde a eint2
-	int bit = (EXTINT >> 2) & 1;
-	// Si bit es 1 entonces no esta activado sino si que lo esta
+	bit = (EXTINT >> 2) & 1;
+	// Si bit sigues estando activado 1 entonces el pin sigue en low level
 	if(bit == 1){
-		return 0;
+		return TRUE;
 	}
-	return 1;
+	return FALSE;
 }
 
 void habilitar_interrupcion_eint1(void){
