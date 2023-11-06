@@ -24,7 +24,7 @@ void pulsar_boton(uint8_t id){
 	FIFO_encolar(BOTON_PULSADO,(uint32_t) id);
 	
 	retardo |= 1U << 31; // Ponemos un 1 en el bit de mayor peso para que se repita la alarma 
-	alarma_inicializar();
+	
 	alarma_activar(MONITORIZAR_BOTON, retardo , (uint32_t)id);
 	
 }
