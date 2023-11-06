@@ -12,6 +12,7 @@ void planificador(void) {
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
+	alarma_inicializar();
 	
 	
 	temporizador_drv_iniciar();
