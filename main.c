@@ -13,6 +13,8 @@ void testFifoOverflow(){
 }
 
 int main() {
+	
+	/*
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
 	testFifoOverflow();
@@ -21,6 +23,8 @@ int main() {
 	temporizador_drv_parar();
 	gpio_hal_escribir(GPIO_OVERFLOW, GPIO_HELLO_WORLD_BITS, 0); //Quitamos el bit de overflow
 	temporizador_drv_reloj(0,FIFO_encolar,TIMER1);	//Paramos el timer1
+	*/
+	
 	planificador();
 	
 	return 0;

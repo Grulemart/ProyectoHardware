@@ -1,0 +1,11 @@
+.\alarma.o: alarma.c
+.\alarma.o: alarma.h
+.\alarma.o: evento.h
+.\alarma.o: timer_drv.h
+.\alarma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\alarma.o: timer_hal.h
+.\alarma.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
+.\alarma.o: fifo.h
+.\alarma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\alarma.o: gpio_hal.h
+.\alarma.o: io_reserva.h

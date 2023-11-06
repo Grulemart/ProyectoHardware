@@ -11,3 +11,9 @@
 .\planificador.o: timer_hal.h
 .\planificador.o: hello_world.h
 .\planificador.o: power_hal.h
+.\planificador.o: alarma.h
+.\planificador.o: botones.h
+.\planificador.o: int_externas_hal.h
+.\planificador.o: botones.h
+.\planificador.o: juego.h
+.\planificador.o: visualizar.h

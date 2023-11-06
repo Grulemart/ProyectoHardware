@@ -50,8 +50,8 @@ void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData)
 	
 	// Iniciar alarma
 	alarmasActivas[indice] = TRUE;
-	uint32t mascara = (1U << 32) - 1U; 
-	retardoReal = retardo & mascara;
+	uint32_t mascara = (1U << 31) - 1U; 
+	uint32_t retardoReal = retardo & mascara;
 	alarmaRetardoInicial[indice] = (retardoReal);
 	alarmaEnd[indice] = alarmaRetardoInicial[indice] + ticks;
 	alarmaReprogramar[indice] = (retardo >> 31);
