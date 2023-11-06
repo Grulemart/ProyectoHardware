@@ -13,7 +13,7 @@ void alarma_inicializar(void);
 // El retardo codifica en el
 // bit de más peso si la alarma es periódica (debe repetirse), los restantes bits
 // indican el retardo en milisegundos
-void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData);
+void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData);
 
 // Procesar interrupciones y encolar eventos
 void alarma_tratar_evento(void);

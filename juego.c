@@ -9,7 +9,7 @@ void juego_inicializar() {
 	intervalo = 0;
 }
 
-void juego_tratar_evento(enum EVENTO_T ID_evento, uint32_t auxData) {
+void juego_tratar_evento(EVENTO_T ID_evento, uint32_t auxData) {
 	
 	uint64_t currentCheck = temporizador_drv_leer();
 	intervalo = currentCheck - cuenta;

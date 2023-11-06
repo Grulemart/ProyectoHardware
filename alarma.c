@@ -3,12 +3,12 @@
 
 #define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
 
-static uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
-static uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
+static volatile uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
+static volatile uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
 static volatile  uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
-static uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
-static uint32_t alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
-static uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
+static volatile uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
+static volatile EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
+static volatile uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
 
 
 static volatile uint32_t ticksAlarma;	// Ticks totales transcurridos desde inicializacion
@@ -24,7 +24,7 @@ void alarma_inicializar(void) {
 
 }
 
-void alarma_activar(enum EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
+void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
 	uint8_t i;
 	uint32_t mascara;
 	uint32_t retardoReal;

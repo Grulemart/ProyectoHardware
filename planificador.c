@@ -3,7 +3,7 @@
 
 
 static uint8_t overflow = NO_HAY_OVERFLOW;
-static enum EVENTO_T evento;
+static EVENTO_T evento;
 static uint32_t auxData;
 
 void planificador(void) {
@@ -17,8 +17,8 @@ void planificador(void) {
 	
 	//hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
-	juego_inicializar();
-	visualizar_inicializar();
+	//juego_inicializar();
+	//visualizar_inicializar();
 	
 	alarma_inicializar();
 	alarma_activar(BOTON_PULSADO, 10, 0);

@@ -24,7 +24,7 @@ void pulsar_boton(uint8_t id){
 	
 }
 
-enum BOOLEAN sigue_pulsado(uint8_t id){
+BOOLEAN sigue_pulsado(uint8_t id){
 	if(id == BOTON_1){
 		if(eint1_activada()){
 			return TRUE;

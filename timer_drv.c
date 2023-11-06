@@ -3,7 +3,7 @@
 
 
 static void (*funcionEncolarEvento)();
-static volatile enum EVENTO_T idEvento;
+static volatile EVENTO_T idEvento;
 // M?dulo del manejador o driver
 
 // Inicializa el temporizador
@@ -34,8 +34,8 @@ void callbackFunction(){
 	(*funcionEncolarEvento)(idEvento,0);
 }
 
-void temporizador_drv_reloj (uint32_t periodo, void(*funcion_encolar_evento)(), 
-	enum EVENTO_T ID_evento){
+void temporizador_drv_reloj(uint32_t periodo, void(*funcion_encolar_evento)(), 
+	EVENTO_T ID_evento){
 	// Se inicia el temporizador y cuando este acaba se encola un nuevo evento
 	funcionEncolarEvento = funcion_encolar_evento;
 	idEvento = ID_evento;

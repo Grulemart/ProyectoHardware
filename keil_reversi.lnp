@@ -12,5 +12,7 @@
 ".\alarma.o"
 ".\int_externas_hal.o"
 ".\botones.o"
+".\juego.o"
+".\visualizar.o"
 --strict --scatter ".\keil_reversi.sct"
 --summary_stderr --info summarysizes -o .\keil_reversi.axf

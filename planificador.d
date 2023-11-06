@@ -12,11 +12,8 @@
 .\planificador.o: hello_world.h
 .\planificador.o: power_hal.h
 .\planificador.o: alarma.h
-<<<<<<< HEAD
-=======
 .\planificador.o: botones.h
 .\planificador.o: int_externas_hal.h
 .\planificador.o: botones.h
 .\planificador.o: juego.h
 .\planificador.o: visualizar.h
->>>>>>> e4409097546e7d860a7962a1b794e826f1e6a246

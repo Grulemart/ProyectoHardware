@@ -13,18 +13,17 @@
 #define NO_HAY_OVERFLOW 0
 #define HAY_OVERFLOW 1
 
-typedef uint8_t BOOLEAN;
 
 // Tama�o de la cola
 #define FIFO_SIZE 32
-#define EVENT_TYPES 4
+#define EVENT_TYPES EVENTO_T
 
 
 void FIFO_inicializar(GPIO_HAL_PIN_T newOverflowPin, GPIO_HAL_PIN_BITS_T newOverflowPinNumber);
 
-void FIFO_encolar(enum EVENTO_T ID_evento, uint32_t auxData);
+void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData);
 
-uint8_t FIFO_extraer(enum EVENTO_T *ID_evento, uint32_t *auxData);
+uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData);
 
 uint32_t FIFO_estadisticas(uint8_t ID_evento);
 

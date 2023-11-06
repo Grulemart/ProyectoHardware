@@ -12,11 +12,8 @@
 .\main.o: hello_world.h
 .\main.o: power_hal.h
 .\main.o: alarma.h
-<<<<<<< HEAD
-=======
 .\main.o: botones.h
 .\main.o: int_externas_hal.h
 .\main.o: botones.h
 .\main.o: juego.h
 .\main.o: visualizar.h
->>>>>>> e4409097546e7d860a7962a1b794e826f1e6a246

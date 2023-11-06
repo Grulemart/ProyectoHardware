@@ -7,9 +7,9 @@
 #include "evento.h"
 #include "timer_drv.h"
 
-void juego_inicializar();
+void juego_inicializar(void);
 
-void juego_tratar_evento(enum EVENTO_T ID_evento, uint32_t auxData);
+void juego_tratar_evento(EVENTO_T ID_evento, uint32_t auxData);
 
 
 #endif

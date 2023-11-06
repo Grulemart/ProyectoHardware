@@ -3,7 +3,7 @@
 #define __EVENTO_H__
 
 // Declaracion de los ID de los eventos de interrupción
-enum EVENTO_T {
+typedef enum {
 	VOID = 0,
 	TIMER0 = 1,
 	TIMER1 = 2,
@@ -15,13 +15,15 @@ enum EVENTO_T {
 	DEJAR_BOTON = 8,
 	VISUALIZAR_CUENTA = 9,
 	LATIDO = 10,
-	VISUALIZAR_HELLO = 11
-};
+	VISUALIZAR_HELLO = 11,
+	BOTON_PULSADO = 12,
+	NUM_EVENTS = 13,
+} EVENTO_T;
 
 // Declaracion de tipo Boolean
-enum BOOLEAN {
+typedef enum{
 	TRUE = 1,
 	FALSE = 0
-};
+} BOOLEAN;
 
 #endif

@@ -13,7 +13,7 @@
 
 void iniciar_botones(void);
 void pulsar_boton(uint8_t id);
-enum BOOLEAN sigue_pulsado(uint8_t id);
+BOOLEAN sigue_pulsado(uint8_t id);
 void habilitar_interrupcion(uint8_t id);
 
 
