@@ -52,8 +52,8 @@ void planificador(void) {
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
 			gpio_hal_escribir(30, 1, 0);
-			vecesPulsado++;
 			reprogramar_alarma(POWER_DOWN, 0);
+			vecesPulsado++;
 			
 			if (auxData == 1) { // EINT1
 				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
@@ -66,6 +66,7 @@ void planificador(void) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
 			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
 				habilitar_interrupcion((uint8_t)auxData);
+				
 			}
 		} else if (evento == VISUALIZAR_CUENTA) {
 			// Visualiza el intervalo entre pulsaciones en ms

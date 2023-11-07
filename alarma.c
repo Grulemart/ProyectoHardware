@@ -82,6 +82,7 @@ void reprogramar_alarma(EVENTO_T ID_evento, uint32_t auxData) {
 	int i;
 	for ( i = 0; i < MAX_ALARMAS; i++) {
 		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
+			alarmasActivas[i] = TRUE;
 			alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
 			return;
 		}
@@ -97,12 +98,12 @@ void alarma_tratar_evento(void) {
 	
 	for(i = 0; i < MAX_ALARMAS; i++){
 		if(alarmasActivas[i] == TRUE && alarmaEnd[i] <= ticksAlarma){
-			FIFO_encolar(alarmaEvento[i], alarmaAuxData[i]);
 			if(alarmaReprogramar[i] == TRUE){
 				alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
 			}else{
 				alarmasActivas[i] = FALSE;
 			}
+			FIFO_encolar(alarmaEvento[i], alarmaAuxData[i]);
 		}
 	}
 }
