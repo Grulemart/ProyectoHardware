@@ -6,7 +6,7 @@
 #include "timer_drv.h"
 #include "fifo.h"
 
-#define MAX_ALARMAS 4
+#define MAX_ALARMAS 8
 
 void alarma_inicializar(void);
 
