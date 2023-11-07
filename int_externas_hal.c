@@ -13,7 +13,7 @@ void eint1_ISR (void) __irq {
 	pulsar_boton(id_boton_eint1);
 }
 
-void eint2_ISR (void){
+void eint2_ISR (void) __irq{
 	EXTINT = EXTINT |0x4;
 	VICVectAddr = 0;
 	// Disable the EXTINT2 Interrupt
