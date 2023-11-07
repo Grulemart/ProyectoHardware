@@ -2,7 +2,7 @@
 #include "hello_world.h"
 
 
-#define TIEMPO_ENTRE_BLINK_182 500000 
+#define TIEMPO_ENTRE_BLINK_182 0x8000000A 
 
 static GPIO_HAL_PIN_T helloWorldPin;
 static GPIO_HAL_PIN_BITS_T helloWorldPinBits;
@@ -14,7 +14,10 @@ void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits) {
 	helloWorldPin = bit;
 	helloWorldPinBits = pinBits;
 	gpio_hal_sentido(helloWorldPin, helloWorldPinBits, GPIO_HAL_PIN_DIR_OUTPUT);
-	temporizador_drv_reloj(TIEMPO_ENTRE_BLINK_182, FIFO_encolar, TIMER1);
+	
+	
+	alarma_activar(VISUALIZAR_HELLO, TIEMPO_ENTRE_BLINK_182, 0);
+	//temporizador_drv_reloj(TIEMPO_ENTRE_BLINK_182, FIFO_encolar, TIMER1);
 }
 
 void hello_world_tick_tack(){ 

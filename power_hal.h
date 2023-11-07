@@ -3,8 +3,11 @@
 #define __POWER_HAL_H__
 
 #include <LPC210x.H>                       /* LPC210x definitions */
+#include "alarma.h"
 
-void power_hal_wait(void); 
+#define USUARIO_AUSENTE 2000 // 12s
 
+void power_hal_wait(void);
+void power_hal_deep_sleep(void);
 
 #endif

@@ -15,6 +15,10 @@ void alarma_inicializar(void);
 // indican el retardo en milisegundos
 void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData);
 
+void cancelar_alarma(EVENTO_T ID_evento, uint32_t auxData);
+
+void reprogramar_alarma(EVENTO_T ID_evento, uint32_t auxData);
+
 // Procesar interrupciones y encolar eventos
 void alarma_tratar_evento(void);
 

@@ -1,8 +1,8 @@
 
 #include "juego.h"
 
-static uint64_t cuenta;
-static uint8_t intervalo;
+static uint8_t cuenta;
+static uint64_t intervalo;
 
 void juego_inicializar() {
 	cuenta = 0;
@@ -12,9 +12,9 @@ void juego_inicializar() {
 void juego_tratar_evento(EVENTO_T ID_evento, uint32_t auxData) {
 	
 	uint64_t currentCheck = temporizador_drv_leer();
-	intervalo = currentCheck - cuenta;
-	cuenta = currentCheck;
+	intervalo = currentCheck - intervalo;
+	cuenta += auxData;
 	
-	FIFO_encolar(ID_evento, (uint32_t)intervalo);
+	FIFO_encolar(ID_evento, (uint32_t)cuenta);
 	
 }

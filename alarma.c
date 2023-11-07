@@ -5,7 +5,7 @@
 
 static volatile uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
 static volatile uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
-static volatile  uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
+static volatile uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
 static volatile uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
 static volatile EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
 static volatile uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
@@ -62,6 +62,30 @@ void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
 	
 	FIFO_encolar(ALARMA_OVERFLOW, 0);
 	return;	
+}
+
+// Cancela la primera alarma con ID_evento y auxData que encuentra en el array
+// En este caso si se requiere de una alarma cancelable se vale del auxData para reconocerla
+void cancelar_alarma(EVENTO_T ID_evento, uint32_t auxData) {
+	int i;
+	for ( i = 0; i < MAX_ALARMAS; i++) {
+		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
+			alarmasActivas[i] = FALSE;
+			return;
+		}
+	}
+}
+
+// Reprograma la primera alarma con ID_evento y auxData que encuentra en el array
+// En este caso si se requiere de una alarma cancelable se vale del auxData para reconocerla
+void reprogramar_alarma(EVENTO_T ID_evento, uint32_t auxData) {
+	int i;
+	for ( i = 0; i < MAX_ALARMAS; i++) {
+		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
+			alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
+			return;
+		}
+	}
 }
 
 void alarma_tratar_evento(void) {

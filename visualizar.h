@@ -6,7 +6,7 @@
 #include "io_reserva.h"
 #include <inttypes.h>
 
-void visualizar_inicializar();
+void visualizar_inicializar(void);
 
 void visualizar(uint8_t cantidad);
 

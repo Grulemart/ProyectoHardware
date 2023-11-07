@@ -10,8 +10,8 @@
 .\main.o: timer_drv.h
 .\main.o: timer_hal.h
 .\main.o: hello_world.h
-.\main.o: power_hal.h
 .\main.o: alarma.h
+.\main.o: power_hal.h
 .\main.o: botones.h
 .\main.o: int_externas_hal.h
 .\main.o: botones.h

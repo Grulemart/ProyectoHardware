@@ -1,3 +1,12 @@
 .\power_hal.o: power_hal.c
 .\power_hal.o: power_hal.h
 .\power_hal.o: C:\Keil_v5\ARM\INC\Philips\LPC210x.H
+.\power_hal.o: alarma.h
+.\power_hal.o: evento.h
+.\power_hal.o: timer_drv.h
+.\power_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\power_hal.o: timer_hal.h
+.\power_hal.o: fifo.h
+.\power_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\power_hal.o: gpio_hal.h
+.\power_hal.o: io_reserva.h
