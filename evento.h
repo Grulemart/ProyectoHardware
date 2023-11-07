@@ -15,7 +15,8 @@ typedef enum {
 	VISUALIZAR_CUENTA = 8,
 	LATIDO = 9,
 	VISUALIZAR_HELLO = 10,
-	NUM_EVENTS = 11,
+	POWER_DOWN = 11,
+	NUM_EVENTS = 12
 } EVENTO_T;
 
 // Declaracion de tipo Boolean

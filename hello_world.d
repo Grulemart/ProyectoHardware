@@ -9,3 +9,4 @@
 .\hello_world.o: timer_hal.h
 .\hello_world.o: evento.h
 .\hello_world.o: fifo.h
+.\hello_world.o: alarma.h

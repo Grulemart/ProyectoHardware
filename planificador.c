@@ -12,16 +12,21 @@ void planificador(void) {
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
+	alarma_inicializar();
 	
 	
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
 	iniciar_botones();
 	
-	//hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	//juego_inicializar();
 	//visualizar_inicializar();
+	
+	gpio_hal_sentido(30, 1, GPIO_HAL_PIN_DIR_OUTPUT);
+	
+	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
 	
 	while(overflow != HAY_OVERFLOW) {
 		
@@ -35,7 +40,6 @@ void planificador(void) {
 			// Procesar evento TIMER0
 		} else if (evento == TIMER1) {
 			// Procesar evento TIMER1
-			hello_world_tick_tack();
 		} else if (evento == GPIO) {
 			// Procesar evento GPIO
 		} else if (evento == ALARMA) {
@@ -47,16 +51,37 @@ void planificador(void) {
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
+			gpio_hal_escribir(30, 1, 0);
+			reprogramar_alarma(POWER_DOWN, 0);
 			vecesPulsado++;
+			
+			if (auxData == 1) { // EINT1
+				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
+			} else { // EINT2
+				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)-1); // Constante resta 1 a cuenta en modulo juego
+			}
+			
 			//juego_tratar_evento(VISUALIZAR_CUENTA, 0);
 		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
 			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
 				habilitar_interrupcion((uint8_t)auxData);
+				
 			}
 		} else if (evento == VISUALIZAR_CUENTA) {
 			// Visualiza el intervalo entre pulsaciones en ms
 			visualizar((uint8_t)auxData);
+		} else if (evento == VISUALIZAR_HELLO) {
+			hello_world_tick_tack();
+		}
+		
+		
+		
+		
+		else if (evento == POWER_DOWN) {
+			gpio_hal_escribir(30, 1, 1);
+			// TODO: Activar cuando las interrupciones externas funcoinen lol
+			power_hal_deep_sleep();
 		}
 
 		

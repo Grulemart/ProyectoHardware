@@ -15,6 +15,7 @@ void iniciar_botones(void){
 
 void pulsar_boton(uint8_t id){
 	uint32_t retardo = RETARDO_MONITORIZAR_BOTON;
+	retardo |= 1U << 31; // Ponemos un 1 en el bit de mayor peso para que se repita la alarma 
 	if(id == BOTON_1){
 		estado_boton1 = PULSADO;
 	}else if (id == BOTON_2){
@@ -22,9 +23,6 @@ void pulsar_boton(uint8_t id){
 	}
 	
 	FIFO_encolar(BOTON_PULSADO,(uint32_t) id);
-	
-	retardo |= 1U << 31; // Ponemos un 1 en el bit de mayor peso para que se repita la alarma 
-	alarma_inicializar();
 	alarma_activar(MONITORIZAR_BOTON, retardo , (uint32_t)id);
 	
 }
@@ -35,6 +33,7 @@ BOOLEAN sigue_pulsado(uint8_t id){
 			return TRUE;
 		}else{
 			estado_boton1 = NO_PULSADO;
+			cancelar_alarma(MONITORIZAR_BOTON, id);
 			return FALSE;
 		}
 	}
@@ -42,6 +41,7 @@ BOOLEAN sigue_pulsado(uint8_t id){
 		return TRUE;
 	}else{
 		estado_boton2 = NO_PULSADO;
+		cancelar_alarma(MONITORIZAR_BOTON, id);
 		return FALSE;
 	}
 }
