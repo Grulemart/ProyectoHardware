@@ -69,7 +69,7 @@ void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
 void alarma_reprogramar(EVENTO_T ID_evento, uint32_t auxData) {
 	int i;
 	for ( i = 0; i < MAX_ALARMAS; i++) {
-		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
+		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData && alarmasActivas[i] == TRUE) {
 			alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
 			return;
 		}

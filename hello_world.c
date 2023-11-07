@@ -2,7 +2,7 @@
 #include "hello_world.h"
 
 
-#define TIEMPO_ENTRE_BLINK_182 0x8000000A 
+#define TIEMPO_ENTRE_BLINK_182 0x800001f4 
 
 static GPIO_HAL_PIN_T helloWorldPin;
 static GPIO_HAL_PIN_BITS_T helloWorldPinBits;

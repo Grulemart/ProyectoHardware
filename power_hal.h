@@ -5,9 +5,10 @@
 #include <LPC210x.H>                       /* LPC210x definitions */
 #include "alarma.h"
 
-#define USUARIO_AUSENTE 0x80000B20 // Tiempo a transcurrir entre inactividad para activar power-down mode (12 s)
+#define USUARIO_AUSENTE 0x80002ee0 // Tiempo a transcurrir entre inactividad para activar power-down mode (12 s)
 
 void power_hal_wait(void);
 void power_hal_deep_sleep(void);
+extern void Switch_to_PLL(void);
 
 #endif

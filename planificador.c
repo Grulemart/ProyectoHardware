@@ -49,7 +49,7 @@ void planificador(void) {
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
 			gpio_hal_escribir(30, 1, 0);
-			alarma_reprogramar(POWER_DOWN, 0);
+
 			vecesPulsado++;
 			
 			if (auxData == 1) { // EINT1
@@ -77,6 +77,7 @@ void planificador(void) {
 		
 		else if (evento == POWER_DOWN) {
 			power_hal_deep_sleep();
+			alarma_reprogramar(POWER_DOWN, 0);
 		}
 
 		

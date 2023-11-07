@@ -7,5 +7,7 @@ void power_hal_wait (void)  {
 
 // Pone al procesador en estado power_down
 void power_hal_deep_sleep(void) {
-	PCON |= 0x3;
+	EXTWAKE |= 0x6;
+	PCON |= 0x2;
+	Switch_to_PLL();
 }
