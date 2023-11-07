@@ -4,7 +4,7 @@
 #define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
 
 static volatile uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
-static volatile uint8_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
+static volatile uint32_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
 static volatile uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
 static volatile uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
 static volatile EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
