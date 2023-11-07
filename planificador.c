@@ -12,20 +12,17 @@ void planificador(void) {
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
-	alarma_inicializar();
-	
 	
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
 	iniciar_botones();
+	alarma_inicializar();
 	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
-	//juego_inicializar();
-	//visualizar_inicializar();
-	
-	gpio_hal_sentido(30, 1, GPIO_HAL_PIN_DIR_OUTPUT);
-	
+	juego_inicializar();
+	visualizar_inicializar();
+
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
 	
 	while(overflow != HAY_OVERFLOW) {
@@ -52,7 +49,7 @@ void planificador(void) {
 		} else if (evento == BOTON_PULSADO) {
 			// Procesar evento EINT1
 			gpio_hal_escribir(30, 1, 0);
-			reprogramar_alarma(POWER_DOWN, 0);
+			alarma_reprogramar(POWER_DOWN, 0);
 			vecesPulsado++;
 			
 			if (auxData == 1) { // EINT1
@@ -79,8 +76,6 @@ void planificador(void) {
 		
 		
 		else if (evento == POWER_DOWN) {
-			gpio_hal_escribir(30, 1, 1);
-			// TODO: Activar cuando las interrupciones externas funcoinen lol
 			power_hal_deep_sleep();
 		}
 

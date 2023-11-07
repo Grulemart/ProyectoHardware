@@ -64,6 +64,7 @@ int eint2_activada(void) {
 	int bit;
 	// Hacemos clear del bit 3 si el pin esta en low level no debería dejar hacer el clear
 	EXTINT |= 0x4; // 
+	
 	// Cogemos el bit 2 que corresponde a eint2
 	bit = (EXTINT >> 2) & 1;
 	// Si bit sigues estando activado 1 entonces el pin sigue en low level

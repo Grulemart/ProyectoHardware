@@ -33,7 +33,6 @@ BOOLEAN sigue_pulsado(uint8_t id){
 			return TRUE;
 		}else{
 			estado_boton1 = NO_PULSADO;
-			cancelar_alarma(MONITORIZAR_BOTON, id);
 			return FALSE;
 		}
 	}
@@ -41,7 +40,6 @@ BOOLEAN sigue_pulsado(uint8_t id){
 		return TRUE;
 	}else{
 		estado_boton2 = NO_PULSADO;
-		cancelar_alarma(MONITORIZAR_BOTON, id);
 		return FALSE;
 	}
 }

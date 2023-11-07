@@ -64,25 +64,12 @@ void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
 	return;	
 }
 
-// Cancela la primera alarma con ID_evento y auxData que encuentra en el array
-// En este caso si se requiere de una alarma cancelable se vale del auxData para reconocerla
-void cancelar_alarma(EVENTO_T ID_evento, uint32_t auxData) {
-	int i;
-	for ( i = 0; i < MAX_ALARMAS; i++) {
-		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
-			alarmasActivas[i] = FALSE;
-			return;
-		}
-	}
-}
-
 // Reprograma la primera alarma con ID_evento y auxData que encuentra en el array
 // En este caso si se requiere de una alarma cancelable se vale del auxData para reconocerla
-void reprogramar_alarma(EVENTO_T ID_evento, uint32_t auxData) {
+void alarma_reprogramar(EVENTO_T ID_evento, uint32_t auxData) {
 	int i;
 	for ( i = 0; i < MAX_ALARMAS; i++) {
 		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData) {
-			alarmasActivas[i] = TRUE;
 			alarmaEnd[i] = ticksAlarma + alarmaRetardoInicial[i];
 			return;
 		}
@@ -95,7 +82,6 @@ void alarma_tratar_evento(void) {
 	ticksAlarma++;
 	
 	// Comprobar que han expirado las alarmas
-	
 	for(i = 0; i < MAX_ALARMAS; i++){
 		if(alarmasActivas[i] == TRUE && alarmaEnd[i] <= ticksAlarma){
 			if(alarmaReprogramar[i] == TRUE){
