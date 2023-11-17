@@ -576,6 +576,26 @@
               <FileType>1</FileType>
               <FilePath>.\visualizar.c</FilePath>
             </File>
+            <File>
+              <FileName>watchdog.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\watchdog.h</FilePath>
+            </File>
+            <File>
+              <FileName>watchdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\watchdog.c</FilePath>
+            </File>
+            <File>
+              <FileName>semaforo_interrupciones.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\semaforo_interrupciones.h</FilePath>
+            </File>
+            <File>
+              <FileName>semaforo_interrupciones.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\semaforo_interrupciones.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
