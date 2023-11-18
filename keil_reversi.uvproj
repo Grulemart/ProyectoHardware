@@ -596,6 +596,11 @@
               <FileType>1</FileType>
               <FilePath>.\semaforo_interrupciones.c</FilePath>
             </File>
+            <File>
+              <FileName>SWI.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\SWI.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

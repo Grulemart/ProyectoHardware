@@ -209,7 +209,7 @@
 
   <Group>
     <GroupName>System Calls</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -602,6 +602,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>.\semaforo_interrupciones.c</PathWithFileName>
       <FilenameWithoutPath>semaforo_interrupciones.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>34</FileNumber>
+      <FileType>2</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\SWI.s</PathWithFileName>
+      <FilenameWithoutPath>SWI.s</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
