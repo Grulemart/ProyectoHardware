@@ -17,3 +17,5 @@
 .\planificador.o: botones.h
 .\planificador.o: juego.h
 .\planificador.o: visualizar.h
+.\planificador.o: linea_serie_drv.h
+.\planificador.o: linea_serie_hal.h

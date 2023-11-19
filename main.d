@@ -17,3 +17,5 @@
 .\main.o: botones.h
 .\main.o: juego.h
 .\main.o: visualizar.h
+.\main.o: linea_serie_drv.h
+.\main.o: linea_serie_hal.h

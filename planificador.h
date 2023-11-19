@@ -12,6 +12,7 @@
 #include "juego.h"
 #include "visualizar.h"
 #include "alarma.h"
+#include "linea_serie_drv.h"
 
 void planificador(void);
 

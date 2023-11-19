@@ -5,7 +5,6 @@
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
-static uint64_t vecesPulsado = 0;
 
 void planificador(void) {
 	
@@ -24,6 +23,8 @@ void planificador(void) {
 	visualizar_inicializar();
 
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
+	iniciar_linea_serie();
+	linea_serie_drv_enviar_array("Prueba array");
 	
 	while(overflow != HAY_OVERFLOW) {
 		
@@ -47,11 +48,7 @@ void planificador(void) {
 			// Procesar overflow si hay overflow de alarmas
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 		} else if (evento == BOTON_PULSADO) {
-			// Procesar evento EINT1
-			gpio_hal_escribir(30, 1, 0);
-
-			vecesPulsado++;
-			
+				alarma_reprogramar(POWER_DOWN, 0);
 			if (auxData == 1) { // EINT1
 				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
 			} else { // EINT2
@@ -62,8 +59,9 @@ void planificador(void) {
 		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
 			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
+				// Cancelamos la alarma si ha dejado de pulsar el boton
+				alarma_activar(evento, CANCELAR_ALARMA, auxData);
 				habilitar_interrupcion((uint8_t)auxData);
-				
 			}
 		} else if (evento == VISUALIZAR_CUENTA) {
 			// Visualiza el intervalo entre pulsaciones en ms
@@ -71,20 +69,18 @@ void planificador(void) {
 		} else if (evento == VISUALIZAR_HELLO) {
 			hello_world_tick_tack();
 		}
-		
-		
-		
-		
 		else if (evento == POWER_DOWN) {
 			power_hal_deep_sleep();
 			alarma_reprogramar(POWER_DOWN, 0);
-		}
-
-		
-		else {
+			iniciar_linea_serie();
+		}	else if (evento == EV_RX_SERIE){
+			//Procesar evento recepcion serie
+			
+		} else if (evento == EV_TX_SERIE){
+			//Procesar evento transimisón serie
+		}else {
 			// Procesar evento VOID (error)
 		}
-		
 		
 		// Lee el pin de overflow y sale del bucle si está activo
 		overflow = gpio_hal_leer(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);

@@ -7,6 +7,7 @@
 #include "fifo.h"
 
 #define MAX_ALARMAS 8
+#define CANCELAR_ALARMA 0
 
 void alarma_inicializar(void);
 
