@@ -45,7 +45,10 @@ void recibir_caracter(char c){
 }
 
 void linea_serie_drv_enviar_array(char* array){
-	if(*array == '\0')return;
+	if(*array == '\0'){
+		FIFO_encolar(EV_TX_SERIE, 0);
+		return;
+	}
 	for(send_buffer_index = 0; send_buffer_index < SEND_BUFFER_SIZE; send_buffer_index++){
 		sendBuffer[send_buffer_index] = array[send_buffer_index];
 		if(array[send_buffer_index] == '\0'){
