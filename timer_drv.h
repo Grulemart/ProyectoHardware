@@ -4,6 +4,7 @@
 
 #include <stdint.h>
 #include "timer_hal.h"
+#include "llamadas_swi.h"
 #include "evento.h"
 #include "fifo.h"
 

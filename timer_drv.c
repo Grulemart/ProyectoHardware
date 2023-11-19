@@ -21,7 +21,7 @@ void temporizador_drv_empezar() {
 // Lee el tiempo transcurrido en microsegundos
 uint64_t temporizador_drv_leer() {
     // Lee el tiempo en ticks utilizando temporizador_hal_leer() y lo convierte a microsegundos
-	return temporizador_hal_leer()/TICKS_A_US;
+	return clock_get_us()/TICKS_A_US;
 }
 
 // Detiene el temporizador y devuelve el tiempo transcurrido en microsegundos
