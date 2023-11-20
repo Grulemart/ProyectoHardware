@@ -41,8 +41,6 @@ void uart0_iniciar(void (*function_callback_recibir)(char c), void (*function_ca
 
 void uart0_enviar_caracter(char c){
 		U0THR = c;
-
-	
 }
 
 
