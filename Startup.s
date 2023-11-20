@@ -274,7 +274,11 @@ MEMMAP          EQU     0xE01FC040      ; Memory Mapping Control
                 MSR     CPSR_c, #Mode_IRQ:OR:I_Bit:OR:F_Bit
                 MOV     SP, R0
                 SUB     R0, R0, #IRQ_Stack_Size
-				
+						
+;  Enter Supervisor Mode and set its Stack Pointer
+                MSR     CPSR_c, #Mode_SVC:OR:I_Bit:OR:F_Bit
+                MOV     SP, R0
+                SUB     R0, R0, #SVC_Stack_Size
 
 
 
