@@ -5,7 +5,10 @@
 .\alarma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\alarma.o: timer_hal.h
 .\alarma.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
-.\alarma.o: fifo.h
+.\alarma.o: llamadas_swi.h
 .\alarma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\alarma.o: timer_drv.h
+.\alarma.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\alarma.o: fifo.h
 .\alarma.o: gpio_hal.h
 .\alarma.o: io_reserva.h

@@ -6,6 +6,7 @@
 #include "io_reserva.h"
 #include "gpio_hal.h"
 #include "alarma.h"
+#include "llamadas_swi.h"
 
 void testFifoOverflow(){
 	gpio_hal_iniciar();
@@ -26,6 +27,8 @@ int main() {
 	*/
 	
 	
+	enable_irq();
+	read_IRQ_bit();
 	planificador();
 	
 	return 0;

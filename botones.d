@@ -12,3 +12,6 @@
 .\botones.o: alarma.h
 .\botones.o: timer_drv.h
 .\botones.o: timer_hal.h
+.\botones.o: llamadas_swi.h
+.\botones.o: timer_drv.h
+.\botones.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -436,6 +436,11 @@
               <FileType>1</FileType>
               <FilePath>.\Retarget.c</FilePath>
             </File>
+            <File>
+              <FileName>SWI.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>.\SWI.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -587,16 +592,6 @@
               <FilePath>.\watchdog.c</FilePath>
             </File>
             <File>
-              <FileName>semaforo_interrupciones.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\semaforo_interrupciones.h</FilePath>
-            </File>
-            <File>
-              <FileName>semaforo_interrupciones.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\semaforo_interrupciones.c</FilePath>
-            </File>
-            <File>
               <FileName>linea_serie_hal.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\linea_serie_hal.c</FilePath>
@@ -615,6 +610,16 @@
               <FileName>linea_serie_drv.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\linea_serie_drv.h</FilePath>
+            </File>
+            <File>
+              <FileName>llamadas_swi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\llamadas_swi.c</FilePath>
+            </File>
+            <File>
+              <FileName>llamadas_swi.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\llamadas_swi.h</FilePath>
             </File>
           </Files>
         </Group>

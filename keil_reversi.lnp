@@ -1,6 +1,7 @@
 --cpu ARM7TDMI
 ".\startup.o"
 ".\retarget.o"
+".\swi.o"
 ".\main.o"
 ".\fifo.o"
 ".\gpio_hal.o"
@@ -15,8 +16,8 @@
 ".\juego.o"
 ".\visualizar.o"
 ".\watchdog.o"
-".\semaforo_interrupciones.o"
 ".\linea_serie_hal.o"
 ".\linea_serie_drv.o"
+".\llamadas_swi.o"
 --strict --scatter ".\keil_reversi.sct"
 --summary_stderr --info summarysizes -o .\keil_reversi.axf

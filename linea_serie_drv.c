@@ -6,6 +6,7 @@ static volatile char receiveBuffer[3];
 static volatile uint8_t buffer_index = 0;
 static volatile char sendBuffer[SEND_BUFFER_SIZE];
 static volatile uint32_t send_buffer_index = 0;
+static volatile BOOLEAN mandando_serie = FALSE;
 
 int check_command(void){
 	if(receiveBuffer[0] == 'E' && receiveBuffer[1] == 'N' && receiveBuffer[2] == 'D'){
@@ -23,16 +24,22 @@ int check_command(void){
 	return FALSE;
 }
 
-void recibir_caracter(char c){
-	
-	uart0_enviar_caracter(c);
+void recibir_caracter(char c){	
+	char array[2];
 	switch(estado) {
 		case ESTADO_ESPERANDO_INICIO:
 			if(c == START_DELIMETER){
+				array[0] = c;
+				array[1] = '\0';
+				linea_serie_drv_enviar_array(array);
 				estado = ESTADO_RECIBIENDO_TRAMA;
 			}
 			break;
 		case ESTADO_RECIBIENDO_TRAMA:
+				array[0] = c;
+				array[1] = '\0';
+				linea_serie_drv_enviar_array(array);
+
 			if(c == END_DELIMETER){
 				if(check_command())
 					FIFO_encolar(EV_RX_SERIE, (uint32_t)receiveBuffer);
@@ -46,9 +53,12 @@ void recibir_caracter(char c){
 
 void linea_serie_drv_enviar_array(char* array){
 	if(*array == '\0'){
-		FIFO_encolar(EV_TX_SERIE, 0);
 		return;
 	}
+	if(mandando_serie == TRUE){
+		return;
+	}
+	mandando_serie = TRUE;
 	for(send_buffer_index = 0; send_buffer_index < SEND_BUFFER_SIZE; send_buffer_index++){
 		sendBuffer[send_buffer_index] = array[send_buffer_index];
 		if(array[send_buffer_index] == '\0'){
@@ -62,6 +72,7 @@ void linea_serie_drv_enviar_array(char* array){
 
 void linea_serie_drv_continuar_envio(){
 	if(send_buffer_index >= SEND_BUFFER_SIZE || sendBuffer[send_buffer_index ] == '\0'){
+		mandando_serie = FALSE;
 		FIFO_encolar(EV_TX_SERIE,0);
 		return;
 	}

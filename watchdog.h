@@ -4,7 +4,7 @@
 
 #include <LPC210x.H> 
 #include <inttypes.h>
-#include "semaforo_interrupciones.h"
+#include "llamadas_swi.h"
 
 void WD_hal_inicializar(uint32_t sec);
 

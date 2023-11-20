@@ -9,3 +9,6 @@
 .\juego.o: evento.h
 .\juego.o: timer_drv.h
 .\juego.o: timer_hal.h
+.\juego.o: llamadas_swi.h
+.\juego.o: timer_drv.h
+.\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

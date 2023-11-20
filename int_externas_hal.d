@@ -12,3 +12,6 @@
 .\int_externas_hal.o: alarma.h
 .\int_externas_hal.o: timer_drv.h
 .\int_externas_hal.o: timer_hal.h
+.\int_externas_hal.o: llamadas_swi.h
+.\int_externas_hal.o: timer_drv.h
+.\int_externas_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

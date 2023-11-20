@@ -1,0 +1,13 @@
+.\llamadas_swi.o: llamadas_swi.c
+.\llamadas_swi.o: llamadas_swi.h
+.\llamadas_swi.o: C:\Keil_v5\ARM\INC\Philips\LPC210x.H
+.\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
+.\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\llamadas_swi.o: timer_drv.h
+.\llamadas_swi.o: timer_hal.h
+.\llamadas_swi.o: llamadas_swi.h
+.\llamadas_swi.o: evento.h
+.\llamadas_swi.o: fifo.h
+.\llamadas_swi.o: gpio_hal.h
+.\llamadas_swi.o: io_reserva.h
+.\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

@@ -9,10 +9,10 @@ void WD_hal_inicializar(uint32_t sec) {
 }
 
 void WD_hal_feed(void) {
-	bloquear_interrupciones(); // Funciones realizadas sin riesgo de interrupciones
+	disable_irq();// Funciones realizadas sin riesgo de interrupciones
 	WDFEED = 0xAA;
 	WDFEED = 0x55;
-	liberar_interrupciones();
+	enable_irq();
 }
 
 void WD_hal_test(void) {
