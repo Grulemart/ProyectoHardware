@@ -1,4 +1,3 @@
-
 #ifndef __PLANIFICADOR_H__
 #define __PLANIFICADOR_H__
 

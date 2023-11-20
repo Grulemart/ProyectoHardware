@@ -342,6 +342,3 @@ PLL_Loop2       LDR     R3, [R0, #PLLSTAT_OFS]
                 BX      LR
 
                 END
-
-
-           

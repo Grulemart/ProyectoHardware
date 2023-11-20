@@ -5,20 +5,23 @@ static int id_boton_eint2;
 
 
 void eint1_ISR (void) __irq {
+	
+	// Disable the EXTINT1 Interrupt
+	VICIntEnClr = 0x00008000;
 	EXTINT = EXTINT | 0x2;
 	VICVectAddr = 0;
-	// Disable the EXTINT1 Interrupt
-	VICVectCntl2 = 0;
-	VICIntEnable &= ~(0x00008000);
+	
 	pulsar_boton(id_boton_eint1);
 }
 
 void eint2_ISR (void) __irq{
+	
+	
+	// Disable the EXTINT2 Interrupt
+	VICIntEnClr=0x00010000;
 	EXTINT = EXTINT |0x4;
 	VICVectAddr = 0;
-	// Disable the EXTINT2 Interrupt
-	VICVectCntl3 = 0;
-	VICIntEnable &= ~(0x00010000);
+	
 	pulsar_boton(id_boton_eint2);
 }
 

@@ -5,9 +5,11 @@
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
+static char comando[3];
+
 
 void planificador(void) {
-	
+	int i;
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
@@ -16,15 +18,16 @@ void planificador(void) {
 	temporizador_drv_empezar();
 	iniciar_botones();
 	alarma_inicializar();
+	iniciar_linea_serie();
 	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
 	
 	juego_inicializar();
 	visualizar_inicializar();
+	
 
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
-	iniciar_linea_serie();
-	linea_serie_drv_enviar_array("Prueba array");
+	
 	
 	while(overflow != HAY_OVERFLOW) {
 		
@@ -73,11 +76,15 @@ void planificador(void) {
 			power_hal_deep_sleep();
 			alarma_reprogramar(POWER_DOWN, 0);
 			iniciar_linea_serie();
-		}	else if (evento == EV_RX_SERIE){
-			//Procesar evento recepcion serie
-			
+		}else if (evento == EV_RX_SERIE){
+			for(i = 0; i<3; i++){
+				comando[i] = (char)((auxData >> (8*i))& 0xFF);
+			}
+			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
+					linea_serie_drv_enviar_array("Hola");
+				}
 		} else if (evento == EV_TX_SERIE){
-			//Procesar evento transimisón serie
+			alarma_reprogramar(POWER_DOWN, 0);
 		}else {
 			// Procesar evento VOID (error)
 		}
@@ -86,7 +93,5 @@ void planificador(void) {
 		overflow = gpio_hal_leer(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
 		
 	}
-	
-	
 	
 }

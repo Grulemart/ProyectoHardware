@@ -19,6 +19,10 @@
 .\main.o: int_externas_hal.h
 .\main.o: botones.h
 .\main.o: juego.h
-.\main.o: visualizar.h
+.\main.o: tablero.h
+.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+.\main.o: celda.h
+.\main.o: config_conecta_K.h
 .\main.o: linea_serie_drv.h
 .\main.o: linea_serie_hal.h
+.\main.o: visualizar.h

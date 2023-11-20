@@ -621,6 +621,26 @@
               <FileType>5</FileType>
               <FilePath>.\llamadas_swi.h</FilePath>
             </File>
+            <File>
+              <FileName>tablero.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\tablero.c</FilePath>
+            </File>
+            <File>
+              <FileName>celda.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\celda.h</FilePath>
+            </File>
+            <File>
+              <FileName>config_conecta_K.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\config_conecta_K.h</FilePath>
+            </File>
+            <File>
+              <FileName>tablero.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\tablero.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

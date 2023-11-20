@@ -9,11 +9,10 @@
 #define ESTADO_RECIBIENDO_TRAMA 2
 #define START_DELIMETER '$'
 #define END_DELIMETER '!'
-#define SEND_BUFFER_SIZE 100
+#define SEND_BUFFER_SIZE 200
 
 void iniciar_linea_serie(void);
 void linea_serie_drv_enviar_array(char* array);
 
 
 #endif
-    

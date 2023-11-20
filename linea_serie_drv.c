@@ -15,6 +15,9 @@ int check_command(void){
 	if(receiveBuffer[0] == 'N' && receiveBuffer[1] == 'E' && receiveBuffer[2] == 'W'){
 		return TRUE;
 	}
+	if(receiveBuffer[0] == 'T' && receiveBuffer[1] == 'A' && receiveBuffer[2] == 'B'){
+		return TRUE;
+	}
 	if(receiveBuffer [1] == '-'){
 		int fila = receiveBuffer[0] - '0';
 		int columna = receiveBuffer[1] - '0';
@@ -26,23 +29,30 @@ int check_command(void){
 
 void recibir_caracter(char c){	
 	char array[2];
+	int i;
+	uint32_t auxdata;
+	if(c == '\r'){
+		array[0] = '\n';
+	}else{
+		array[0] = c;
+	}
+	array[1] = '\0';
+	linea_serie_drv_enviar_array(array);
+
 	switch(estado) {
 		case ESTADO_ESPERANDO_INICIO:
 			if(c == START_DELIMETER){
-				array[0] = c;
-				array[1] = '\0';
-				linea_serie_drv_enviar_array(array);
 				estado = ESTADO_RECIBIENDO_TRAMA;
 			}
 			break;
 		case ESTADO_RECIBIENDO_TRAMA:
-				array[0] = c;
-				array[1] = '\0';
-				linea_serie_drv_enviar_array(array);
-
 			if(c == END_DELIMETER){
-				if(check_command())
-					FIFO_encolar(EV_RX_SERIE, (uint32_t)receiveBuffer);
+				if(check_command()){
+					for(i = 0; i < 3; i++){
+						auxdata |= (uint32_t)array[i] << (8*i);
+					}
+					FIFO_encolar(EV_RX_SERIE, auxdata);
+				}
 			}else if(buffer_index >= 3){
 					gpio_hal_escribir(GPIO_SERIE_ERROR, 1, 1);
 				}else{
