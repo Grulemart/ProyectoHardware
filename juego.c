@@ -1,12 +1,14 @@
-
 #include "juego.h"
 
 static volatile uint8_t cuenta;
 static volatile uint64_t intervalo;
+static TABLERO cuadricula;
+static char array[13];
+static uint64_t tiempoSistema;
 
 // Función para convertir un entero a una cadena de caracteres (ASCII)
 
-void uint64ToAsciiArray(uint64_t value, char asciiArray[9]) {
+void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
     // Assuming a 64-bit unsigned integer and 8 characters for the ASCII representation
     // (including the null terminator)
 
@@ -22,21 +24,16 @@ void uint64ToAsciiArray(uint64_t value, char asciiArray[9]) {
 }
 
 
-void conecta_K_visualizar_tiempo(){
-	char array[13];
-	char arrayNum[9];
-	uint64_t tiempoSistema;
-	int i;
+void conecta_K_visualizar_tiempo(void){
 	tiempoSistema = clock_get_us();
-	array[0] = 'u';
-	array[1] = 's';
-	array[3] = ':';
-	uint64ToAsciiArray(tiempoSistema, arrayNum);
-	for(i = 4; i < 12; i++){
-		array[i] = arrayNum[i-4];
-	}
+	uint64ToAsciiArray(tiempoSistema, array);
+	array[8] = ' ';
+	array[9] = 'u';
+	array[10] = 's';
 	array[11] = '\n';
+	array[12] = '\0';
 	linea_serie_drv_enviar_array(array);
+	
 }
 
 void conecta_K_test_cargar_tablero(TABLERO *t){
@@ -60,13 +57,14 @@ tablero_test[7][7] =
 	}
 }
 
-void conecta_K_visualizar_tablero(TABLERO *t){
+void conecta_K_visualizar_tablero(){
 	static char array[200];
 	int fila;
 	int columna;
 	int indiceArray = 0;
 	CELDA celda;
-	
+		
+	array[indiceArray++] = '\n';
 	array[indiceArray++] = '-';
 	array[indiceArray++] = '|';
 
@@ -80,7 +78,7 @@ void conecta_K_visualizar_tablero(TABLERO *t){
 		array[indiceArray++] = fila + 1 + '0';
 		array[indiceArray++] = '|';
 		for(columna = 0; columna < NUM_COLUMNAS; columna++){
-			celda = tablero_leer_celda(t, fila, columna);
+			celda = tablero_leer_celda(&cuadricula, fila, columna);
 			if(celda_vacia(celda)){
 				array[indiceArray++] = ' ';
 				array[indiceArray++] = '|';
@@ -100,7 +98,6 @@ void conecta_K_visualizar_tablero(TABLERO *t){
 }
 
 void juego_inicializar() {
-	TABLERO cuadricula;
 	cuenta = 0;
 	intervalo = 0;
 	

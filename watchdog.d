@@ -11,4 +11,3 @@
 .\watchdog.o: fifo.h
 .\watchdog.o: gpio_hal.h
 .\watchdog.o: io_reserva.h
-.\watchdog.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

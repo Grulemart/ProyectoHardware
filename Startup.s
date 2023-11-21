@@ -90,8 +90,8 @@ VPBDIV          EQU     0xE01FC100      ; VPBDIV Address
 ;//               <1=> XCLK Pin = CPU Clock
 ;//               <2=> XCLK Pin = CPU Clock / 2
 ;// </e>
-VPBDIV_SETUP    EQU     0
-VPBDIV_Val      EQU     0x00000000
+VPBDIV_SETUP    EQU     1
+VPBDIV_Val      EQU     0x00000001
 
 
 ; Phase Locked Loop (PLL) definitions
@@ -161,9 +161,8 @@ Vectors         LDR     PC, Reset_Addr
                 LDR     PC, [PC, #-0x0FF0]     ; Vector from VicVectAddr
                 LDR     PC, FIQ_Addr
 				
-				
-				IMPORT SWI_Handler
-
+; Dario
+                IMPORT SWI_Handler
 
 Reset_Addr      DCD     Reset_Handler
 Undef_Addr      DCD     Undef_Handler
@@ -173,10 +172,9 @@ DAbt_Addr       DCD     DAbt_Handler
                 DCD     0                      ; Reserved Address 
 IRQ_Addr        DCD     IRQ_Handler
 FIQ_Addr        DCD     FIQ_Handler
-	
 
 Undef_Handler   B       Undef_Handler
-;SWI_Handler     B       SWI_Handler
+; SWI_Handler     B       SWI_Handler
 PAbt_Handler    B       PAbt_Handler
 DAbt_Handler    B       DAbt_Handler
 IRQ_Handler     B       IRQ_Handler
@@ -274,26 +272,16 @@ MEMMAP          EQU     0xE01FC040      ; Memory Mapping Control
                 MSR     CPSR_c, #Mode_IRQ:OR:I_Bit:OR:F_Bit
                 MOV     SP, R0
                 SUB     R0, R0, #IRQ_Stack_Size
-						
+
 ;  Enter Supervisor Mode and set its Stack Pointer
                 MSR     CPSR_c, #Mode_SVC:OR:I_Bit:OR:F_Bit
                 MOV     SP, R0
                 SUB     R0, R0, #SVC_Stack_Size
 
-
-
-				
-;  Enter Supervisor Mode and set its Stack Pointer
-                MSR     CPSR_c, #Mode_SVC:OR:I_Bit:OR:F_Bit
-                MOV     SP, R0
-                SUB     R0, R0, #SVC_Stack_Size
-				
-;  Enter User Mode and set its Stack Pointer
+;  Darío Enter User Mode and set its Stack Pointer
                 MSR     CPSR_c, #Mode_USR
                 MOV     SP, R0
                 SUB     SL, SP, #USR_Stack_Size
-				
-
 
 ; Enter the C code
 
@@ -314,13 +302,21 @@ __user_initial_stackheap
                 LDR     R2, = (Heap_Mem +      Heap_Size)
                 LDR     R3, = Stack_Mem
                 BX      LR
-				
-				EXPORT Switch_to_PLL
-Switch_to_PLL
-                LDR     R0, =PLL_BASE
-                MOV     R1, #0xAA
-                MOV     R2, #0x55
+; codigo para generar una excepción
+				EXPORT  exception
+				PRESERVE8 {TRUE}
+exception				
+				MOV 	R0,#1
+				LDR		R1,[R0]
+				BX      LR
 
+				EXPORT  Switch_to_PLL
+
+;  Switch to PLL Clock
+Switch_to_PLL   
+                LDR     R0, =PLL_BASE
+				MOV     R1, #0xAA
+                MOV     R2, #0x55
 ;  Configure and Enable PLL
                 MOV     R3, #PLLCFG_Val
                 STR     R3, [R0, #PLLCFG_OFS] 
@@ -328,17 +324,15 @@ Switch_to_PLL
                 STR     R3, [R0, #PLLCON_OFS]
                 STR     R1, [R0, #PLLFEED_OFS]
                 STR     R2, [R0, #PLLFEED_OFS]
-
-;  Wait until PLL Locked
+;				;  Wait until PLL Locked
 PLL_Loop2       LDR     R3, [R0, #PLLSTAT_OFS]
                 ANDS    R3, R3, #PLLSTAT_PLOCK
                 BEQ     PLL_Loop2
-
-;  Switch to PLL Clock
-                MOV     R3, #(PLLCON_PLLE:OR:PLLCON_PLLC)
+				
+				MOV     R3, #(PLLCON_PLLE:OR:PLLCON_PLLC)
                 STR     R3, [R0, #PLLCON_OFS]
                 STR     R1, [R0, #PLLFEED_OFS]
                 STR     R2, [R0, #PLLFEED_OFS]
-                BX      LR
+				BX      LR
 
                 END

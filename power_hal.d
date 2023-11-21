@@ -9,7 +9,6 @@
 .\power_hal.o: llamadas_swi.h
 .\power_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\power_hal.o: timer_drv.h
-.\power_hal.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\power_hal.o: fifo.h
 .\power_hal.o: gpio_hal.h
 .\power_hal.o: io_reserva.h

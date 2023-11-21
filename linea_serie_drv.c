@@ -37,7 +37,6 @@ void recibir_caracter(char c){
 		array[0] = c;
 	}
 	array[1] = '\0';
-	linea_serie_drv_enviar_array(array);
 
 	switch(estado) {
 		case ESTADO_ESPERANDO_INICIO:
@@ -49,13 +48,18 @@ void recibir_caracter(char c){
 			if(c == END_DELIMETER){
 				if(check_command()){
 					for(i = 0; i < 3; i++){
-						auxdata |= (uint32_t)array[i] << (8*i);
+						auxdata |= (uint32_t)receiveBuffer[i] << (8*i);
 					}
+					buffer_index = 0;
+					estado = ESTADO_ESPERANDO_INICIO;
 					FIFO_encolar(EV_RX_SERIE, auxdata);
 				}
 			}else if(buffer_index >= 3){
+					estado = ESTADO_ESPERANDO_INICIO;
+					buffer_index = 0;
 					gpio_hal_escribir(GPIO_SERIE_ERROR, 1, 1);
 				}else{
+					linea_serie_drv_enviar_array(array);
 					receiveBuffer[buffer_index++] = c;	
 				}
 		}		

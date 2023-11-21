@@ -11,7 +11,6 @@
 .\main.o: timer_hal.h
 .\main.o: llamadas_swi.h
 .\main.o: timer_drv.h
-.\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\main.o: hello_world.h
 .\main.o: alarma.h
 .\main.o: power_hal.h

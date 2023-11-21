@@ -4,9 +4,8 @@
 #include <LPC210x.H> 
 #include <inttypes.h>
 #include "timer_drv.h"
-#include <stdio.h>
 
-uint64_t __swi(0) clock_get_us(void);
+uint32_t __swi(0) clock_get_us(void);
 
 uint32_t __swi(1) read_IRQ_bit(void);
 

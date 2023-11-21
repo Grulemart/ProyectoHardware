@@ -10,4 +10,3 @@
 .\llamadas_swi.o: fifo.h
 .\llamadas_swi.o: gpio_hal.h
 .\llamadas_swi.o: io_reserva.h
-.\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

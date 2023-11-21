@@ -11,7 +11,6 @@
 .\planificador.o: timer_hal.h
 .\planificador.o: llamadas_swi.h
 .\planificador.o: timer_drv.h
-.\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\planificador.o: hello_world.h
 .\planificador.o: alarma.h
 .\planificador.o: power_hal.h
