@@ -13,6 +13,13 @@
 #include "alarma.h"
 #include "linea_serie_drv.h"
 
+#define ESTADO_ESPERANDO_COMANDO 0
+#define ESTADO_ESPERANDO_TIEMPO_1 1
+#define ESTADO_ESPERANDO_TIEMPO_2 2
+#define ESTADO_ESPERANDO_TABLERO 3
+#define ESTADO_ESPERANDO_FIN_COMANDO 4
+
+
 void planificador(void);
 
 #endif

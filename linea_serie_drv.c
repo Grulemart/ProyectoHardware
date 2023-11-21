@@ -28,7 +28,7 @@ int check_command(void){
 }
 
 void recibir_caracter(char c){	
-	char array[2];
+	char array[3];
 	int i;
 	uint32_t auxdata;
 	if(c == '\r'){
@@ -42,6 +42,7 @@ void recibir_caracter(char c){
 		case ESTADO_ESPERANDO_INICIO:
 			if(c == START_DELIMETER){
 				estado = ESTADO_RECIBIENDO_TRAMA;
+				linea_serie_drv_enviar_array(array);
 			}
 			break;
 		case ESTADO_RECIBIENDO_TRAMA:
@@ -53,6 +54,9 @@ void recibir_caracter(char c){
 					buffer_index = 0;
 					estado = ESTADO_ESPERANDO_INICIO;
 					FIFO_encolar(EV_RX_SERIE, auxdata);
+					array[1] = '\n';
+					array[2] = '\0';
+					linea_serie_drv_enviar_array(array);
 				}
 			}else if(buffer_index >= 3){
 					estado = ESTADO_ESPERANDO_INICIO;
@@ -87,7 +91,11 @@ void linea_serie_drv_enviar_array(char* array){
 void linea_serie_drv_continuar_envio(){
 	if(send_buffer_index >= SEND_BUFFER_SIZE || sendBuffer[send_buffer_index ] == '\0'){
 		mandando_serie = FALSE;
-		FIFO_encolar(EV_TX_SERIE,0);
+		if(sendBuffer[0] == '!' && sendBuffer[1] == '\n' && sendBuffer[2] == '\0'){
+			FIFO_encolar(EV_TX_SERIE, AUX_DATA_COMANDO_TERMINADO);
+		}else{
+			FIFO_encolar(EV_TX_SERIE,0);
+		}
 		return;
 	}
 	uart0_enviar_caracter(sendBuffer[send_buffer_index++]);

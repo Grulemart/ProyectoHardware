@@ -7,7 +7,7 @@ I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 F (.\SWI.s)(0x655BE5CB)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"-o .\swi.o --depend .\swi.d)
 F (.\main.c)(0x655BA3ED)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
-I (planificador.h)(0x655BCC8A)
+I (planificador.h)(0x655C7AD9)
 I (fifo.h)(0x6558F596)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
@@ -27,7 +27,7 @@ I (tablero.h)(0x655B969F)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (celda.h)(0x64FB239C)
 I (config_conecta_K.h)(0x64FB239E)
-I (linea_serie_drv.h)(0x655BC6CD)
+I (linea_serie_drv.h)(0x655C76F5)
 I (linea_serie_hal.h)(0x655A8CCD)
 I (visualizar.h)(0x6558F596)
 F (.\fifo.c)(0x655B7B9F)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\fifo.o --omf_browse .\fifo.crf --depend .\fifo.d)
@@ -64,9 +64,9 @@ F (.\gpio_hal.h)(0x6558F596)()
 F (.\timer_drv.h)(0x655BC09D)()
 F (.\timer_hal.h)(0x6558F596)()
 F (.\evento.h)(0x655BB1BF)()
-F (.\planificador.h)(0x655BCC8A)()
-F (.\planificador.c)(0x655BE19A)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
-I (planificador.h)(0x655BCC8A)
+F (.\planificador.h)(0x655C7AD9)()
+F (.\planificador.c)(0x655C7B46)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
+I (planificador.h)(0x655C7AD9)
 I (fifo.h)(0x6558F596)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
@@ -87,7 +87,7 @@ I (tablero.h)(0x655B969F)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (celda.h)(0x64FB239C)
 I (config_conecta_K.h)(0x64FB239E)
-I (linea_serie_drv.h)(0x655BC6CD)
+I (linea_serie_drv.h)(0x655C76F5)
 I (linea_serie_hal.h)(0x655A8CCD)
 I (visualizar.h)(0x6558F596)
 F (.\io_reserva.h)(0x655A498B)()
@@ -178,7 +178,7 @@ I (tablero.h)(0x655B969F)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (celda.h)(0x64FB239C)
 I (config_conecta_K.h)(0x64FB239E)
-I (linea_serie_drv.h)(0x655BC6CD)
+I (linea_serie_drv.h)(0x655C76F5)
 I (linea_serie_hal.h)(0x655A8CCD)
 F (.\juego.h)(0x655BE9DE)()
 F (.\visualizar.h)(0x6558F596)()
@@ -208,8 +208,8 @@ I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 F (.\linea_serie_hal.h)(0x655A8CCD)()
-F (.\linea_serie_drv.c)(0x655C72C6)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\linea_serie_drv.o --omf_browse .\linea_serie_drv.crf --depend .\linea_serie_drv.d)
-I (linea_serie_drv.h)(0x655BC6CD)
+F (.\linea_serie_drv.c)(0x655C7925)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\linea_serie_drv.o --omf_browse .\linea_serie_drv.crf --depend .\linea_serie_drv.d)
+I (linea_serie_drv.h)(0x655C76F5)
 I (linea_serie_hal.h)(0x655A8CCD)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
@@ -218,7 +218,7 @@ I (fifo.h)(0x6558F596)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
 I (evento.h)(0x655BB1BF)
-F (.\linea_serie_drv.h)(0x655BC6CD)()
+F (.\linea_serie_drv.h)(0x655C76F5)()
 F (.\llamadas_swi.c)(0x655C6F04)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\llamadas_swi.o --omf_browse .\llamadas_swi.crf --depend .\llamadas_swi.d)
 I (llamadas_swi.h)(0x655C6F0E)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)

@@ -6,7 +6,7 @@ static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
 static char comando[3];
-static volatile int estado = 0;
+static volatile int estado = ESTADO_ESPERANDO_COMANDO;
 
 
 void planificador(void) {
@@ -25,7 +25,6 @@ void planificador(void) {
 	
 	juego_inicializar();
 	visualizar_inicializar();
-	conecta_K_visualizar_tiempo();
 	
 
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
@@ -83,20 +82,21 @@ void planificador(void) {
 				comando[i] = (char)((auxData >> (8*i))& 0xFF);
 			}
 			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
-				estado = 1;
-				conecta_K_visualizar_tiempo();
+				estado = ESTADO_ESPERANDO_FIN_COMANDO;
 			}
-		} else if (evento == EV_TX_SERIE){
-			if(estado == 1){
+		}else if (evento == EV_TX_SERIE){
+			if(estado == ESTADO_ESPERANDO_FIN_COMANDO){
+				estado = ESTADO_ESPERANDO_TIEMPO_1;
+				conecta_K_visualizar_tiempo();
+			}else if(estado == ESTADO_ESPERANDO_TIEMPO_1){
+				estado = ESTADO_ESPERANDO_TABLERO;
 				conecta_K_visualizar_tablero();
-				estado = 2;
-			}
-			if(estado == 2){
+			}else if(estado == ESTADO_ESPERANDO_TABLERO){
+				estado = ESTADO_ESPERANDO_TIEMPO_2;
 				conecta_K_visualizar_tiempo();
-				estado = 0;
+			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
+				estado = ESTADO_ESPERANDO_COMANDO;
 			}
-			
-			
 			alarma_reprogramar(POWER_DOWN, 0);
 		}else {
 			// Procesar evento VOID (error)

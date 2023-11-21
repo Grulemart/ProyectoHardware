@@ -10,6 +10,7 @@
 #define START_DELIMETER '$'
 #define END_DELIMETER '!'
 #define SEND_BUFFER_SIZE 200
+#define AUX_DATA_COMANDO_TERMINADO 18
 
 void iniciar_linea_serie(void);
 void linea_serie_drv_enviar_array(char* array);
