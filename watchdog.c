@@ -8,7 +8,7 @@ void WD_hal_inicializar(uint32_t sec) {
 	WD_hal_feed(); // Alimentar watchdog por primera vez
 }
 
-void WD_hal_feed(void) {
+void WD_hal_feed(void){
 	disable_irq();// Funciones realizadas sin riesgo de interrupciones
 	WDFEED = 0xAA;
 	WDFEED = 0x55;

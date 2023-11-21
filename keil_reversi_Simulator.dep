@@ -190,7 +190,7 @@ I (C:\Keil_v5\ARM\INC\Philips\LPC210X.H)(0x559D2F68)
 I (io_reserva.h)(0x655A498B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 F (.\watchdog.h)(0x655BC78B)()
-F (.\watchdog.c)(0x655BC795)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\watchdog.o --omf_browse .\watchdog.crf --depend .\watchdog.d)
+F (.\watchdog.c)(0x655C8AF4)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\watchdog.o --omf_browse .\watchdog.crf --depend .\watchdog.d)
 I (watchdog.h)(0x655BC78B)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
@@ -208,7 +208,7 @@ I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 F (.\linea_serie_hal.h)(0x655A8CCD)()
-F (.\linea_serie_drv.c)(0x655C7925)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\linea_serie_drv.o --omf_browse .\linea_serie_drv.crf --depend .\linea_serie_drv.d)
+F (.\linea_serie_drv.c)(0x655C8AF4)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\linea_serie_drv.o --omf_browse .\linea_serie_drv.crf --depend .\linea_serie_drv.d)
 I (linea_serie_drv.h)(0x655C76F5)
 I (linea_serie_hal.h)(0x655A8CCD)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)

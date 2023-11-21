@@ -41,6 +41,7 @@ void recibir_caracter(char c){
 	switch(estado) {
 		case ESTADO_ESPERANDO_INICIO:
 			if(c == START_DELIMETER){
+				gpio_hal_escribir(GPIO_SERIE_ERROR, 1, 0);
 				estado = ESTADO_RECIBIENDO_TRAMA;
 				linea_serie_drv_enviar_array(array);
 			}
