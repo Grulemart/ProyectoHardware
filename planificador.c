@@ -35,10 +35,11 @@ void planificador(void) {
 		
 		// Extraccion de eventos a procesar
 		while((FIFO_extraer(&evento, &auxData)) == NO_HAY_EVENTO_A_PROCESAR){
+			WD_hal_feed();
 			power_hal_wait();
 		}
-		
 		WD_hal_feed();
+
 		
 		// Datos a procesar
 		if (evento == TIMER0) {
@@ -98,10 +99,11 @@ void planificador(void) {
 				estado = ESTADO_ESPERANDO_TIEMPO_2;
 				conecta_K_visualizar_tiempo();
 			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
+				disable_irq();
+				WD_hal_test();
 				estado = ESTADO_ESPERANDO_COMANDO;
 			}
 			alarma_reprogramar(POWER_DOWN, 0);
-			WD_hal_test();
 		}else {
 			// Procesar evento VOID (error)
 		}
