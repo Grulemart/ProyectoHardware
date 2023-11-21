@@ -14,7 +14,7 @@
 #include "linea_serie_drv.h"
 #include "watchdog.h"
 
-#define WATCHDOG_TIME 0x1000000
+#define WATCHDOG_TIME 0x4000000
 
 #define ESTADO_ESPERANDO_COMANDO 0
 #define ESTADO_ESPERANDO_TIEMPO_1 1

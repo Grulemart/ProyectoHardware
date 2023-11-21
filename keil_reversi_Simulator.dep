@@ -5,9 +5,9 @@ I (C:\Keil_v5\ARM\ARMCC\include\rt_misc.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
 F (.\SWI.s)(0x655BE5CB)(--cpu ARM7TDMI --pd "__EVAL SETA 1" -g-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips--pd "__UVISION_VERSION SETA 526"-o .\swi.o --depend .\swi.d)
-F (.\main.c)(0x655C904B)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\main.o --omf_browse .\main.crf --depend .\main.d)
+F (.\main.c)(0x655C96BF)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\main.o --omf_browse .\main.crf --depend .\main.d)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
-I (planificador.h)(0x655C9500)
+I (planificador.h)(0x655C96F6)
 I (fifo.h)(0x655C904B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
@@ -18,7 +18,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 I (hello_world.h)(0x6558F596)
 I (botones.h)(0x6558F596)
@@ -44,7 +44,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\gpio_hal.c)(0x6558F596)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\gpio_hal.o --omf_browse .\gpio_hal.crf --depend .\gpio_hal.d)
 I (gpio_hal.h)(0x6558F596)
@@ -64,7 +64,7 @@ I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
 I (semaforo.h)(0x655C904B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\timer_hal.c)(0x6558F596)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\timer_hal.o --omf_browse .\timer_hal.crf --depend .\timer_hal.d)
 I (timer_hal.h)(0x6558F596)
@@ -75,9 +75,9 @@ F (.\gpio_hal.h)(0x6558F596)()
 F (.\timer_drv.h)(0x655BC09D)()
 F (.\timer_hal.h)(0x6558F596)()
 F (.\evento.h)(0x655BB1BF)()
-F (.\planificador.h)(0x655C9500)()
-F (.\planificador.c)(0x655C93A1)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
-I (planificador.h)(0x655C9500)
+F (.\planificador.h)(0x655C96F6)()
+F (.\planificador.c)(0x655C98BA)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\planificador.o --omf_browse .\planificador.crf --depend .\planificador.d)
+I (planificador.h)(0x655C96F6)
 I (fifo.h)(0x655C904B)
 I (C:\Keil_v5\ARM\ARMCC\include\inttypes.h)(0x599F2F9E)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x599F2F9E)
@@ -89,7 +89,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 I (hello_world.h)(0x6558F596)
 I (botones.h)(0x6558F596)
@@ -117,11 +117,11 @@ I (llamadas_swi.h)(0x655C6F0E)
 I (evento.h)(0x655BB1BF)
 I (fifo.h)(0x655C904B)
 I (semaforo.h)(0x655C904B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\hello_world.h)(0x6558F596)()
 F (.\power_hal.c)(0x655A60ED)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\power_hal.o --omf_browse .\power_hal.crf --depend .\power_hal.d)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (C:\Keil_v5\ARM\INC\Philips\LPC210x.H)(0x559D2F68)
 I (alarma.h)(0x655A6264)
 I (evento.h)(0x655BB1BF)
@@ -134,7 +134,7 @@ I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
 I (semaforo.h)(0x655C904B)
-F (.\power_hal.h)(0x655C720E)()
+F (.\power_hal.h)(0x655C981F)()
 F (.\alarma.c)(0x6558F596)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\alarma.o --omf_browse .\alarma.crf --depend .\alarma.d)
 I (alarma.h)(0x655A6264)
 I (evento.h)(0x655BB1BF)
@@ -148,7 +148,7 @@ I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
 I (semaforo.h)(0x655C904B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 F (.\alarma.h)(0x655A6264)()
 F (.\int_externas_hal.c)(0x655BC9AB)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\int_externas_hal.o --omf_browse .\int_externas_hal.crf --depend .\int_externas_hal.d)
 I (int_externas_hal.h)(0x6558F596)
@@ -164,7 +164,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\int_externas_hal.h)(0x6558F596)()
 F (.\botones.c)(0x655BC770)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\botones.o --omf_browse .\botones.crf --depend .\botones.d)
@@ -181,7 +181,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\botones.h)(0x6558F596)()
 F (.\juego.c)(0x655C71A4)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\juego.o --omf_browse .\juego.crf --depend .\juego.d)
@@ -197,7 +197,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 I (tablero.h)(0x655B969F)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x599F2F9C)
@@ -228,7 +228,7 @@ I (evento.h)(0x655BB1BF)
 I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\linea_serie_hal.c)(0x655B7B9F)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\linea_serie_hal.o --omf_browse .\linea_serie_hal.crf --depend .\linea_serie_hal.d)
 I (linea_serie_hal.h)(0x655A8CCD)
@@ -250,7 +250,7 @@ I (semaforo.h)(0x655C904B)
 I (llamadas_swi.h)(0x655C6F0E)
 I (timer_drv.h)(0x655BC09D)
 I (timer_hal.h)(0x6558F596)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\linea_serie_drv.h)(0x655C76F5)()
 F (.\llamadas_swi.c)(0x655C6F04)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\llamadas_swi.o --omf_browse .\llamadas_swi.crf --depend .\llamadas_swi.d)
@@ -265,7 +265,7 @@ I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
 I (semaforo.h)(0x655C904B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)
 F (.\llamadas_swi.h)(0x655C6F0E)()
 F (.\tablero.c)(0x655B95B4)(-c --cpu ARM7TDMI -D__EVAL -g -O0-IC:\Keil_v5\ARM\RV31\INC-IC:\Keil_v5\ARM\CMSIS\Include-IC:\Keil_v5\ARM\INC\Philips-D__UVISION_VERSION="526"-o .\tablero.o --omf_browse .\tablero.crf --depend .\tablero.d)
@@ -292,5 +292,5 @@ I (evento.h)(0x655BB1BF)
 I (fifo.h)(0x655C904B)
 I (gpio_hal.h)(0x6558F596)
 I (io_reserva.h)(0x655A498B)
-I (power_hal.h)(0x655C720E)
+I (power_hal.h)(0x655C981F)
 I (alarma.h)(0x655A6264)

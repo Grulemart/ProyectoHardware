@@ -79,8 +79,9 @@ void planificador(void) {
 		}
 		else if (evento == POWER_DOWN) {
 			power_hal_deep_sleep();
-			alarma_reprogramar(POWER_DOWN, 0);
 			iniciar_linea_serie();
+			alarma_reprogramar(POWER_DOWN, 0);
+		
 		}else if (evento == EV_RX_SERIE){
 			for(i = 0; i<3; i++){
 				comando[i] = (char)((auxData >> (8*i))& 0xFF);

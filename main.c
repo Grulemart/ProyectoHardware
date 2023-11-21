@@ -27,6 +27,8 @@ int main() {
 	temporizador_drv_reloj(0,FIFO_encolar,TIMER1);	//Paramos el timer1
 	*/
 	
+	enable_irq();
+	disable_fiq();
 	planificador();
 	
 	return 0;
