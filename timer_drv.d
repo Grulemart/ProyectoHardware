@@ -10,3 +10,7 @@
 .\timer_drv.o: fifo.h
 .\timer_drv.o: gpio_hal.h
 .\timer_drv.o: io_reserva.h
+.\timer_drv.o: semaforo.h
+.\timer_drv.o: power_hal.h
+.\timer_drv.o: alarma.h
+.\timer_drv.o: fifo.h

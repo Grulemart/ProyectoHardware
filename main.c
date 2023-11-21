@@ -7,6 +7,7 @@
 #include "gpio_hal.h"
 #include "alarma.h"
 #include "llamadas_swi.h"
+#include "watchdog.h"
 
 void testFifoOverflow(){
 	gpio_hal_iniciar();

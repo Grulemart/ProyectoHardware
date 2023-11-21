@@ -11,4 +11,7 @@
 .\hello_world.o: timer_drv.h
 .\hello_world.o: evento.h
 .\hello_world.o: fifo.h
+.\hello_world.o: semaforo.h
+.\hello_world.o: power_hal.h
 .\hello_world.o: alarma.h
+.\hello_world.o: fifo.h

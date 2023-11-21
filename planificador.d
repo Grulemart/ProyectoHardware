@@ -7,13 +7,15 @@
 .\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\planificador.o: io_reserva.h
 .\planificador.o: evento.h
+.\planificador.o: semaforo.h
+.\planificador.o: llamadas_swi.h
 .\planificador.o: timer_drv.h
 .\planificador.o: timer_hal.h
 .\planificador.o: llamadas_swi.h
-.\planificador.o: timer_drv.h
-.\planificador.o: hello_world.h
-.\planificador.o: alarma.h
+.\planificador.o: fifo.h
 .\planificador.o: power_hal.h
+.\planificador.o: alarma.h
+.\planificador.o: hello_world.h
 .\planificador.o: botones.h
 .\planificador.o: int_externas_hal.h
 .\planificador.o: botones.h
@@ -25,3 +27,4 @@
 .\planificador.o: linea_serie_drv.h
 .\planificador.o: linea_serie_hal.h
 .\planificador.o: visualizar.h
+.\planificador.o: watchdog.h

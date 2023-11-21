@@ -7,10 +7,14 @@
 .\juego.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\juego.o: io_reserva.h
 .\juego.o: evento.h
+.\juego.o: semaforo.h
 .\juego.o: llamadas_swi.h
 .\juego.o: timer_drv.h
 .\juego.o: timer_hal.h
 .\juego.o: llamadas_swi.h
+.\juego.o: fifo.h
+.\juego.o: power_hal.h
+.\juego.o: alarma.h
 .\juego.o: tablero.h
 .\juego.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 .\juego.o: celda.h

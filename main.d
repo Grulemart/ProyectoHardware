@@ -7,13 +7,15 @@
 .\main.o: gpio_hal.h
 .\main.o: io_reserva.h
 .\main.o: evento.h
+.\main.o: semaforo.h
+.\main.o: llamadas_swi.h
 .\main.o: timer_drv.h
 .\main.o: timer_hal.h
 .\main.o: llamadas_swi.h
-.\main.o: timer_drv.h
-.\main.o: hello_world.h
-.\main.o: alarma.h
+.\main.o: fifo.h
 .\main.o: power_hal.h
+.\main.o: alarma.h
+.\main.o: hello_world.h
 .\main.o: botones.h
 .\main.o: int_externas_hal.h
 .\main.o: botones.h
@@ -25,3 +27,4 @@
 .\main.o: linea_serie_drv.h
 .\main.o: linea_serie_hal.h
 .\main.o: visualizar.h
+.\main.o: watchdog.h

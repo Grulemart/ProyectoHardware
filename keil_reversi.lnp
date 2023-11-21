@@ -20,5 +20,6 @@
 ".\linea_serie_drv.o"
 ".\llamadas_swi.o"
 ".\tablero.o"
+".\semaforo.o"
 --strict --scatter ".\keil_reversi.sct"
 --summary_stderr --info summarysizes -o .\keil_reversi.axf

@@ -6,6 +6,7 @@
 
 #include "gpio_hal.h"
 #include "evento.h"
+#include "semaforo.h"
 
 #define NO_HAY_EVENTO_A_PROCESAR 0
 #define HAY_EVENTO_A_PROCESAR 1

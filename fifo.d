@@ -6,3 +6,11 @@
 .\fifo.o: C:\Keil_v5\ARM\INC\Philips\LPC210X.H
 .\fifo.o: io_reserva.h
 .\fifo.o: evento.h
+.\fifo.o: semaforo.h
+.\fifo.o: llamadas_swi.h
+.\fifo.o: timer_drv.h
+.\fifo.o: timer_hal.h
+.\fifo.o: llamadas_swi.h
+.\fifo.o: fifo.h
+.\fifo.o: power_hal.h
+.\fifo.o: alarma.h

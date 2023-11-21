@@ -641,6 +641,16 @@
               <FileType>5</FileType>
               <FilePath>.\tablero.h</FilePath>
             </File>
+            <File>
+              <FileName>semaforo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\semaforo.h</FilePath>
+            </File>
+            <File>
+              <FileName>semaforo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\semaforo.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

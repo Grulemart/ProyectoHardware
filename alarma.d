@@ -11,3 +11,6 @@
 .\alarma.o: fifo.h
 .\alarma.o: gpio_hal.h
 .\alarma.o: io_reserva.h
+.\alarma.o: semaforo.h
+.\alarma.o: power_hal.h
+.\alarma.o: alarma.h

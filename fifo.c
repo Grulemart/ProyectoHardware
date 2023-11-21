@@ -36,7 +36,7 @@ void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOver
 }
 
 void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
-	
+	lock();
 	// Se produce overflow
 	if(procesado[indiceUltimoEncolado] == FALSE){
 		// Enciende led de overflow
@@ -53,11 +53,13 @@ void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
 		
 		indiceUltimoEncolado = (indiceUltimoEncolado + 1) % FIFO_SIZE;
 	}
-		
+	unlock();
 }
 
 uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
+	lock();
 	if (procesado[indiceProcesoATratar] == TRUE) {
+		unlock();
 		return NO_HAY_EVENTO_A_PROCESAR;
 	} 
 	// Hay eventos a procesar y se pasan por parámetros
@@ -65,6 +67,7 @@ uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
 	*auxData = auxDataArray[indiceProcesoATratar];
 	procesado[indiceProcesoATratar] = TRUE;
 	indiceProcesoATratar = (indiceProcesoATratar + 1) % FIFO_SIZE;
+	unlock();
 	return HAY_EVENTO_A_PROCESAR;
 }
 

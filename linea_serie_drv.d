@@ -8,3 +8,11 @@
 .\linea_serie_drv.o: gpio_hal.h
 .\linea_serie_drv.o: io_reserva.h
 .\linea_serie_drv.o: evento.h
+.\linea_serie_drv.o: semaforo.h
+.\linea_serie_drv.o: llamadas_swi.h
+.\linea_serie_drv.o: timer_drv.h
+.\linea_serie_drv.o: timer_hal.h
+.\linea_serie_drv.o: llamadas_swi.h
+.\linea_serie_drv.o: fifo.h
+.\linea_serie_drv.o: power_hal.h
+.\linea_serie_drv.o: alarma.h

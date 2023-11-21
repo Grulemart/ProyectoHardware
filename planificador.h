@@ -12,6 +12,9 @@
 #include "visualizar.h"
 #include "alarma.h"
 #include "linea_serie_drv.h"
+#include "watchdog.h"
+
+#define WATCHDOG_TIME 0x5FFFFFF
 
 #define ESTADO_ESPERANDO_COMANDO 0
 #define ESTADO_ESPERANDO_TIEMPO_1 1

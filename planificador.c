@@ -29,6 +29,7 @@ void planificador(void) {
 
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
 	
+	WD_hal_inicializar(WATCHDOG_TIME);
 	
 	while(overflow != HAY_OVERFLOW) {
 		
@@ -36,6 +37,8 @@ void planificador(void) {
 		while((FIFO_extraer(&evento, &auxData)) == NO_HAY_EVENTO_A_PROCESAR){
 			power_hal_wait();
 		}
+		
+		WD_hal_feed();
 		
 		// Datos a procesar
 		if (evento == TIMER0) {
@@ -98,6 +101,7 @@ void planificador(void) {
 				estado = ESTADO_ESPERANDO_COMANDO;
 			}
 			alarma_reprogramar(POWER_DOWN, 0);
+			WD_hal_test();
 		}else {
 			// Procesar evento VOID (error)
 		}

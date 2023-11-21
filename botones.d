@@ -9,8 +9,11 @@
 .\botones.o: gpio_hal.h
 .\botones.o: io_reserva.h
 .\botones.o: evento.h
-.\botones.o: alarma.h
+.\botones.o: semaforo.h
+.\botones.o: llamadas_swi.h
 .\botones.o: timer_drv.h
 .\botones.o: timer_hal.h
 .\botones.o: llamadas_swi.h
-.\botones.o: timer_drv.h
+.\botones.o: fifo.h
+.\botones.o: power_hal.h
+.\botones.o: alarma.h

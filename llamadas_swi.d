@@ -10,3 +10,8 @@
 .\llamadas_swi.o: fifo.h
 .\llamadas_swi.o: gpio_hal.h
 .\llamadas_swi.o: io_reserva.h
+.\llamadas_swi.o: semaforo.h
+.\llamadas_swi.o: power_hal.h
+.\llamadas_swi.o: alarma.h
+.\llamadas_swi.o: timer_drv.h
+.\llamadas_swi.o: fifo.h

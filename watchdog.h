@@ -1,10 +1,10 @@
 
-#ifndef __VISUALIZAR_H__
-#define __VISUALIZAR_H__
+#ifndef __WATCHDOG_H__
+#define __WATCHDOG_H__
 
 #include <LPC210x.H> 
 #include <inttypes.h>
-#include "llamadas_swi.h"
+#include "semaforo.h"
 
 void WD_hal_inicializar(uint32_t sec);
 

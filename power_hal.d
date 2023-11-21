@@ -12,3 +12,5 @@
 .\power_hal.o: fifo.h
 .\power_hal.o: gpio_hal.h
 .\power_hal.o: io_reserva.h
+.\power_hal.o: semaforo.h
+.\power_hal.o: power_hal.h

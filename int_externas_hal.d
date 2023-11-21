@@ -9,8 +9,11 @@
 .\int_externas_hal.o: gpio_hal.h
 .\int_externas_hal.o: io_reserva.h
 .\int_externas_hal.o: evento.h
-.\int_externas_hal.o: alarma.h
+.\int_externas_hal.o: semaforo.h
+.\int_externas_hal.o: llamadas_swi.h
 .\int_externas_hal.o: timer_drv.h
 .\int_externas_hal.o: timer_hal.h
 .\int_externas_hal.o: llamadas_swi.h
-.\int_externas_hal.o: timer_drv.h
+.\int_externas_hal.o: fifo.h
+.\int_externas_hal.o: power_hal.h
+.\int_externas_hal.o: alarma.h
