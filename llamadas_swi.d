@@ -4,4 +4,3 @@
 .\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\llamadas_swi.o: timer_drv.h
-.\llamadas_swi.o: evento.h

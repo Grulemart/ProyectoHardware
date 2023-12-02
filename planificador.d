@@ -5,7 +5,6 @@
 .\planificador.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\planificador.o: gpio_hal.h
 .\planificador.o: timer_drv.h
-.\planificador.o: evento.h
 .\planificador.o: hello_world.h
 .\planificador.o: power_hal.h
 .\planificador.o: C:\Keil_v5\ARM\INC\Philips\LPC210x.H
@@ -18,3 +17,4 @@
 .\planificador.o: watchdog.h
 .\planificador.o: io_reserva.h
 .\planificador.o: llamadas_swi.h
+.\planificador.o: evento.h

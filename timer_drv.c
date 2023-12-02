@@ -4,7 +4,7 @@
 #include "llamadas_swi.h"
 
 static void (*funcionEncolarEvento)();
-static volatile EVENTO_T idEvento;
+static volatile uint8_t idEvento;
 // M?dulo del manejador o driver
 
 // Inicializa el temporizador
@@ -36,7 +36,7 @@ void callbackFunction(){
 }
 
 void temporizador_drv_reloj(uint32_t periodo, void(*funcion_encolar_evento)(), 
-	EVENTO_T ID_evento){
+	uint8_t ID_evento){
 	// Se inicia el temporizador y cuando este acaba se encola un nuevo evento
 	funcionEncolarEvento = funcion_encolar_evento;
 	idEvento = ID_evento;

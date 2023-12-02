@@ -15,16 +15,18 @@ static volatile uint8_t alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras ex
 static volatile uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
 
 static volatile uint32_t ticksAlarma;	// Ticks totales transcurridos desde inicializacion
+static uint8_t idEventoAlarmaOverflow;
 
 static void (*funcionEncolarEvento)();
 
-void alarma_inicializar(void(*funcion_encolar_evento)()) {
+void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)()) {
 	
 	ticksAlarma = 0;
 	funcionEncolarEvento = funcion_encolar_evento;
+	idEventoAlarmaOverflow = _idEventoAlarmaOverflow;
 	// Inicializar temporizador con interrupcion a 1ms 
 	// Cada 1ms el timer1 encolara el evento ALARMA en la cola FIFO
-	temporizador_drv_reloj(PERIODO_TIMER1, funcion_encolar_evento, ALARMA);
+	temporizador_drv_reloj(PERIODO_TIMER1, funcion_encolar_evento, idEventoAlarma);
 
 }
 
@@ -64,7 +66,7 @@ void alarma_activar(uint8_t ID_evento, uint32_t retardo, uint32_t auxData) {
 	
 	// Si no hay alarmas disponibles se encola evento ALARMA_OVERFLOW
 	
-	funcionEncolarEvento(ALARMA_OVERFLOW, 0);
+	funcionEncolarEvento(idEventoAlarmaOverflow, 0);
 	return;	
 }
 

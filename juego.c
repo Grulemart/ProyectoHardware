@@ -108,6 +108,8 @@ void juego_inicializar(void(*funcion_encolar_evento)()) {
 	intervalo = 0;
 	funcionEncolarEvento = funcion_encolar_evento;
 	
+	
+	
 	tablero_inicializar(&cuadricula);
 	conecta_K_test_cargar_tablero(&cuadricula);
 }

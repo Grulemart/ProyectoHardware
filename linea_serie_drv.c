@@ -1,6 +1,5 @@
 
 #include "linea_serie_drv.h"
-#include "evento.h"
 #include "gpio_hal.h"
 
 #define TRUE 1
@@ -16,7 +15,7 @@ static void (*funcionEncolarEvento)();
 static uint8_t gpio_serie_error;
 static uint8_t idEventoRX, idEventoTX;
 
-int check_command(void){
+uint8_t check_command(void){
 	if(receiveBuffer[0] == 'E' && receiveBuffer[1] == 'N' && receiveBuffer[2] == 'D'){
 		return TRUE;
 	}
