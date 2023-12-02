@@ -3,6 +3,9 @@
 #include "int_externas_hal.h"
 #include "alarma.h"
 
+#define TRUE 0
+#define FALSE 1
+
 const uint32_t RETARDO_MONITORIZAR_BOTON = 100;
 
 static void (*funcionEncolarEvento)();

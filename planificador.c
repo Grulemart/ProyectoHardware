@@ -15,6 +15,9 @@
 #include "io_reserva.h"
 #include "llamadas_swi.h"
 
+#define TRUE 1
+#define FALSE 0
+
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
@@ -32,7 +35,7 @@ void planificador(void) {
 	temporizador_drv_empezar();
 	iniciar_botones(FIFO_encolar, BOTON_PULSADO, MONITORIZAR_BOTON);
 	alarma_inicializar(FIFO_encolar);
-	iniciar_linea_serie(EV_RX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
+	iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS, VISUALIZAR_HELLO);
 	
@@ -90,7 +93,7 @@ void planificador(void) {
 		}
 		else if (evento == POWER_DOWN) {
 			power_hal_deep_sleep();
-			iniciar_linea_serie(EV_RX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
+			iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 			alarma_reprogramar(POWER_DOWN, 0);
 		
 		}else if (evento == EV_RX_SERIE){

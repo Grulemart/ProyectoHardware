@@ -2,8 +2,8 @@
 #include "fifo.h"
 #include "desactivar_interrupciones.h"
 
-#define TRUE 0
-#define FALSE 1
+#define TRUE 1
+#define FALSE 0
 
 #define MAX_NUM_EVENTOS 32
 

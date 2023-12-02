@@ -4,7 +4,7 @@
 
 #define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
 
-#define TRUE 0
+#define TRUE 1
 #define FALSE 0
 
 static volatile uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas

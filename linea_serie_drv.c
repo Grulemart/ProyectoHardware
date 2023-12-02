@@ -3,6 +3,9 @@
 #include "evento.h"
 #include "gpio_hal.h"
 
+#define TRUE 1
+#define FALSE 0
+
 static volatile int estado = ESTADO_ESPERANDO_INICIO;
 static volatile char receiveBuffer[3];
 static volatile uint8_t buffer_index = 0;
@@ -11,7 +14,7 @@ static volatile uint32_t send_buffer_index = 0;
 static volatile uint8_t mandando_serie = FALSE;
 static void (*funcionEncolarEvento)();
 static uint8_t gpio_serie_error;
-static uint8_t idEvento;
+static uint8_t idEventoRX, idEventoTX;
 
 int check_command(void){
 	if(receiveBuffer[0] == 'E' && receiveBuffer[1] == 'N' && receiveBuffer[2] == 'D'){
@@ -59,7 +62,7 @@ void recibir_caracter(char c){
 					}
 					buffer_index = 0;
 					estado = ESTADO_ESPERANDO_INICIO;
-					funcionEncolarEvento(EV_RX_SERIE, auxdata);
+					funcionEncolarEvento(idEventoRX, auxdata);
 					array[1] = '\n';
 					array[2] = '\0';
 					linea_serie_drv_enviar_array(array);
@@ -98,19 +101,20 @@ void linea_serie_drv_continuar_envio(void){
 	if(send_buffer_index >= SEND_BUFFER_SIZE || sendBuffer[send_buffer_index ] == '\0'){
 		mandando_serie = FALSE;
 		if(sendBuffer[0] == '!' && sendBuffer[1] == '\n' && sendBuffer[2] == '\0'){
-			funcionEncolarEvento(idEvento, AUX_DATA_COMANDO_TERMINADO);
+			funcionEncolarEvento(idEventoTX, AUX_DATA_COMANDO_TERMINADO);
 		}else{
-			funcionEncolarEvento(idEvento, 0);
+			funcionEncolarEvento(idEventoTX, 0);
 		}
 		return;
 	}
 	uart0_enviar_caracter(sendBuffer[send_buffer_index++]);
 }
 
-void iniciar_linea_serie(uint8_t _idEvento, void(*funcion_encolar_evento)(), uint8_t _gpio_serie_error){
+void iniciar_linea_serie(uint8_t _idEventoRX, uint8_t _idEventoTX, void(*funcion_encolar_evento)(), uint8_t _gpio_serie_error){
 	funcionEncolarEvento = funcion_encolar_evento;
 	gpio_serie_error = _gpio_serie_error;
-	idEvento = _idEvento;
+	idEventoRX = _idEventoRX;
+	idEventoTX = _idEventoTX;
 	gpio_hal_sentido(gpio_serie_error, 1, GPIO_HAL_PIN_DIR_OUTPUT); // Solo es necesario declarar un bit de overflow
 	send_buffer_index = 0;
 	buffer_index = 0;

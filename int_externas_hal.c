@@ -3,6 +3,9 @@
 #include <LPC210X.H>
 #include "botones.h"
 
+#define TRUE 1
+#define FALSE 0
+
 static int id_boton_eint1;
 static int id_boton_eint2;
 
