@@ -8,3 +8,5 @@ conectaK_2023.uvproj
 *.crf
 *.o
 *.dep
+*.d
+*.scvd

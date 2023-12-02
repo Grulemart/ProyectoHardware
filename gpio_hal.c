@@ -1,8 +1,9 @@
+
 #include "gpio_hal.h"
-	
+#include "LPC210X.H"
+
 void gpio_hal_iniciar(){
 	PINSEL0 = 0x00000000;
-	
 }
 
 void gpio_hal_sentido(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, gpio_hal_pin_dir_t direccion){

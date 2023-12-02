@@ -1,10 +1,16 @@
+
 #include "juego.h"
+#include "llamadas_swi.h"
+#include "tablero.h"
+#include "celda.h"
+#include "linea_serie_drv.h"
 
 static volatile uint8_t cuenta;
 static volatile uint64_t intervalo;
 static TABLERO cuadricula;
 static char array[13];
-static uint64_t tiempoSistema;
+static volatile uint64_t tiempoSistema;
+static void (*funcionEncolarEvento)();
 
 // Función para convertir un entero a una cadena de caracteres (ASCII)
 
@@ -97,19 +103,20 @@ void conecta_K_visualizar_tablero(){
 	linea_serie_drv_enviar_array(array);
 }
 
-void juego_inicializar() {
+void juego_inicializar(void(*funcion_encolar_evento)()) {
 	cuenta = 0;
 	intervalo = 0;
+	funcionEncolarEvento = funcion_encolar_evento;
 	
 	tablero_inicializar(&cuadricula);
 	conecta_K_test_cargar_tablero(&cuadricula);
 }
 
-void juego_tratar_evento(EVENTO_T ID_evento, uint32_t auxData) {
+void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData) {
 	//uint64_t currentCheck = clock_get_us();
 	//intervalo = currentCheck - intervalo;
 	cuenta += auxData;
 	
-	FIFO_encolar(ID_evento, (uint32_t)cuenta);
+	(*funcionEncolarEvento)(ID_evento, (uint32_t)cuenta);
 	
 }

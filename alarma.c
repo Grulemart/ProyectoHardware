@@ -1,30 +1,34 @@
 
 #include "alarma.h"
+#include "timer_drv.h"
 
 #define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
+
+#define TRUE 0
+#define FALSE 0
 
 static volatile uint8_t alarmasActivas[MAX_ALARMAS];					// Alarmas activas
 static volatile uint32_t alarmaRetardoInicial[MAX_ALARMAS];		// Retardo incial proporcionado para reprogramar alarmas
 static volatile uint32_t alarmaEnd[MAX_ALARMAS];							// Tick de expiracion de las alarmas
 static volatile uint32_t alarmaReprogramar[MAX_ALARMAS]; // Reprogramacion de alarmas
-static volatile EVENTO_T alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
+static volatile uint8_t alarmaEvento[MAX_ALARMAS];			// Evento a encolar tras expiracion
 static volatile uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del evento a encolar
-
 
 static volatile uint32_t ticksAlarma;	// Ticks totales transcurridos desde inicializacion
 
+static void (*funcionEncolarEvento)();
 
-void alarma_inicializar(void) {
+void alarma_inicializar(void(*funcion_encolar_evento)()) {
 	
 	ticksAlarma = 0;
-	
+	funcionEncolarEvento = funcion_encolar_evento;
 	// Inicializar temporizador con interrupcion a 1ms 
 	// Cada 1ms el timer1 encolara el evento ALARMA en la cola FIFO
-	temporizador_drv_reloj(PERIODO_TIMER1, FIFO_encolar, ALARMA);
+	temporizador_drv_reloj(PERIODO_TIMER1, funcion_encolar_evento, ALARMA);
 
 }
 
-void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
+void alarma_activar(uint8_t ID_evento, uint32_t retardo, uint32_t auxData) {
 	uint8_t i;
 	uint32_t mascara;
 	uint32_t retardoReal;
@@ -60,13 +64,13 @@ void alarma_activar(EVENTO_T ID_evento, uint32_t retardo, uint32_t auxData) {
 	
 	// Si no hay alarmas disponibles se encola evento ALARMA_OVERFLOW
 	
-	FIFO_encolar(ALARMA_OVERFLOW, 0);
+	funcionEncolarEvento(ALARMA_OVERFLOW, 0);
 	return;	
 }
 
 // Reprograma la primera alarma con ID_evento y auxData que encuentra en el array
 // En este caso si se requiere de una alarma cancelable se vale del auxData para reconocerla
-void alarma_reprogramar(EVENTO_T ID_evento, uint32_t auxData) {
+void alarma_reprogramar(uint8_t ID_evento, uint32_t auxData) {
 	int i;
 	for ( i = 0; i < MAX_ALARMAS; i++) {
 		if (alarmaEvento[i] == ID_evento && alarmaAuxData[i] == auxData && alarmasActivas[i] == TRUE) {
@@ -89,7 +93,7 @@ void alarma_tratar_evento(void) {
 			}else{
 				alarmasActivas[i] = FALSE;
 			}
-			FIFO_encolar(alarmaEvento[i], alarmaAuxData[i]);
+			funcionEncolarEvento(alarmaEvento[i], alarmaAuxData[i]);
 		}
 	}
 }

@@ -4,15 +4,5 @@
 .\linea_serie_drv.o: C:\Keil_v5\ARM\INC\Philips\LPC210x.H
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\linea_serie_drv.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\linea_serie_drv.o: fifo.h
-.\linea_serie_drv.o: gpio_hal.h
-.\linea_serie_drv.o: io_reserva.h
 .\linea_serie_drv.o: evento.h
-.\linea_serie_drv.o: semaforo.h
-.\linea_serie_drv.o: llamadas_swi.h
-.\linea_serie_drv.o: timer_drv.h
-.\linea_serie_drv.o: timer_hal.h
-.\linea_serie_drv.o: llamadas_swi.h
-.\linea_serie_drv.o: fifo.h
-.\linea_serie_drv.o: power_hal.h
-.\linea_serie_drv.o: alarma.h
+.\linea_serie_drv.o: gpio_hal.h

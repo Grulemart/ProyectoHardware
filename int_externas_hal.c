@@ -1,8 +1,13 @@
+
 #include "int_externas_hal.h"
+#include <LPC210X.H>
+#include "botones.h"
 
 static int id_boton_eint1;
 static int id_boton_eint2;
 
+static uint8_t idEventoBotonPulsado;
+static uint8_t idEventoMonitorizarBoton;
 
 void eint1_ISR (void) __irq {
 	
@@ -11,7 +16,7 @@ void eint1_ISR (void) __irq {
 	EXTINT = EXTINT | 0x2;
 	VICVectAddr = 0;
 	
-	pulsar_boton(id_boton_eint1);
+	pulsar_boton(id_boton_eint1, idEventoBotonPulsado, idEventoMonitorizarBoton);
 }
 
 void eint2_ISR (void) __irq{
@@ -22,10 +27,15 @@ void eint2_ISR (void) __irq{
 	EXTINT = EXTINT |0x4;
 	VICVectAddr = 0;
 	
-	pulsar_boton(id_boton_eint2);
+	pulsar_boton(id_boton_eint2, idEventoBotonPulsado, idEventoMonitorizarBoton);
 }
 
-void iniciar_ext1(int id){
+void iniciar_id_evento(uint8_t _idEventoBotonPulsado, uint8_t _idEventoMonitorizarBoton) {
+	idEventoBotonPulsado = _idEventoBotonPulsado;
+	idEventoMonitorizarBoton = _idEventoMonitorizarBoton;
+}
+
+void iniciar_ext1(uint32_t id){
 	id_boton_eint1 = id;
 	EXTINT = EXTINT | 0x2; // Clear interrupt flag
 	EXTWAKE = EXTWAKE | 0X2;	 // Awake the processor when interrupt
@@ -37,7 +47,7 @@ void iniciar_ext1(int id){
 	VICIntEnable = VICIntEnable |  0x00008000;	// Enable EXTINT1 Interrupt
 }
 
-void iniciar_ext2(int id){
+void iniciar_ext2(uint32_t id){
 	id_boton_eint2 = id;
 	EXTINT = EXTINT | 0x4; // Clear interrupt flag
 	EXTWAKE = EXTWAKE | 0X4; // Awake the processor when interrupt

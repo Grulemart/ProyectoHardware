@@ -4,14 +4,4 @@
 .\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\inttypes.h
 .\llamadas_swi.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
 .\llamadas_swi.o: timer_drv.h
-.\llamadas_swi.o: timer_hal.h
-.\llamadas_swi.o: llamadas_swi.h
 .\llamadas_swi.o: evento.h
-.\llamadas_swi.o: fifo.h
-.\llamadas_swi.o: gpio_hal.h
-.\llamadas_swi.o: io_reserva.h
-.\llamadas_swi.o: semaforo.h
-.\llamadas_swi.o: power_hal.h
-.\llamadas_swi.o: alarma.h
-.\llamadas_swi.o: timer_drv.h
-.\llamadas_swi.o: fifo.h

@@ -1,12 +1,25 @@
 
 #include "planificador.h"
-
+#include "fifo.h"
+#include "timer_drv.h"
+#include "hello_world.h"
+#include <inttypes.h>
+#include "power_hal.h"
+#include "alarma.h"
+#include "botones.h"
+#include "juego.h"
+#include "visualizar.h"
+#include "alarma.h"
+#include "linea_serie_drv.h"
+#include "watchdog.h"
+#include "io_reserva.h"
+#include "llamadas_swi.h"
 
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
 static char comando[3];
-static volatile int estado = ESTADO_ESPERANDO_COMANDO;
+static int estado = ESTADO_ESPERANDO_COMANDO;
 
 
 void planificador(void) {
@@ -17,14 +30,14 @@ void planificador(void) {
 	
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
-	iniciar_botones();
-	alarma_inicializar();
-	iniciar_linea_serie();
+	iniciar_botones(FIFO_encolar, BOTON_PULSADO, MONITORIZAR_BOTON);
+	alarma_inicializar(FIFO_encolar);
+	iniciar_linea_serie(EV_RX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 	
-	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS);
+	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS, VISUALIZAR_HELLO);
 	
-	juego_inicializar();
-	visualizar_inicializar();
+	juego_inicializar(FIFO_encolar);
+	visualizar_inicializar(GPIO_VISUALIZAR, GPIO_VISUALIZAR_BITS);
 	
 
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
@@ -49,7 +62,6 @@ void planificador(void) {
 		} else if (evento == GPIO) {
 			// Procesar evento GPIO
 		} else if (evento == ALARMA) {
-			alarma_tratar_evento();
 			// Procesar evento ALARMA
 			alarma_tratar_evento();
 		}	else if (evento == ALARMA_OVERFLOW) {
@@ -62,7 +74,6 @@ void planificador(void) {
 			} else { // EINT2
 				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)-1); // Constante resta 1 a cuenta en modulo juego
 			}
-			
 			//juego_tratar_evento(VISUALIZAR_CUENTA, 0);
 		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
@@ -79,7 +90,7 @@ void planificador(void) {
 		}
 		else if (evento == POWER_DOWN) {
 			power_hal_deep_sleep();
-			iniciar_linea_serie();
+			iniciar_linea_serie(EV_RX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 			alarma_reprogramar(POWER_DOWN, 0);
 		
 		}else if (evento == EV_RX_SERIE){

@@ -1,5 +1,6 @@
 
 #include "watchdog.h"
+#include "desactivar_interrupciones.h"
 
 void WD_hal_inicializar(uint32_t sec) {
 	WDTC = sec;

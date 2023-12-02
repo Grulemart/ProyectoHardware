@@ -1,6 +1,7 @@
 
 #include "timer_drv.h"
-
+#include "timer_hal.h"
+#include "llamadas_swi.h"
 
 static void (*funcionEncolarEvento)();
 static volatile EVENTO_T idEvento;

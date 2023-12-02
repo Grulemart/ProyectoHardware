@@ -3,10 +3,7 @@
 #define __TIMER_DRV_H__
 
 #include <stdint.h>
-#include "timer_hal.h"
-#include "llamadas_swi.h"
 #include "evento.h"
-#include "fifo.h"
 
 void temporizador_drv_iniciar(void);
 void temporizador_drv_empezar(void);

@@ -1,11 +1,16 @@
 
 #include "fifo.h"
+#include "desactivar_interrupciones.h"
 
+#define TRUE 0
+#define FALSE 1
 
-static volatile EVENTO_T fifo[FIFO_SIZE];					// Dirección de memoria de vector de eventos registrados
+#define MAX_NUM_EVENTOS 32
+
+static volatile uint8_t fifo[FIFO_SIZE];					// Dirección de memoria de vector de eventos registrados
 static volatile uint32_t auxDataArray[FIFO_SIZE];			// Array de datos auxiliares de los eventos
-static volatile BOOLEAN procesado[FIFO_SIZE];			// Array de registro de eventos procesados
-static volatile uint32_t eventRegister[NUM_EVENTS];		// Registro de numero de eventos de un tipo producidos
+static volatile uint8_t procesado[FIFO_SIZE];			// Array de registro de eventos procesados
+static volatile uint32_t eventRegister[MAX_NUM_EVENTOS];		// Registro de numero de eventos de un tipo producidos
 static volatile uint8_t indiceUltimoEncolado;					// Indice de ultimo evento registrado
 static volatile uint8_t indiceProcesoATratar;					// Indice para registrar eventos procesados
 static volatile GPIO_HAL_PIN_T overflowPin;						// Pin de overflow
@@ -24,18 +29,18 @@ void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOver
 	gpio_hal_escribir(overflowPin, overflowPinNumber, NO_HAY_OVERFLOW);
 	
 	for (i = 0; i < FIFO_SIZE; i++) {
-		fifo[i] = VOID;
+		fifo[i] = 0;
 		procesado[i] = TRUE;
 		auxDataArray[i] = 0;
 	}
 	
-	for (i = 0; i < NUM_EVENTS; i++) {
+	for (i = 0; i < MAX_NUM_EVENTOS; i++) {
 		eventRegister[i] = 0;
 	}
 	
 }
 
-void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
+void FIFO_encolar(uint8_t ID_evento, uint32_t auxData) {
 	lock();
 	// Se produce overflow
 	if(procesado[indiceUltimoEncolado] == FALSE){
@@ -49,14 +54,14 @@ void FIFO_encolar(EVENTO_T ID_evento, uint32_t auxData) {
 		
 		// Actualización de indices
 		eventRegister[ID_evento] += 1;
-		eventRegister[VOID] += 1;
+		eventRegister[0] += 1;
 		
 		indiceUltimoEncolado = (indiceUltimoEncolado + 1) % FIFO_SIZE;
 	}
 	unlock();
 }
 
-uint8_t FIFO_extraer(EVENTO_T *ID_evento, uint32_t *auxData) {
+uint8_t FIFO_extraer(uint8_t *ID_evento, uint32_t *auxData) {
 	lock();
 	if (procesado[indiceProcesoATratar] == TRUE) {
 		unlock();

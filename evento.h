@@ -21,10 +21,4 @@ typedef enum {
 	NUM_EVENTS = 14
 } EVENTO_T;
 
-// Declaracion de tipo Boolean
-typedef enum{
-	TRUE = 1,
-	FALSE = 0
-} BOOLEAN;
-
 #endif

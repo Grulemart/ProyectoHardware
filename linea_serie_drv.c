@@ -1,12 +1,17 @@
-#include "linea_serie_drv.h"
 
+#include "linea_serie_drv.h"
+#include "evento.h"
+#include "gpio_hal.h"
 
 static volatile int estado = ESTADO_ESPERANDO_INICIO;
 static volatile char receiveBuffer[3];
 static volatile uint8_t buffer_index = 0;
 static volatile char sendBuffer[SEND_BUFFER_SIZE];
 static volatile uint32_t send_buffer_index = 0;
-static volatile BOOLEAN mandando_serie = FALSE;
+static volatile uint8_t mandando_serie = FALSE;
+static void (*funcionEncolarEvento)();
+static uint8_t gpio_serie_error;
+static uint8_t idEvento;
 
 int check_command(void){
 	if(receiveBuffer[0] == 'E' && receiveBuffer[1] == 'N' && receiveBuffer[2] == 'D'){
@@ -28,9 +33,9 @@ int check_command(void){
 }
 
 void recibir_caracter(char c){	
-	char array[3];
-	int i;
-	uint32_t auxdata;
+	static char array[3];
+	static int i;
+	static uint32_t auxdata;
 	if(c == '\r'){
 		array[0] = '\n';
 	}else{
@@ -41,7 +46,7 @@ void recibir_caracter(char c){
 	switch(estado) {
 		case ESTADO_ESPERANDO_INICIO:
 			if(c == START_DELIMETER){
-				gpio_hal_escribir(GPIO_SERIE_ERROR, 1, 0);
+				gpio_hal_escribir(gpio_serie_error, 1, 0);
 				estado = ESTADO_RECIBIENDO_TRAMA;
 				linea_serie_drv_enviar_array(array);
 			}
@@ -54,7 +59,7 @@ void recibir_caracter(char c){
 					}
 					buffer_index = 0;
 					estado = ESTADO_ESPERANDO_INICIO;
-					FIFO_encolar(EV_RX_SERIE, auxdata);
+					funcionEncolarEvento(EV_RX_SERIE, auxdata);
 					array[1] = '\n';
 					array[2] = '\0';
 					linea_serie_drv_enviar_array(array);
@@ -62,7 +67,7 @@ void recibir_caracter(char c){
 			}else if(buffer_index >= 3){
 					estado = ESTADO_ESPERANDO_INICIO;
 					buffer_index = 0;
-					gpio_hal_escribir(GPIO_SERIE_ERROR, 1, 1);
+					gpio_hal_escribir(gpio_serie_error, 1, 1);
 				}else{
 					linea_serie_drv_enviar_array(array);
 					receiveBuffer[buffer_index++] = c;	
@@ -89,20 +94,27 @@ void linea_serie_drv_enviar_array(char* array){
 	uart0_enviar_caracter(sendBuffer[send_buffer_index++]);
 }
 
-void linea_serie_drv_continuar_envio(){
+void linea_serie_drv_continuar_envio(void){
 	if(send_buffer_index >= SEND_BUFFER_SIZE || sendBuffer[send_buffer_index ] == '\0'){
 		mandando_serie = FALSE;
 		if(sendBuffer[0] == '!' && sendBuffer[1] == '\n' && sendBuffer[2] == '\0'){
-			FIFO_encolar(EV_TX_SERIE, AUX_DATA_COMANDO_TERMINADO);
+			funcionEncolarEvento(idEvento, AUX_DATA_COMANDO_TERMINADO);
 		}else{
-			FIFO_encolar(EV_TX_SERIE,0);
+			funcionEncolarEvento(idEvento, 0);
 		}
 		return;
 	}
 	uart0_enviar_caracter(sendBuffer[send_buffer_index++]);
 }
 
-void iniciar_linea_serie(void){
-	gpio_hal_sentido(GPIO_SERIE_ERROR, 1, GPIO_HAL_PIN_DIR_OUTPUT);
+void iniciar_linea_serie(uint8_t _idEvento, void(*funcion_encolar_evento)(), uint8_t _gpio_serie_error){
+	funcionEncolarEvento = funcion_encolar_evento;
+	gpio_serie_error = _gpio_serie_error;
+	idEvento = _idEvento;
+	gpio_hal_sentido(gpio_serie_error, 1, GPIO_HAL_PIN_DIR_OUTPUT); // Solo es necesario declarar un bit de overflow
+	send_buffer_index = 0;
+	buffer_index = 0;
+	mandando_serie = FALSE;
+	estado = ESTADO_ESPERANDO_INICIO;
 	uart0_iniciar(&recibir_caracter, &linea_serie_drv_continuar_envio);
 }
