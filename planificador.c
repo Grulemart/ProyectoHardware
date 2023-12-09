@@ -48,6 +48,10 @@ void planificador(void) {
 	
 	WD_hal_inicializar(WATCHDOG_TIME);
 	
+	
+	
+	juego_mostrar_instrucciones();
+	
 	while(overflow != HAY_OVERFLOW) {
 		
 		// Extraccion de eventos a procesar
@@ -104,19 +108,21 @@ void planificador(void) {
 			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
 				estado = ESTADO_ESPERANDO_FIN_COMANDO;
 			}
+			if(comando[0] == 'N' && comando[1] == 'E' && comando[2] == 'W') {
+				estado = ESTADO_ESPERANDO_FIN_COMANDO;
+			}
 		}else if (evento == EV_TX_SERIE){
 			if(estado == ESTADO_ESPERANDO_FIN_COMANDO){
 				estado = ESTADO_ESPERANDO_TIEMPO_1;
 				conecta_K_visualizar_tiempo();
 			}else if(estado == ESTADO_ESPERANDO_TIEMPO_1){
 				estado = ESTADO_ESPERANDO_TABLERO;
+				// Si se visualiza las jugadas diferenciar aqui
 				conecta_K_visualizar_tablero();
 			}else if(estado == ESTADO_ESPERANDO_TABLERO){
 				estado = ESTADO_ESPERANDO_TIEMPO_2;
 				conecta_K_visualizar_tiempo();
 			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
-				disable_irq();
-				WD_hal_test();
 				estado = ESTADO_ESPERANDO_COMANDO;
 			}
 			alarma_reprogramar(POWER_DOWN, 0);

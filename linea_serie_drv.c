@@ -1,13 +1,14 @@
 
 #include "linea_serie_drv.h"
 #include "gpio_hal.h"
+#include "config_conecta_K.h"
 
 #define TRUE 1
 #define FALSE 0
 
 static volatile int estado = ESTADO_ESPERANDO_INICIO;
 static volatile char receiveBuffer[3];
-static volatile uint8_t buffer_index = 0;
+static volatile uint16_t buffer_index = 0;
 static volatile char sendBuffer[SEND_BUFFER_SIZE];
 static volatile uint32_t send_buffer_index = 0;
 static volatile uint8_t mandando_serie = FALSE;
@@ -29,7 +30,8 @@ uint8_t check_command(void){
 		int fila = receiveBuffer[0] - '0';
 		int columna = receiveBuffer[1] - '0';
 		
-		return (fila >= 1 && fila <= 7 && columna >= 1 && columna <= 7); //TODO: cambiar por constantes
+		// Las jugadas son del 1 al 7 (formato humano), no del 0 al 6 (formato pagina)
+		return (fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS); 
 	}
 	return FALSE;
 }
