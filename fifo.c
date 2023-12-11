@@ -16,6 +16,7 @@ static volatile uint8_t indiceProcesoATratar;					// Indice para registrar event
 static volatile GPIO_HAL_PIN_T overflowPin;						// Pin de overflow
 static volatile GPIO_HAL_PIN_BITS_T overflowPinNumber;	// Numero de pines de overflow
 
+// Inicializa las variables del módulo
 void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOverflowPinNumber) {
 	
 	// Inicialización de variables
@@ -40,6 +41,8 @@ void FIFO_inicializar(GPIO_HAL_PIN_T newPinOverflow, GPIO_HAL_PIN_BITS_T newOver
 	
 }
 
+// Encola un nuevo evento en la cola
+// Se deshabilitan las interrupciones mientras se está encolando el evento
 void FIFO_encolar(uint8_t ID_evento, uint32_t auxData) {
 	lock();
 	// Se produce overflow
@@ -61,6 +64,10 @@ void FIFO_encolar(uint8_t ID_evento, uint32_t auxData) {
 	unlock();
 }
 
+// Se extrae un evento de la cola
+// La función devuelve NO_HAY_EVENTO_A_PROCESAR si no existen elementos en la cola
+// La función devuelve HAY_EVENTO_A_PROCESAR y se devuelven los elementos del evento por ID_evento y auxData
+// si la cola no está vacía, dicho elemento se marca como procesado
 uint8_t FIFO_extraer(uint8_t *ID_evento, uint32_t *auxData) {
 	lock();
 	if (procesado[indiceProcesoATratar] == TRUE) {
@@ -76,6 +83,7 @@ uint8_t FIFO_extraer(uint8_t *ID_evento, uint32_t *auxData) {
 	return HAY_EVENTO_A_PROCESAR;
 }
 
+// Devuelve el número de eventos registrados de un tipo en la cola
 uint32_t FIFO_estadisticas(uint8_t ID_evento) {
 	// Se devuelve el numero de eventos registrados de ID_evento
 	return eventRegister[ID_evento];

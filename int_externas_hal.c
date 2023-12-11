@@ -33,11 +33,13 @@ void eint2_ISR (void) __irq{
 	pulsar_boton(id_boton_eint2, idEventoBotonPulsado, idEventoMonitorizarBoton);
 }
 
+// Inicialización de variables de eventos
 void iniciar_id_evento(uint8_t _idEventoBotonPulsado, uint8_t _idEventoMonitorizarBoton) {
 	idEventoBotonPulsado = _idEventoBotonPulsado;
 	idEventoMonitorizarBoton = _idEventoMonitorizarBoton;
 }
 
+// Inicializa los registros de eint1 con los parámetros necesarios
 void iniciar_ext1(uint32_t id){
 	id_boton_eint1 = id;
 	EXTINT = EXTINT | 0x2; // Clear interrupt flag
@@ -50,6 +52,7 @@ void iniciar_ext1(uint32_t id){
 	VICIntEnable = VICIntEnable |  0x00008000;	// Enable EXTINT1 Interrupt
 }
 
+// Inicializa los registros de eint2 con los parámetros necesarios
 void iniciar_ext2(uint32_t id){
 	id_boton_eint2 = id;
 	EXTINT = EXTINT | 0x4; // Clear interrupt flag
@@ -63,6 +66,7 @@ void iniciar_ext2(uint32_t id){
 	VICIntEnable = VICIntEnable |  0x00010000;	// Enable EXTINT1 Interrupt
 }
 
+// Comprueba si se sigue produciendo una interrupción externa de tipo eint1
 int eint1_activada(void){
 	int bit;
 	// Hacemos clear del bit 2 si el pin esta en low level no debería dejar hacer el clear
@@ -76,6 +80,7 @@ int eint1_activada(void){
 	return FALSE;
 }
 
+// Comprueba si se sigue produciendo una interrupción externa de tipo eint2
 int eint2_activada(void) {
 	int bit;
 	// Hacemos clear del bit 3 si el pin esta en low level no debería dejar hacer el clear
@@ -90,11 +95,13 @@ int eint2_activada(void) {
 	return FALSE;
 }
 
+// Habilita la interrupción eint1
 void habilitar_interrupcion_eint1(void){
 	VICVectCntl2 = 0x20 | 15; // 0x20 bit 5 enables vectored IRQs 15 is the number of the interrupt eint1
 	VICIntEnable = VICIntEnable |  0x00008000;	// Enable EXTINT1 Interrupt
 }
 
+// Habilita la interrupción eint2
 void habilitar_interrupcion_eint2(void){
 	VICVectCntl3 = 0x20 | 16; // 0x20 bit 5 enables vectored IRQs 15 is the number of the interrupt eint1
 	VICIntEnable = VICIntEnable |  0x00010000;	// Enable EXTINT1 Interrupt
