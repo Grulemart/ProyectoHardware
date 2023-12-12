@@ -17,20 +17,17 @@ void eint1_ISR (void) __irq {
 	// Disable the EXTINT1 Interrupt
 	VICIntEnClr = 0x00008000;
 	EXTINT = EXTINT | 0x2;
-	VICVectAddr = 0;
-	
 	pulsar_boton(id_boton_eint1, idEventoBotonPulsado, idEventoMonitorizarBoton);
+	VICVectAddr = 0;
 }
 
 void eint2_ISR (void) __irq{
 	
-	
 	// Disable the EXTINT2 Interrupt
 	VICIntEnClr=0x00010000;
 	EXTINT = EXTINT |0x4;
-	VICVectAddr = 0;
-	
 	pulsar_boton(id_boton_eint2, idEventoBotonPulsado, idEventoMonitorizarBoton);
+	VICVectAddr = 0;
 }
 
 void iniciar_id_evento(uint8_t _idEventoBotonPulsado, uint8_t _idEventoMonitorizarBoton) {
@@ -96,7 +93,7 @@ void habilitar_interrupcion_eint1(void){
 }
 
 void habilitar_interrupcion_eint2(void){
-	VICVectCntl3 = 0x20 | 16; // 0x20 bit 5 enables vectored IRQs 15 is the number of the interrupt eint1
+	VICVectCntl3 = 0x20 | 16; // 0x20 bit 5 enables vectored IRQs 16 is the number of the interrupt eint2
 	VICIntEnable = VICIntEnable |  0x00010000;	// Enable EXTINT1 Interrupt
 }
 

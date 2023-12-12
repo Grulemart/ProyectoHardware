@@ -8,6 +8,7 @@ void uart0_RSI (void) __irq;
 void uart0_RSI(void) __irq {
 	uint32_t mascara = 0x7;
 	uint32_t identificadorInterrupcion = (U0IIR >> 1) & mascara;
+
 	if(identificadorInterrupcion == 0x2){
 		(*callback_funciton_recibir)(U0RBR);
 	}else if(identificadorInterrupcion == 0x1){

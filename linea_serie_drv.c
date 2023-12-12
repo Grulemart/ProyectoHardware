@@ -27,7 +27,7 @@ uint8_t check_command(void){
 	}
 	if(receiveBuffer [1] == '-'){
 		int fila = receiveBuffer[0] - '0';
-		int columna = receiveBuffer[1] - '0';
+		int columna = receiveBuffer[2] - '0';
 		
 		return (fila >= 1 && fila <= 7 && columna >= 1 && columna <= 7); //TODO: cambiar por constantes
 	}
@@ -56,6 +56,7 @@ void recibir_caracter(char c){
 		case ESTADO_RECIBIENDO_TRAMA:
 			if(c == END_DELIMETER){
 				if(check_command()){
+					auxdata = 0;
 					for(i = 0; i < 3; i++){
 						auxdata |= (uint32_t)receiveBuffer[i] << (8*i);
 					}

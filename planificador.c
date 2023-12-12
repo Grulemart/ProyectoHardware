@@ -22,12 +22,12 @@
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static EVENTO_T evento;
 static uint32_t auxData;
-static char comando[3];
-static int estado = ESTADO_ESPERANDO_COMANDO;
+
 
 
 void planificador(void) {
 	int i;
+	static char comando[3];
 	// Inicializaci�n de I/O
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
@@ -93,33 +93,21 @@ void planificador(void) {
 			hello_world_tick_tack();
 		}
 		else if (evento == POWER_DOWN) {
-			power_hal_deep_sleep();
-			iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
+			//power_hal_deep_sleep();
+			//iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 			alarma_reprogramar(POWER_DOWN, 0);
 		
 		}else if (evento == EV_RX_SERIE){
 			for(i = 0; i<3; i++){
 				comando[i] = (char)((auxData >> (8*i))& 0xFF);
 			}
-			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
-				estado = ESTADO_ESPERANDO_FIN_COMANDO;
-			}
+			auxData = 0;
+			juego_tratar_comando(comando);
 		}else if (evento == EV_TX_SERIE){
-			if(estado == ESTADO_ESPERANDO_FIN_COMANDO){
-				estado = ESTADO_ESPERANDO_TIEMPO_1;
-				conecta_K_visualizar_tiempo();
-			}else if(estado == ESTADO_ESPERANDO_TIEMPO_1){
-				estado = ESTADO_ESPERANDO_TABLERO;
-				conecta_K_visualizar_tablero();
-			}else if(estado == ESTADO_ESPERANDO_TABLERO){
-				estado = ESTADO_ESPERANDO_TIEMPO_2;
-				conecta_K_visualizar_tiempo();
-			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
-				disable_irq();
-				WD_hal_test();
-				estado = ESTADO_ESPERANDO_COMANDO;
-			}
+			juego_trasmision_realizada();
 			alarma_reprogramar(POWER_DOWN, 0);
+		}else if (evento == HACER_JUGADA){
+			juego_alarma();
 		}else {
 			// Procesar evento VOID (error)
 		}

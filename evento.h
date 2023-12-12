@@ -18,7 +18,8 @@ typedef enum {
 	POWER_DOWN = 11,
 	EV_RX_SERIE = 12,
 	EV_TX_SERIE = 13,
-	NUM_EVENTS = 14
+	HACER_JUGADA = 14,
+	NUM_EVENTS = 15
 } EVENTO_T;
 
 #endif

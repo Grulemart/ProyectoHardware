@@ -12,3 +12,4 @@
 .\juego.o: evento.h
 .\juego.o: linea_serie_drv.h
 .\juego.o: linea_serie_hal.h
+.\juego.o: alarma.h
