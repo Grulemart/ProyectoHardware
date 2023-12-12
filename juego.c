@@ -14,16 +14,25 @@
 
 #define VACIO 0
 
-static volatile uint8_t cuenta;
+#define JUGADOR_1_COLOR 1
+#define JUGADOR_2_COLOR 2
+
+static volatile uint8_t cuenta; // Variable que maneja el numero de turnos realizados
 static volatile uint64_t intervalo;
-static TABLERO cuadricula;
-static int filaJugada = -1;
-static int columnaJugada = -1;
-static char array[13];
-static volatile uint64_t tiempoSistema;
-static int estado = ESPERANDO_INICIO;
-static void (*funcionEncolarEvento)(uint8_t, uint32_t);
+static TABLERO cuadricula; // Estructura que guarda los datos del tablero
+static int filaJugada = -1;	// Fila de la jugada por confirmar (-1 no se cconfirma ninguna)
+static int columnaJugada = -1; // Columna de la jugada por confirmar (-1 no se cconfirma ninguna)
+static char array[13]; // Array auxiliar para enviar comandos a UART
+static int estado = ESPERANDO_INICIO; // Estado de juego
+static int error = FALSE;	// Variable que confirma si hay un error
+static int errorEstado = COMANDO_NO_RECONOCIDO; // Tipo de error del modulo
+//static void (*funcionEncolarEvento)(uint8_t, uint32_t); // Funcion callback FIFO_encolar
 static int turno = 1;
+
+
+static char* errorComandoNoReconocido = "Comando no reconocido\n";
+static char* errorComandoNoValido = "Comando no valido en el contexto actual\n";
+static char* errorJugadaNoValida = "Jugada no valida (los valores tienen que estar dentro de los limites del tablero)\n";
 
 // Función para convertir un entero a una cadena de caracteres (ASCII)
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
@@ -43,8 +52,7 @@ void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
 
 // Muestra el tiempo transcurrido en us desde que se inicia el temporizador por UART
 void conecta_K_visualizar_tiempo(void){
-	tiempoSistema = clock_get_us();
-	uint64ToAsciiArray(tiempoSistema, array);
+	uint64ToAsciiArray(clock_get_us(), array);
 	array[8] = ' ';
 	array[9] = 'u';
 	array[10] = 's';
@@ -55,7 +63,7 @@ void conecta_K_visualizar_tiempo(void){
 }
 
 // Carga los datos de un tablero a mitad partida para comprobar que el programa procesa un estado acabado
-void conecta_K_test_cargar_tablero(TABLERO *t){
+void conecta_K_test_cargar_tablero(){
 	uint8_t i;
 	uint8_t j;
 	uint8_t 
@@ -71,18 +79,18 @@ tablero_test[7][7] =
 	
 	for (i = 0; i < NUM_FILAS; i++){
 		for(j = 0; j < NUM_COLUMNAS; j++){
-			tablero_insertar_color(t, i, j, tablero_test[i][j]);
+			tablero_insertar_color(&cuadricula, i, j, tablero_test[i][j]);
 		}
 	}
 }
 
 // Carga un tablero vacio en memoria
-void conecta_K_vacio_cargar_tablero(TABLERO *t){
+void conecta_K_vacio_cargar_tablero(){
 	uint8_t i;
 	uint8_t j;
 	for (i = 0; i < NUM_FILAS; i++){
 		for(j = 0; j < NUM_COLUMNAS; j++){
-			tablero_insertar_color(t, i, j, VACIO);
+			tablero_insertar_color(&cuadricula, i, j, VACIO);
 		}
 	}
 }
@@ -131,13 +139,10 @@ void conecta_K_visualizar_tablero(){
 	linea_serie_drv_enviar_array(array);
 }
 
-// Inicializa un juego con un tablero test
-void juego_inicializar(void(*funcion_encolar_evento)(uint8_t, uint32_t)) {
+// Inicializa las variables del modulo
+void juego_inicializar() {
 	cuenta = 0;
-	funcionEncolarEvento = funcion_encolar_evento;
-	
 	tablero_inicializar(&cuadricula);
-	conecta_K_test_cargar_tablero(&cuadricula);
 }
 
 // Muestra las intrucciones de tutorial por pantalla
@@ -150,15 +155,6 @@ void juego_mostrar_instrucciones(void) {
 	  "Escribe $END! para rendirse\n";
 	
 	linea_serie_drv_enviar_array(instrucciones);
-}
-
-// Encola un evento con un valor de auxData+cuenta en la cola
-void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData) {
-	//uint64_t currentCheck = clock_get_us();
-	//intervalo = currentCheck - intervalo;
-	cuenta += auxData;
-	
-	(*funcionEncolarEvento)(ID_evento, (uint32_t)cuenta);
 }
 
 // Compara dos vectores 
@@ -187,25 +183,56 @@ int esJugadaValida(char comando[]){
 	return FALSE;
 }
 
+// Envia un error al modulo
+void enviar_error(uint8_t tipoError) {
+	error = TRUE;
+	errorEstado = tipoError;
+}
+
 // Trata los comandos llegados de la terminal y actualiza el estado
 void juego_tratar_comando(char comando[3]){
 	if(estado == ESPERANDO_INICIO){
 		if(compararVectorConString(comando, "NEW")){
-			tablero_inicializar(&cuadricula);
+			conecta_K_vacio_cargar_tablero();
 			estado = ESPERANDO_TX_FIN_COMANDO_1;
+		} else {
+			enviar_error(COMANDO_NO_VALIDO);
 		}
 	}else if(estado == ESTADO_ESPERANDO_JUGADA){
-		if(esJugadaValida(comando)){
+		if(compararVectorConString(comando, "END")) {
+			char* mensaje = "El juego se acaba\n";
+			linea_serie_drv_enviar_array(mensaje);
+			
+			// TODO: Mostrar resultados
+			
+			juego_inicializar();
+			estado = ESPERANDO_INICIO;
+		}
+		else if(esJugadaValida(comando)){
 			filaJugada = comando[0] - '0' - 1;
 			columnaJugada = comando[2] - '0' - 1;
 			alarma_activar(HACER_JUGADA, TIEMPO_JUGADA, 0);
 			estado = ESPERANDO_TX_FIN_COMANDO_2;
+		} else {
+			enviar_error(JUGADA_NO_VALIDA);
 		}
 	}
 }
 
-// 
+// Muestra por pantalla los resultados del comando introducido
 void juego_trasmision_realizada(void){
+	if (error == TRUE) {
+		error = FALSE;
+		if (errorEstado == COMANDO_NO_RECONOCIDO) {
+			linea_serie_drv_enviar_array(errorComandoNoReconocido);
+		} else if (errorEstado == COMANDO_NO_VALIDO) {
+			linea_serie_drv_enviar_array(errorComandoNoValido);
+		} else if (errorEstado == JUGADA_NO_VALIDA) {
+			linea_serie_drv_enviar_array(errorJugadaNoValida);
+		}
+		return;
+	}
+	
 	if (estado == ESPERANDO_TX_FIN_COMANDO_1){
 		conecta_K_visualizar_tablero();
 		estado = ESTADO_ESPERANDO_JUGADA;
@@ -215,18 +242,13 @@ void juego_trasmision_realizada(void){
 	}
 }
 
-//
-void juego_boton_pulsado(int boton){
-	//TODO
-}
-
-//
+// Realizar la jugada dentro del tablero
 void juego_alarma(void){
 	if(estado == ESPERANDO_DECISION_JUGADA){
 		if(turno == 0 || turno == 1){
-			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, 1); //constantes
+			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_1_COLOR); 
 		}else{
-			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, 2); // constantes
+			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_2_COLOR); 
 		}
 		filaJugada = -1;
 		columnaJugada = -1;

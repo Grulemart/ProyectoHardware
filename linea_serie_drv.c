@@ -8,15 +8,15 @@
 
 #define COMANDO_SIZE 3
 
-static volatile int estado = ESTADO_ESPERANDO_INICIO;
+static volatile int estado = ESTADO_ESPERANDO_INICIO; // Estado de la UART para enviar caracteres
 static volatile char receiveBuffer[COMANDO_SIZE];
 static volatile uint8_t buffer_index = 0;
 static volatile char sendBuffer[SEND_BUFFER_SIZE];
 static volatile uint32_t send_buffer_index = 0;
 static volatile uint8_t mandando_serie = FALSE;
-static void (*funcionEncolarEvento)(uint8_t, uint32_t);
-static uint8_t gpio_serie_error;
-static uint8_t idEventoRX, idEventoTX;
+static void (*funcionEncolarEvento)(uint8_t, uint32_t); // Funcion callback FIFO_encolar
+static uint8_t gpio_serie_error; // Indice del pin de error
+static uint8_t idEventoRX, idEventoTX; // Indice de los eventos a enviar
 
 // Devuelve TRUE (1), si el comando introducido es válido y FALSE si no lo es
 // En el caso de introducir un comando de jugada, devuelve TRUE si la jugada está dentro de los limites

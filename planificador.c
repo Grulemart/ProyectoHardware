@@ -23,8 +23,7 @@
 static uint8_t overflow = NO_HAY_OVERFLOW;
 static uint8_t evento;
 static uint32_t auxData;
-static uint8_t estado = ESPERANDO_INICIO;
-
+static uint8_t isPowerDown = FALSE;
 
 
 void planificador(void) {
@@ -42,7 +41,8 @@ void planificador(void) {
 	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS, VISUALIZAR_HELLO);
 	
-	juego_inicializar(FIFO_encolar);
+	juego_inicializar();
+	//conecta_K_test_cargar_tablero();
 	visualizar_inicializar(GPIO_VISUALIZAR, GPIO_VISUALIZAR_BITS);
 	
 
@@ -77,12 +77,13 @@ void planificador(void) {
 			gpio_hal_escribir(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS, 1);
 		} else if (evento == BOTON_PULSADO) {
 				alarma_reprogramar(POWER_DOWN, 0);
-			if (auxData == 1) { // EINT1
-				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
-			} else { // EINT2
-				juego_inicializar(FIFO_encolar); // Reinicio del juego
+			if (isPowerDown == FALSE) {
+				if (auxData == 1) { // EINT1
+					//juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
+				} else { // EINT2
+					conecta_K_vacio_cargar_tablero(); // Reinicio del juego
+				}
 			}
-			//juego_tratar_evento(VISUALIZAR_CUENTA, 0);
 		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
 			if (sigue_pulsado((uint8_t)auxData) == FALSE) {
@@ -99,6 +100,7 @@ void planificador(void) {
 		else if (evento == POWER_DOWN) {
 			//power_hal_deep_sleep();
 			//iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
+			isPowerDown = TRUE;
 			alarma_reprogramar(POWER_DOWN, 0);
 		
 		}else if (evento == EV_RX_SERIE){

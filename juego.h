@@ -15,17 +15,22 @@
 #define ESPERANDO_FIN_COMANDO_5 9
 #define ESPERANDO_TX_ERROR2 10
 
+#define COMANDO_NO_RECONOCIDO 0
+#define COMANDO_NO_VALIDO 1
+#define JUGADA_NO_VALIDA 2
+
 void conecta_K_visualizar_tiempo(void);
-void juego_inicializar(void(*funcion_encolar_evento)(uint8_t, uint32_t));
+void juego_inicializar(void);
 void conecta_K_visualizar_tablero(void);
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]);
 void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData);
 void juego_tratar_comando(char comando[3]);
 void juego_trasmision_realizada(void);
-void juego_boton_pulsado(int boton);
 void juego_alarma(void);
-	
 
+void conecta_K_test_cargar_tablero(void);
+void conecta_K_vacio_cargar_tablero(void);
+	
 void juego_mostrar_instrucciones(void);
 
 #endif
