@@ -19,6 +19,7 @@ static uint8_t idEventoAlarmaOverflow;
 
 static void (*funcionEncolarEvento)();
 
+// Inicializa las variables e interrupciones necesarias para el modulo alarma
 void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)()) {
 	
 	ticksAlarma = 0;
@@ -30,6 +31,8 @@ void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow,
 
 }
 
+// Activa una nueva alarma
+// Si no hay espacio para más alarmas se produce overflow y se muestra en el pin de la GPIO
 void alarma_activar(uint8_t ID_evento, uint32_t retardo, uint32_t auxData) {
 	uint8_t i;
 	uint32_t mascara;
@@ -82,6 +85,7 @@ void alarma_reprogramar(uint8_t ID_evento, uint32_t auxData) {
 	}
 }
 
+// Procesa un tick y trata las alarmas que han expirado, encolando sus respectivos eventos en la cola FIFO
 void alarma_tratar_evento(void) {
 	uint8_t i;
 	// Aumentar numero de ciclos

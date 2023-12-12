@@ -124,6 +124,17 @@ void juego_inicializar(void(*funcion_encolar_evento)()) {
 	conecta_K_test_cargar_tablero(&cuadricula);
 }
 
+void juego_mostrar_instrucciones() {
+	
+	char* instrucciones = "Instrucciones de juego:\n"\
+		"Escribe $NEW! para una nueva partida\n"\
+		"Escribe $#-#! (fila-columna) para realizar una jugada\n"\
+	  "Escribe $TAB! para mostrar el tablero\n"\
+	  "Escribe $END! para rendirse\n";
+	
+	linea_serie_drv_enviar_array(instrucciones);
+}
+
 void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData) {
 	//uint64_t currentCheck = clock_get_us();
 	//intervalo = currentCheck - intervalo;

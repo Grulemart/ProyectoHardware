@@ -48,6 +48,10 @@ void planificador(void) {
 	
 	WD_hal_inicializar(WATCHDOG_TIME);
 	
+	
+	
+	juego_mostrar_instrucciones();
+	
 	while(overflow != HAY_OVERFLOW) {
 		
 		// Extraccion de eventos a procesar
@@ -101,10 +105,33 @@ void planificador(void) {
 			for(i = 0; i<3; i++){
 				comando[i] = (char)((auxData >> (8*i))& 0xFF);
 			}
+<<<<<<< HEAD
 			auxData = 0;
 			juego_tratar_comando(comando);
 		}else if (evento == EV_TX_SERIE){
 			juego_trasmision_realizada();
+=======
+			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
+				estado = ESTADO_ESPERANDO_FIN_COMANDO;
+			}
+			if(comando[0] == 'N' && comando[1] == 'E' && comando[2] == 'W') {
+				estado = ESTADO_ESPERANDO_FIN_COMANDO;
+			}
+		}else if (evento == EV_TX_SERIE){
+			if(estado == ESTADO_ESPERANDO_FIN_COMANDO){
+				estado = ESTADO_ESPERANDO_TIEMPO_1;
+				conecta_K_visualizar_tiempo();
+			}else if(estado == ESTADO_ESPERANDO_TIEMPO_1){
+				estado = ESTADO_ESPERANDO_TABLERO;
+				// Si se visualiza las jugadas diferenciar aqui
+				conecta_K_visualizar_tablero();
+			}else if(estado == ESTADO_ESPERANDO_TABLERO){
+				estado = ESTADO_ESPERANDO_TIEMPO_2;
+				conecta_K_visualizar_tiempo();
+			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
+				estado = ESTADO_ESPERANDO_COMANDO;
+			}
+>>>>>>> 9439b497039f3bf93eb38652ea88c4252a0a51ed
 			alarma_reprogramar(POWER_DOWN, 0);
 		}else if (evento == HACER_JUGADA){
 			juego_alarma();

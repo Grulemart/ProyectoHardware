@@ -26,5 +26,6 @@ void juego_boton_pulsado(int boton);
 void juego_alarma(void);
 	
 
+void juego_mostrar_instrucciones();
 
 #endif

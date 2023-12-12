@@ -2,10 +2,12 @@
 #include "gpio_hal.h"
 #include "LPC210X.H"
 
+// Inicializa el registro necesario para GPIO
 void gpio_hal_iniciar(){
 	PINSEL0 = 0x00000000;
 }
 
+// Declara el sentido (input ó output) que van a tener los pins especificados por parámetros
 void gpio_hal_sentido(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, gpio_hal_pin_dir_t direccion){
 	// Verifica que los bits a configurar estén en el rango correcto
     if(num_bits > 0 && num_bits <= 32){
@@ -22,6 +24,7 @@ void gpio_hal_sentido(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, gpio_hal_pi
     }
 }
 
+// Lee el valor de los pines especificados por parámetros
 uint32_t gpio_hal_leer(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits){
 	// Verifica que los bits a leer estén en el rango correcto
     if (num_bits > 0 && num_bits <= 32) {
@@ -36,6 +39,7 @@ uint32_t gpio_hal_leer(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits){
     return 0;
 }
 
+// Sobreescribe los bits de los pines especificados por parámetros
 void gpio_hal_escribir(GPIO_HAL_PIN_T gpio_inicial, uint8_t num_bits, uint32_t valor){
 	// Verifica que los bits a escribir estén en el rango correcto
     if (num_bits > 0 && num_bits <= 32) {

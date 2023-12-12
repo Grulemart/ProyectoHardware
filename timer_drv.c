@@ -31,10 +31,12 @@ uint64_t temporizador_drv_parar() {
     return temporizador_hal_parar()/TICKS_A_US;
 }
 
+// Funcion callback de FIFO_encolar del modulo FIFO
 void callbackFunction(){
 	(*funcionEncolarEvento)(idEvento,0);
 }
 
+// Inicializa los parámetros y registros necesarios de TIMER1s
 void temporizador_drv_reloj(uint32_t periodo, void(*funcion_encolar_evento)(), 
 	uint8_t ID_evento){
 	// Se inicia el temporizador y cuando este acaba se encola un nuevo evento
