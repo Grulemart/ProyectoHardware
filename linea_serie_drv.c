@@ -6,16 +6,20 @@
 #define TRUE 1
 #define FALSE 0
 
+#define COMANDO_SIZE 3
+
 static volatile int estado = ESTADO_ESPERANDO_INICIO;
-static volatile char receiveBuffer[3];
-static volatile uint16_t buffer_index = 0;
+static volatile char receiveBuffer[COMANDO_SIZE];
+static volatile uint8_t buffer_index = 0;
 static volatile char sendBuffer[SEND_BUFFER_SIZE];
 static volatile uint32_t send_buffer_index = 0;
 static volatile uint8_t mandando_serie = FALSE;
-static void (*funcionEncolarEvento)();
+static void (*funcionEncolarEvento)(uint8_t, uint32_t);
 static uint8_t gpio_serie_error;
 static uint8_t idEventoRX, idEventoTX;
 
+// Devuelve TRUE (1), si el comando introducido es válido y FALSE si no lo es
+// En el caso de introducir un comando de jugada, devuelve TRUE si la jugada está dentro de los limites
 uint8_t check_command(void){
 	if(receiveBuffer[0] == 'E' && receiveBuffer[1] == 'N' && receiveBuffer[2] == 'D'){
 		return TRUE;
@@ -36,6 +40,11 @@ uint8_t check_command(void){
 	return FALSE;
 }
 
+
+// Maneja las recepciones de carácteres de la UART
+// Si aun no se ha iniciado un comando se espera a que se escriba '$'
+// Despues se escribe el comando, si es valido se envia el evento EVENTO_RX_SERIE que maneja las acciones
+// Si no se produce un error y se vuelve al estado de inicio
 void recibir_caracter(char c){	
 	static char array[3];
 	static int i;
@@ -59,7 +68,7 @@ void recibir_caracter(char c){
 			if(c == END_DELIMETER){
 				if(check_command()){
 					auxdata = 0;
-					for(i = 0; i < 3; i++){
+					for(i = 0; i < COMANDO_SIZE; i++){
 						auxdata |= (uint32_t)receiveBuffer[i] << (8*i);
 					}
 					buffer_index = 0;
@@ -69,7 +78,7 @@ void recibir_caracter(char c){
 					array[2] = '\0';
 					linea_serie_drv_enviar_array(array);
 				}
-			}else if(buffer_index >= 3){
+			}else if(buffer_index >= 3){	// Comando > 3, no valido
 					estado = ESTADO_ESPERANDO_INICIO;
 					buffer_index = 0;
 					gpio_hal_escribir(gpio_serie_error, 1, 1);
@@ -80,6 +89,8 @@ void recibir_caracter(char c){
 		}		
 }
 
+// Recive una cadena de carácteres y los envia a la UART para mostrarlos
+// No envia carácteres si está vacía '\0' o si ya se está enviando carácteres
 void linea_serie_drv_enviar_array(char* array){
 	if(*array == '\0'){
 		return;
@@ -112,7 +123,8 @@ void linea_serie_drv_continuar_envio(void){
 	uart0_enviar_caracter(sendBuffer[send_buffer_index++]);
 }
 
-void iniciar_linea_serie(uint8_t _idEventoRX, uint8_t _idEventoTX, void(*funcion_encolar_evento)(), uint8_t _gpio_serie_error){
+// Inicializa las variables y registros necesarios desde el modulo linea_serie_hal
+void iniciar_linea_serie(uint8_t _idEventoRX, uint8_t _idEventoTX, void(*funcion_encolar_evento)(uint8_t, uint32_t), uint8_t _gpio_serie_error){
 	funcionEncolarEvento = funcion_encolar_evento;
 	gpio_serie_error = _gpio_serie_error;
 	idEventoRX = _idEventoRX;

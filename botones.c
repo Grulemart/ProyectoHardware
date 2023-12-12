@@ -8,10 +8,10 @@
 
 const uint32_t RETARDO_MONITORIZAR_BOTON = 100;
 
-static void (*funcionEncolarEvento)();
+static void (*funcionEncolarEvento)(uint8_t, uint32_t);
 
 // Inicialización de periféricos y variables
-void iniciar_botones(void(*funcion_encolar_evento)(), uint8_t idEventoBotonPulsado, uint8_t idEventoMonitorizarBoton){
+void iniciar_botones(void(*funcion_encolar_evento)(uint8_t, uint32_t), uint8_t idEventoBotonPulsado, uint8_t idEventoMonitorizarBoton){
 	funcionEncolarEvento = funcion_encolar_evento;
 	iniciar_id_evento(idEventoBotonPulsado, idEventoMonitorizarBoton);
 	iniciar_ext1(BOTON_1);

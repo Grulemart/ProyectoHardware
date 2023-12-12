@@ -7,7 +7,7 @@
 #define MAX_ALARMAS 8
 #define CANCELAR_ALARMA 0
 
-void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)());
+void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)(uint8_t, uint32_t));
 
 // El retardo codifica en el
 // bit de más peso si la alarma es periódica (debe repetirse), los restantes bits

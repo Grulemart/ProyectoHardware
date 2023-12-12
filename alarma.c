@@ -17,10 +17,10 @@ static volatile uint32_t alarmaAuxData[MAX_ALARMAS];					// Datos auxiliares del
 static volatile uint32_t ticksAlarma;	// Ticks totales transcurridos desde inicializacion
 static uint8_t idEventoAlarmaOverflow;
 
-static void (*funcionEncolarEvento)();
+static void (*funcionEncolarEvento)(uint8_t, uint32_t);
 
 // Inicializa las variables e interrupciones necesarias para el modulo alarma
-void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)()) {
+void alarma_inicializar(uint8_t idEventoAlarma, uint8_t _idEventoAlarmaOverflow, void(*funcion_encolar_evento)(uint8_t, uint32_t)) {
 	
 	ticksAlarma = 0;
 	funcionEncolarEvento = funcion_encolar_evento;

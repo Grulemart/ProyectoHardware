@@ -5,8 +5,14 @@
 #include "celda.h"
 #include "linea_serie_drv.h"
 #include "alarma.h"
+#include "config_conecta_K.h"
 
 #define TIEMPO_JUGADA 10000 //ms
+
+#define TRUE 1
+#define FALSE 0
+
+#define VACIO 0
 
 static volatile uint8_t cuenta;
 static volatile uint64_t intervalo;
@@ -16,11 +22,10 @@ static int columnaJugada = -1;
 static char array[13];
 static volatile uint64_t tiempoSistema;
 static int estado = ESPERANDO_INICIO;
-static void (*funcionEncolarEvento)();
+static void (*funcionEncolarEvento)(uint8_t, uint32_t);
 static int turno = 1;
 
 // Función para convertir un entero a una cadena de caracteres (ASCII)
-
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
     // Assuming a 64-bit unsigned integer and 8 characters for the ASCII representation
     // (including the null terminator)
@@ -36,7 +41,7 @@ void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
     asciiArray[8] = '\0';
 }
 
-
+// Muestra el tiempo transcurrido en us desde que se inicia el temporizador por UART
 void conecta_K_visualizar_tiempo(void){
 	tiempoSistema = clock_get_us();
 	uint64ToAsciiArray(tiempoSistema, array);
@@ -49,6 +54,7 @@ void conecta_K_visualizar_tiempo(void){
 	
 }
 
+// Carga los datos de un tablero a mitad partida para comprobar que el programa procesa un estado acabado
 void conecta_K_test_cargar_tablero(TABLERO *t){
 	uint8_t i;
 	uint8_t j;
@@ -70,6 +76,18 @@ tablero_test[7][7] =
 	}
 }
 
+// Carga un tablero vacio en memoria
+void conecta_K_vacio_cargar_tablero(TABLERO *t){
+	uint8_t i;
+	uint8_t j;
+	for (i = 0; i < NUM_FILAS; i++){
+		for(j = 0; j < NUM_COLUMNAS; j++){
+			tablero_insertar_color(t, i, j, VACIO);
+		}
+	}
+}
+
+// Visualiza el tablero cargado en memoria por pantalla
 void conecta_K_visualizar_tablero(){
 	static char array[200];
 	int fila;
@@ -113,18 +131,17 @@ void conecta_K_visualizar_tablero(){
 	linea_serie_drv_enviar_array(array);
 }
 
-void juego_inicializar(void(*funcion_encolar_evento)()) {
+// Inicializa un juego con un tablero test
+void juego_inicializar(void(*funcion_encolar_evento)(uint8_t, uint32_t)) {
 	cuenta = 0;
-	intervalo = 0;
 	funcionEncolarEvento = funcion_encolar_evento;
-	
-	
 	
 	tablero_inicializar(&cuadricula);
 	conecta_K_test_cargar_tablero(&cuadricula);
 }
 
-void juego_mostrar_instrucciones() {
+// Muestra las intrucciones de tutorial por pantalla
+void juego_mostrar_instrucciones(void) {
 	
 	char* instrucciones = "Instrucciones de juego:\n"\
 		"Escribe $NEW! para una nueva partida\n"\
@@ -135,6 +152,7 @@ void juego_mostrar_instrucciones() {
 	linea_serie_drv_enviar_array(instrucciones);
 }
 
+// Encola un evento con un valor de auxData+cuenta en la cola
 void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData) {
 	//uint64_t currentCheck = clock_get_us();
 	//intervalo = currentCheck - intervalo;
@@ -143,28 +161,33 @@ void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData) {
 	(*funcionEncolarEvento)(ID_evento, (uint32_t)cuenta);
 }
 
+// Compara dos vectores 
 int compararVectorConString(char vector[], char cadena[]){
 	int i;
 	for(i = 0; i < 3; i++){
 		if(vector[i] != cadena[i]){
-			return 0;
+			return FALSE;
 		}
 	}
-	return 1;
+	return TRUE;
 }
 
+// Comprueba si una jugada introducida es válida
+// La jugada es un array de carácteres de tipo #-#
+// donde # deben ser numeros de 1 al numero especificado de filas o columnas
 int esJugadaValida(char comando[]){
 	if(comando[1] == '-'){
 		int fila = comando[0] - '0';
 		int columna = comando[2] - '0';
 		
-		if(fila >= 1 && fila <= 7 && columna >= 1 && columna <= 7) {	//TODO: cambiar por constantes
+		if(fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS) {	
 			return celda_vacia(tablero_leer_celda(&cuadricula, fila, columna));
 		}
 	}
-	return 0;
+	return FALSE;
 }
 
+// Trata los comandos llegados de la terminal y actualiza el estado
 void juego_tratar_comando(char comando[3]){
 	if(estado == ESPERANDO_INICIO){
 		if(compararVectorConString(comando, "NEW")){
@@ -181,7 +204,7 @@ void juego_tratar_comando(char comando[3]){
 	}
 }
 
-
+// 
 void juego_trasmision_realizada(void){
 	if (estado == ESPERANDO_TX_FIN_COMANDO_1){
 		conecta_K_visualizar_tablero();
@@ -192,9 +215,12 @@ void juego_trasmision_realizada(void){
 	}
 }
 
+//
 void juego_boton_pulsado(int boton){
 	//TODO
 }
+
+//
 void juego_alarma(void){
 	if(estado == ESPERANDO_DECISION_JUGADA){
 		if(turno == 0 || turno == 1){

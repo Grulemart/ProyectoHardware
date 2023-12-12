@@ -16,7 +16,7 @@
 #define ESPERANDO_TX_ERROR2 10
 
 void conecta_K_visualizar_tiempo(void);
-void juego_inicializar(void(*funcion_encolar_evento)());
+void juego_inicializar(void(*funcion_encolar_evento)(uint8_t, uint32_t));
 void conecta_K_visualizar_tablero(void);
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]);
 void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData);
@@ -26,6 +26,6 @@ void juego_boton_pulsado(int boton);
 void juego_alarma(void);
 	
 
-void juego_mostrar_instrucciones();
+void juego_mostrar_instrucciones(void);
 
 #endif

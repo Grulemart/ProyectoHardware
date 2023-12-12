@@ -14,14 +14,16 @@
 #include "watchdog.h"
 #include "io_reserva.h"
 #include "llamadas_swi.h"
+#include "juego.h"
 #include "evento.h"
 
 #define TRUE 1
 #define FALSE 0
 
 static uint8_t overflow = NO_HAY_OVERFLOW;
-static EVENTO_T evento;
+static uint8_t evento;
 static uint32_t auxData;
+static uint8_t estado = ESPERANDO_INICIO;
 
 
 
@@ -47,8 +49,6 @@ void planificador(void) {
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
 	
 	WD_hal_inicializar(WATCHDOG_TIME);
-	
-	
 	
 	juego_mostrar_instrucciones();
 	
@@ -80,7 +80,7 @@ void planificador(void) {
 			if (auxData == 1) { // EINT1
 				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
 			} else { // EINT2
-				juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)-1); // Constante resta 1 a cuenta en modulo juego
+				juego_inicializar(FIFO_encolar); // Reinicio del juego
 			}
 			//juego_tratar_evento(VISUALIZAR_CUENTA, 0);
 		} else if (evento == MONITORIZAR_BOTON) {
@@ -105,17 +105,15 @@ void planificador(void) {
 			for(i = 0; i<3; i++){
 				comando[i] = (char)((auxData >> (8*i))& 0xFF);
 			}
-<<<<<<< HEAD
 			auxData = 0;
 			juego_tratar_comando(comando);
 		}else if (evento == EV_TX_SERIE){
 			juego_trasmision_realizada();
-=======
 			if(comando[0] == 'T' && comando[1] == 'A' && comando[2] == 'B'){
-				estado = ESTADO_ESPERANDO_FIN_COMANDO;
+				//estado = ESTADO_ESPERANDO_FIN_COMANDO;
 			}
 			if(comando[0] == 'N' && comando[1] == 'E' && comando[2] == 'W') {
-				estado = ESTADO_ESPERANDO_FIN_COMANDO;
+				//estado = ESTADO_ESPERANDO_FIN_COMANDO;
 			}
 		}else if (evento == EV_TX_SERIE){
 			if(estado == ESTADO_ESPERANDO_FIN_COMANDO){
@@ -131,7 +129,6 @@ void planificador(void) {
 			}else if(estado == ESTADO_ESPERANDO_TIEMPO_2){
 				estado = ESTADO_ESPERANDO_COMANDO;
 			}
->>>>>>> 9439b497039f3bf93eb38652ea88c4252a0a51ed
 			alarma_reprogramar(POWER_DOWN, 0);
 		}else if (evento == HACER_JUGADA){
 			juego_alarma();
