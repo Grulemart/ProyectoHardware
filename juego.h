@@ -14,6 +14,7 @@
 #define ESPERANDO_TX_ERROR 8
 #define ESPERANDO_FIN_COMANDO_5 9
 #define ESPERANDO_TX_ERROR2 10
+#define TERMINAR_JUEGO 11
 
 #define COMANDO_NO_RECONOCIDO 0
 #define COMANDO_NO_VALIDO 1
@@ -27,6 +28,8 @@ void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData);
 void juego_tratar_comando(char comando[3]);
 void juego_trasmision_realizada(void);
 void juego_alarma(void);
+void termina_juego(uint8_t ganador);
+void cancelar_jugada(void);
 
 void conecta_K_test_cargar_tablero(void);
 void conecta_K_vacio_cargar_tablero(void);

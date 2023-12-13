@@ -71,22 +71,24 @@ void recibir_caracter(char c){
 					for(i = 0; i < COMANDO_SIZE; i++){
 						auxdata |= (uint32_t)receiveBuffer[i] << (8*i);
 					}
-					buffer_index = 0;
-					estado = ESTADO_ESPERANDO_INICIO;
 					funcionEncolarEvento(idEventoRX, auxdata);
 					array[1] = '\n';
 					array[2] = '\0';
 					linea_serie_drv_enviar_array(array);
+				} else {
+					char* mensajeError = "!\n Comando no reconocido.\n\0";
+					linea_serie_drv_enviar_array(mensajeError);
 				}
+				estado = ESTADO_ESPERANDO_INICIO;
+				buffer_index = 0;
 			}else if(buffer_index >= 3){	// Comando > 3, no valido
-					estado = ESTADO_ESPERANDO_INICIO;
 					buffer_index = 0;
 					gpio_hal_escribir(gpio_serie_error, 1, 1);
-				}else{
+			}else{
 					linea_serie_drv_enviar_array(array);
 					receiveBuffer[buffer_index++] = c;	
-				}
-		}		
+			}
+	}		
 }
 
 // Recive una cadena de carácteres y los envia a la UART para mostrarlos

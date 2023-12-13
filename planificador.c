@@ -79,10 +79,12 @@ void planificador(void) {
 				alarma_reprogramar(POWER_DOWN, 0);
 			if (isPowerDown == FALSE) {
 				if (auxData == 1) { // EINT1
-					//juego_tratar_evento(VISUALIZAR_CUENTA, (uint32_t)1); // Constatne añade 1 a cuenta en modulo juego
+					cancelar_jugada();
 				} else { // EINT2
-					conecta_K_vacio_cargar_tablero(); // Reinicio del juego
+					termina_juego(0); // Reinicio del juego
 				}
+			} else {
+				isPowerDown = FALSE;
 			}
 		} else if (evento == MONITORIZAR_BOTON) {
 			// Comprueba a los 100ms si un boton sigue estando pulsado
