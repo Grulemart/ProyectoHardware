@@ -40,7 +40,7 @@ void iniciar_id_evento(uint8_t _idEventoBotonPulsado, uint8_t _idEventoMonitoriz
 void iniciar_ext1(uint32_t id){
 	id_boton_eint1 = id;
 	EXTINT = EXTINT | 0x2; // Clear interrupt flag
-	EXTWAKE = EXTWAKE | 0X2;	 // Awake the processor when interrupt
+	EXTWAKE = EXTWAKE | 0x2;	 // Awake the processor when interrupt
 	VICVectAddr2 = (unsigned long)eint1_ISR;
 	// Set P0.14 to EINT1
 	PINSEL0 &= ~(1 << 28); // Set the bit 28 to 0

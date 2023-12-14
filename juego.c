@@ -17,6 +17,20 @@
 #define JUGADOR_1_COLOR 1
 #define JUGADOR_2_COLOR 2
 
+#define ESPERANDO_INICIO 0
+#define ESPERANDO_TX_FIN_COMANDO_1 1
+#define ESTADO_ESPERANDO_JUGADA 2
+#define ESPERANDO_TX_FIN_COMANDO_2 3
+#define ESPERANDO_DECISION_JUGADA 4
+#define ESPERANDO_TX_FIN_COMANDO_3 5
+#define ESPERANDO_TX_RESULTADOS 6
+#define ESPERANDO_FIN_COMANDO_4 7
+#define ESPERANDO_TX_ERROR 8
+#define ESPERANDO_FIN_COMANDO_5 9
+#define ESPERANDO_TX_ERROR2 10
+#define TERMINAR_JUEGO 11
+#define ESPERANDO_TX_DECISION_JUGADA 12
+
 static volatile uint8_t cuenta; // Variable que maneja el numero de turnos realizados
 static volatile uint64_t intervalo;
 static TABLERO cuadricula; // Estructura que guarda los datos del tablero
@@ -29,6 +43,8 @@ static int errorEstado = COMANDO_NO_RECONOCIDO; // Tipo de error del modulo
 static int turno = 1;
 static uint8_t mostrar_tablero = FALSE;
 static uint8_t ganador = VACIO;
+static int primeraPartida = TRUE;
+static uint64_t tiempoInicioPartida;
 
 static char* errorComandoNoReconocido = " Comando no reconocido\n";
 static char* errorComandoNoValido = " Comando no valido en el contexto actual\n";
@@ -149,36 +165,8 @@ void conecta_K_visualizar_tablero(){
 		}
 		array[indiceArray++] = '\n';
 	}
-	array[indiceArray++] = '\n';
-	
-	if (estado == ESTADO_ESPERANDO_JUGADA || estado == ESPERANDO_INICIO) {
-		uint8_t bufferSize = 21;
-		char* buffer = "Turno del jugador X\n\n";
-		indiceArray = appendArray(array, buffer, indiceArray, bufferSize);
-		array[indiceArray-3] = '0' + (turno / 2) + 1;
-	} else if (estado == TERMINAR_JUEGO) {
-		if (ganador == VACIO) {
-			uint8_t bufferSize = 53;
-			char* buffer = "Se ha terminado el juego\n" \
-				"Se ha producido un empate.\n\n";
-			indiceArray = appendArray(array, buffer, indiceArray, bufferSize);
-		} else {
-			uint8_t bufferSize = 45;
-			char* buffer = "Se ha terminado el juego\n" \
-				"Gana el jugador X\n\n";
-			indiceArray = appendArray(array, buffer, indiceArray, bufferSize);
-			array[indiceArray-3] = '0' + ganador;
-		}
-	}
 	array[indiceArray++] = '\0';
 	linea_serie_drv_enviar_array(array);
-}
-
-// Inicializa las variables del modulo
-void juego_inicializar() {
-	cuenta = 0;
-	tablero_inicializar(&cuadricula);
-	conecta_K_vacio_cargar_tablero();
 }
 
 // Muestra las intrucciones de tutorial por pantalla
@@ -213,7 +201,7 @@ int esJugadaValida(char comando[]){
 		int columna = comando[2] - '0';
 		
 		if(fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS) {	
-			return celda_vacia(tablero_leer_celda(&cuadricula, fila, columna));
+			return celda_vacia(tablero_leer_celda(&cuadricula, fila - 1, columna - 1));
 		}
 	}
 	return FALSE;
@@ -227,9 +215,18 @@ void enviar_error(uint8_t tipoError) {
 	
 }
 
+void mostrar_turno_jugada(){
+	char *array;
+	if(turno == 0 | turno == 1){
+		array = "Turno jugador 1:\n";
+	}else{
+		array = "Turno jugador 2:\n";
+	}
+	linea_serie_drv_enviar_array(array);
+}
+
 // Termina una partida del juego y muestra quien ha ganado
 void termina_juego(uint8_t ganadorCuenta) {
-	
 	if (estado == ESPERANDO_INICIO) {
 		char* mensaje = "\nTodavia no se ha iniciado un juego.\n";
 		linea_serie_drv_enviar_array(mensaje);
@@ -242,26 +239,52 @@ void termina_juego(uint8_t ganadorCuenta) {
 	
 }
 
+void mostrar_resultados(){
+	char *array;
+	if(ganador == VACIO){
+		if(turno == 0 | turno == 1){
+			array = "El jugador 1 se ha rendido\n";
+		}else {
+			array = "El jugador 2 se ha rendido\n";
+		}
+	}else if(ganador == JUGADOR_1_COLOR){
+		array = "Ha ganado jugador 1\n";
+	}else{
+		array = "Ha ganado jugador 2\n";
+	}
+	
+	linea_serie_drv_enviar_array(array);
+}
+
 // Cancela una jugada pendiente
 void cancelar_jugada(void) {
-	
 	if (estado != ESPERANDO_DECISION_JUGADA) {
 		return;
 	}
-	
-	estado = ESTADO_ESPERANDO_JUGADA;
 	filaJugada = -1;
 	columnaJugada = -1;
-	conecta_K_visualizar_tablero(); // Esto igual no se visualiza
-	estado = ESTADO_ESPERANDO_JUGADA;
-	
+	estado = ESPERANDO_TX_DECISION_JUGADA;
+	linea_serie_drv_enviar_array("Jugada cancelada\n");
+}
+
+void juego_inicializar(){
+	tablero_inicializar(&cuadricula);
+	turno = 1;
+	ganador = VACIO;
+	filaJugada = -1;
+	columnaJugada = -1;
+	tiempoInicioPartida = 
 }
 
 // Trata los comandos llegados de la terminal y actualiza el estado
 void juego_tratar_comando(char comando[3]){
 	if(estado == ESPERANDO_INICIO){
 		if(compararVectorConString(comando, "NEW")){
-			conecta_K_test_cargar_tablero();
+			juego_inicializar();
+			if (primeraPartida) {
+				conecta_K_test_cargar_tablero();
+				primeraPartida = FALSE;
+			}
 			estado = ESPERANDO_TX_FIN_COMANDO_1;
 		} else {
 			enviar_error(COMANDO_NO_VALIDO);
@@ -270,7 +293,7 @@ void juego_tratar_comando(char comando[3]){
 		if (compararVectorConString(comando, "TAB")) {
 			mostrar_tablero = TRUE;
 		} else if(compararVectorConString(comando, "END")) {
-			estado = TERMINAR_JUEGO;
+			estado = ESPERANDO_TX_FIN_COMANDO_3;
 		} else if(esJugadaValida(comando)){
 			filaJugada = comando[0] - '0' - 1;
 			columnaJugada = comando[2] - '0' - 1;
@@ -284,7 +307,6 @@ void juego_tratar_comando(char comando[3]){
 
 // Muestra por pantalla los resultados del comando introducido
 void juego_trasmision_realizada(void){
-	
 	if (mostrar_tablero == TRUE) {
 		mostrar_tablero = FALSE;
 		conecta_K_visualizar_tablero();
@@ -304,13 +326,17 @@ void juego_trasmision_realizada(void){
 	}
 	
 	if (estado == ESPERANDO_TX_FIN_COMANDO_1){
-		estado = ESTADO_ESPERANDO_JUGADA;
+		estado = ESPERANDO_TX_DECISION_JUGADA;
 		conecta_K_visualizar_tablero();
 	}else if(estado == ESPERANDO_TX_FIN_COMANDO_2){
 		estado = ESPERANDO_DECISION_JUGADA;
 		conecta_K_visualizar_tablero();
-	} else if (estado == TERMINAR_JUEGO) {
-		termina_juego(VACIO);
+	}else if (estado == ESPERANDO_TX_FIN_COMANDO_3){
+		estado = ESPERANDO_INICIO;
+		mostrar_resultados();
+	} else if (estado == ESPERANDO_TX_DECISION_JUGADA){
+		mostrar_turno_jugada();
+		estado = ESTADO_ESPERANDO_JUGADA;
 	}
 }
 
@@ -319,23 +345,29 @@ void juego_alarma(void){
 	if(estado == ESPERANDO_DECISION_JUGADA){
 		uint8_t color = 0;
 		if(turno == 0 || turno == 1){
-			color = 1;
+			color = JUGADOR_1_COLOR;
 			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_1_COLOR); 
 		}else{
-			color = 2;
+			color = JUGADOR_2_COLOR;
 			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_2_COLOR); 
 		}
 			
-		if (conecta_K_hay_linea_arm_arm(&cuadricula, filaJugada, columnaJugada, color)) {
-			uint8_t ganadorCuenta = (turno / 2) +1;
-			termina_juego(ganadorCuenta);
+		if(conecta_K_hay_linea_arm_arm(&cuadricula, filaJugada, columnaJugada, color)) {
+			if(turno == 0 || turno == 1){
+				ganador = JUGADOR_1_COLOR;
+			}else {
+				ganador = JUGADOR_2_COLOR;
+			}
+			estado = ESPERANDO_INICIO;
+			mostrar_resultados();
 		} else {
+			filaJugada = -1;
+			columnaJugada = -1;
 			turno = (turno + 1) % 4; 
+			estado = ESPERANDO_TX_DECISION_JUGADA;
 			conecta_K_visualizar_tablero();
-			estado = ESTADO_ESPERANDO_JUGADA;
 		}
 		
-		filaJugada = -1;
-		columnaJugada = -1;
+		
 	}
 }

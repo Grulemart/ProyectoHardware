@@ -81,7 +81,8 @@ void planificador(void) {
 				if (auxData == 1) { // EINT1
 					cancelar_jugada();
 				} else { // EINT2
-					termina_juego(0); // Reinicio del juego
+					juego_tratar_comando("END");
+					linea_serie_drv_enviar_array("$END!\n");
 				}
 			} else {
 				isPowerDown = FALSE;
