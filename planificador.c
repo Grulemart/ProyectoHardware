@@ -29,26 +29,21 @@ static uint8_t isPowerDown = FALSE;
 void planificador(void) {
 	int i;
 	static char comando[3];
-	// Inicializaci�n de I/O
+	
+	// Inicializacion de modulos
 	gpio_hal_iniciar();
 	FIFO_inicializar(GPIO_OVERFLOW, GPIO_OVERFLOW_BITS);
-	
 	temporizador_drv_iniciar();
 	temporizador_drv_empezar();
 	iniciar_botones(FIFO_encolar, BOTON_PULSADO, MONITORIZAR_BOTON);
 	alarma_inicializar(ALARMA, ALARMA_OVERFLOW, FIFO_encolar);
 	iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
-	
 	hello_world_inicializar(GPIO_HELLO_WORLD, GPIO_HELLO_WORLD_BITS, VISUALIZAR_HELLO);
-	
 	juego_inicializar();
-	//conecta_K_test_cargar_tablero();
 	visualizar_inicializar(GPIO_VISUALIZAR, GPIO_VISUALIZAR_BITS);
-	
-
-	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
-	
 	WD_hal_inicializar(WATCHDOG_TIME);
+	
+	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
 	
 	juego_mostrar_instrucciones();
 	
@@ -60,7 +55,6 @@ void planificador(void) {
 			power_hal_wait();
 		}
 		WD_hal_feed();
-
 		
 		// Datos a procesar
 		if (evento == TIMER0) {
@@ -81,8 +75,10 @@ void planificador(void) {
 				if (auxData == 1) { // EINT1
 					cancelar_jugada();
 				} else { // EINT2
+					// Equivalente a escribir por comando '$END!'
 					juego_tratar_comando("END");
 					linea_serie_drv_enviar_array("$END!\n");
+					//juego_transmision_realizada();
 				}
 			} else {
 				isPowerDown = FALSE;
@@ -113,7 +109,7 @@ void planificador(void) {
 			auxData = 0;
 			juego_tratar_comando(comando);
 		}else if (evento == EV_TX_SERIE){
-			juego_trasmision_realizada();
+			juego_transmision_realizada();
 			alarma_reprogramar(POWER_DOWN, 0);
 		}else if (evento == HACER_JUGADA){
 			juego_alarma();

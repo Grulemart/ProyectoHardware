@@ -70,14 +70,14 @@ void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
 }
 
 // Muestra el tiempo transcurrido en us desde que se inicia el temporizador por UART
-void conecta_K_visualizar_tiempo(void){
-	uint64ToAsciiArray(clock_get_us(), array);
+char* conecta_K_visualizar_tiempo(uint32_t tiempo){
+	uint64ToAsciiArray(tiempo, array);
 	array[8] = ' ';
 	array[9] = 'u';
 	array[10] = 's';
 	array[11] = '\n';
 	array[12] = '\0';
-	linea_serie_drv_enviar_array(array);
+	return array;
 	
 }
 
@@ -225,35 +225,21 @@ void mostrar_turno_jugada(){
 	linea_serie_drv_enviar_array(array);
 }
 
-// Termina una partida del juego y muestra quien ha ganado
-void termina_juego(uint8_t ganadorCuenta) {
-	if (estado == ESPERANDO_INICIO) {
-		char* mensaje = "\nTodavia no se ha iniciado un juego.\n";
-		linea_serie_drv_enviar_array(mensaje);
-		return;
-	}
-	
-	ganador = ganadorCuenta;
-	conecta_K_visualizar_tablero();
-	estado = ESPERANDO_INICIO;
-	
-}
-
 void mostrar_resultados(){
-	char *array;
+	uint8_t turnoJugador = (turno / 2) + 1;
+	char* buffer;
 	if(ganador == VACIO){
-		if(turno == 0 | turno == 1){
-			array = "El jugador 1 se ha rendido\n";
-		}else {
-			array = "El jugador 2 se ha rendido\n";
-		}
-	}else if(ganador == JUGADOR_1_COLOR){
-		array = "Ha ganado jugador 1\n";
-	}else{
-		array = "Ha ganado jugador 2\n";
+		char array[27] = "El jugador 1 se ha rendido\n";
+		array[11] = '0' + turnoJugador;
+		linea_serie_drv_enviar_array(array);
+	} else {
+		char array[100] = "Ha ganado jugador 1\n" \
+			"Tiempo CPU: ";
+		array[18] = '0' + turnoJugador;
+		buffer = conecta_K_visualizar_tiempo(clock_get_us() - tiempoInicioPartida);
+		appendArray(array, buffer, 32, 13);
+		linea_serie_drv_enviar_array(array);
 	}
-	
-	linea_serie_drv_enviar_array(array);
 }
 
 // Cancela una jugada pendiente
@@ -273,7 +259,7 @@ void juego_inicializar(){
 	ganador = VACIO;
 	filaJugada = -1;
 	columnaJugada = -1;
-	tiempoInicioPartida = 
+	tiempoInicioPartida = clock_get_us();
 }
 
 // Trata los comandos llegados de la terminal y actualiza el estado
@@ -306,7 +292,7 @@ void juego_tratar_comando(char comando[3]){
 }
 
 // Muestra por pantalla los resultados del comando introducido
-void juego_trasmision_realizada(void){
+void juego_transmision_realizada(void){
 	if (mostrar_tablero == TRUE) {
 		mostrar_tablero = FALSE;
 		conecta_K_visualizar_tablero();

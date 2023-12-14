@@ -9,14 +9,12 @@
 #define COMANDO_NO_VALIDO 1
 #define JUGADA_NO_VALIDA 2
 
-void conecta_K_visualizar_tiempo(void);
+char* conecta_K_visualizar_tiempo(uint32_t tiempo);
 void juego_inicializar(void);
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]);
-void juego_tratar_evento(uint8_t ID_evento, uint32_t auxData);
 void juego_tratar_comando(char comando[3]);
-void juego_trasmision_realizada(void);
+void juego_transmision_realizada(void);
 void juego_alarma(void);
-void termina_juego(uint8_t ganador);
 void cancelar_jugada(void);
 
 void conecta_K_test_cargar_tablero(void);
