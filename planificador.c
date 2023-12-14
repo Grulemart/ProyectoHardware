@@ -90,14 +90,14 @@ void planificador(void) {
 				alarma_activar(evento, CANCELAR_ALARMA, auxData);
 				habilitar_interrupcion((uint8_t)auxData);
 			}
-		} else if (evento == VISUALIZAR_CUENTA) {
+		} else if(evento == VISUALIZAR_CUENTA) {
 			// Visualiza el intervalo entre pulsaciones en ms
 			visualizar((uint8_t)auxData);
 		} else if (evento == VISUALIZAR_HELLO) {
 			hello_world_tick_tack();
 		}
-		else if (evento == POWER_DOWN) {
-			//power_hal_deep_sleep();
+		else if(evento == POWER_DOWN) {
+			power_hal_deep_sleep();
 			//iniciar_linea_serie(EV_RX_SERIE, EV_TX_SERIE, FIFO_encolar, GPIO_SERIE_ERROR);
 			isPowerDown = TRUE;
 			alarma_reprogramar(POWER_DOWN, 0);
