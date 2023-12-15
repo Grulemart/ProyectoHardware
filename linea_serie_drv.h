@@ -8,7 +8,7 @@
 #define ESTADO_RECIBIENDO_TRAMA 2
 #define START_DELIMETER '$'
 #define END_DELIMETER '!'
-#define SEND_BUFFER_SIZE 200
+
 #define AUX_DATA_COMANDO_TERMINADO 18
 
 void iniciar_linea_serie(uint8_t _idEventoRX, uint8_t _idEventoTX, void(*funcion_encolar_evento)(uint8_t, uint32_t), uint8_t _gpio_serie_error);
