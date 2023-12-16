@@ -43,7 +43,7 @@ void planificador(void) {
 	visualizar_inicializar(GPIO_VISUALIZAR, GPIO_VISUALIZAR_BITS);
 	WD_hal_inicializar(WATCHDOG_TIME);
 	
-	alarma_activar(POWER_DOWN, USUARIO_AUSENTE, 0);
+	alarma_activar(POWER_DOWN, USUARIO_AUSENTE + REPEAT_ALARM, 0);
 	
 	juego_mostrar_instrucciones();
 	

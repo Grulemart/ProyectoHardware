@@ -16,7 +16,8 @@ static volatile int estado = ESTADO_ESPERANDO_INICIO; // Estado de la UART para 
 static volatile char receive_buffer[RECEIVE_BUFFER_SIZE];
 static volatile uint8_t receive_buffer_index = 0;
 
-static  char send_buffer[MAX_BUFFERS][SEND_BUFFER_SIZE];
+static char send_array[SEND_BUFFER_SIZE] = {0}; 
+static char send_buffer[MAX_BUFFERS][SEND_BUFFER_SIZE] = {0};
 static volatile uint32_t send_buffer_index = 0;
 static volatile uint8_t is_sending = FALSE;
 static volatile uint8_t is_waiting[MAX_BUFFERS] = { FALSE };
@@ -107,14 +108,15 @@ void recibir_caracter(char c){
 // Envia el current_send_index a la UART
 void sendToUART() {
 	send_buffer_index = 0;
-	uart0_enviar_caracter(send_buffer[current_send_index][send_buffer_index++]);
+	uart0_enviar_caracter(send_array[send_buffer_index++]);
 }
 
 // Copia los contenidos de buffer en array
 void copyArray(char* array, char* buffer) {
-	for(send_buffer_index = 0; send_buffer_index < SEND_BUFFER_SIZE; send_buffer_index++){
-		array[send_buffer_index] = buffer[send_buffer_index];
-		if(buffer[send_buffer_index] == '\0'){
+	uint16_t i;
+	for(i = 0; i < SEND_BUFFER_SIZE || buffer[i] == '\0'; i++){
+		array[i] = buffer[i];
+		if(buffer[i] == '\0'){
 			break;
 		}
 	}
@@ -126,36 +128,33 @@ void linea_serie_drv_enviar_array(char* array){
 	if(*array == '\0'){ return; }
 	
 	if(is_sending == TRUE){
-		queue_send_index = (queue_send_index + 1) % MAX_BUFFERS;
 		if (is_waiting[queue_send_index] == TRUE) { return; } // OVERFLOW
 		is_waiting[queue_send_index] = TRUE;
 		copyArray(send_buffer[queue_send_index], array);
+		queue_send_index = (queue_send_index + 1) % MAX_BUFFERS;
 		return;
 	}
-	
-	copyArray(send_buffer[current_send_index], array);
+	is_sending = TRUE;
+	copyArray(send_array, array);
 	sendToUART();
 }
 
-
-
 void linea_serie_drv_continuar_envio(void){
-	// Cuando se para de enviar carácteres
-	if(send_buffer_index >= SEND_BUFFER_SIZE || send_buffer[current_send_index][send_buffer_index] == '\0'){
-		
-		if (is_waiting[current_send_index++] == TRUE) {
+	// Se para de enviar carácteres
+	if(send_buffer_index >= SEND_BUFFER_SIZE || send_array[send_buffer_index] == '\0'){
+		if (is_waiting[current_send_index] == TRUE) {
 			is_waiting[current_send_index] = FALSE;
+			copyArray(send_array, send_buffer[current_send_index]);
 			current_send_index = (current_send_index + 1) % MAX_BUFFERS;
 			sendToUART();
 		} else {
 			is_sending = FALSE;
 		}
-	
 		funcionEncolarEvento(idEventoTX, 0);
 		return;
 	}
 	// Sigue habiendo carácteres por enviar
-	uart0_enviar_caracter(send_buffer[current_send_index][send_buffer_index++]);
+	uart0_enviar_caracter(send_array[send_buffer_index++]);
 }
 
 // Inicializa las variables y registros necesarios desde el modulo linea_serie_hal

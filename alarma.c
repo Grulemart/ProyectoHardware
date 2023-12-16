@@ -2,7 +2,7 @@
 #include "alarma.h"
 #include "timer_drv.h"
 
-#define PERIODO_TIMER1 1000	// Programar TIMER1 para que interrumpa cada 1 ms
+#define PERIODO_TIMER1 4000	// Programar TIMER1 para que interrumpa cada 1 ms
 
 #define TRUE 1
 #define FALSE 0

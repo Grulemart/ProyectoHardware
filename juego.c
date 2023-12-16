@@ -7,7 +7,7 @@
 #include "alarma.h"
 #include "config_conecta_K.h"
 
-#define TIEMPO_JUGADA 10000 //ms
+#define TIEMPO_JUGADA 1000 //ms
 
 #define TRUE 1
 #define FALSE 0
@@ -125,6 +125,16 @@ uint8_t appendArray(char array[250], char buffer[50], uint8_t index, uint8_t siz
 	return index + size;
 }
 
+void mostrar_turno_jugada(){
+	char *array;
+	if(turno == 0 | turno == 1){
+		array = "Turno jugador 1:\n";
+	}else{
+		array = "Turno jugador 2:\n";
+	}
+	linea_serie_drv_enviar_array(array);
+}
+
 // Visualiza el tablero cargado en memoria por pantalla
 void conecta_K_visualizar_tablero(){
 	static char array[250];
@@ -167,6 +177,7 @@ void conecta_K_visualizar_tablero(){
 	}
 	array[indiceArray++] = '\0';
 	linea_serie_drv_enviar_array(array);
+	mostrar_turno_jugada();
 }
 
 // Muestra las intrucciones de tutorial por pantalla
@@ -176,7 +187,7 @@ void juego_mostrar_instrucciones(void) {
 		"Escribe $NEW! para una nueva partida\n"\
 		"Escribe $#-#! (fila-columna) para realizar una jugada\n"\
 	  "Escribe $TAB! para mostrar el tablero\n"\
-	  "Escribe $END! para rendirse\n";
+	  "Escribe $END! para rendirse\n\0";
 	
 	linea_serie_drv_enviar_array(instrucciones);
 }
@@ -213,16 +224,6 @@ void enviar_error(uint8_t tipoError) {
 	error = TRUE;
 	errorEstado = tipoError;
 	
-}
-
-void mostrar_turno_jugada(){
-	char *array;
-	if(turno == 0 | turno == 1){
-		array = "Turno jugador 1:\n";
-	}else{
-		array = "Turno jugador 2:\n";
-	}
-	linea_serie_drv_enviar_array(array);
 }
 
 void mostrar_resultados(){
@@ -321,7 +322,7 @@ void juego_transmision_realizada(void){
 		estado = ESPERANDO_INICIO;
 		mostrar_resultados();
 	} else if (estado == ESPERANDO_TX_DECISION_JUGADA){
-		mostrar_turno_jugada();
+		//mostrar_turno_jugada();
 		estado = ESTADO_ESPERANDO_JUGADA;
 	}
 }

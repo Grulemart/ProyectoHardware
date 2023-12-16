@@ -2,7 +2,8 @@
 #include "hello_world.h"
 #include "alarma.h"
 
-#define TIEMPO_ENTRE_BLINK_182 0x800001f4 
+#define REPROGRAMAR_ALARMA 0x80000000
+#define TIEMPO_ENTRE_BLINK_182 100
 
 static GPIO_HAL_PIN_T helloWorldPin;
 static GPIO_HAL_PIN_BITS_T helloWorldPinBits;
@@ -16,7 +17,7 @@ void hello_world_inicializar(GPIO_HAL_PIN_T bit, GPIO_HAL_PIN_BITS_T pinBits, ui
 	helloWorldPinBits = pinBits;
 	gpio_hal_sentido(helloWorldPin, helloWorldPinBits, GPIO_HAL_PIN_DIR_OUTPUT);
 	
-	alarma_activar(evento, TIEMPO_ENTRE_BLINK_182, 0);
+	alarma_activar(evento, TIEMPO_ENTRE_BLINK_182 + REPROGRAMAR_ALARMA, 0);
 }
 
 // Procesa un ciclo del módulo, se añade 1 al contador de bits en la GPIO
