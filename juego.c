@@ -6,8 +6,11 @@
 #include "linea_serie_drv.h"
 #include "alarma.h"
 #include "config_conecta_K.h"
+#include <stdio.h>
 
-#define TIEMPO_JUGADA 1000 //ms
+#define TIEMPO_DECISION_JUGADA 3000 //ms
+
+#define SECS_TO_US 1000000
 
 #define TRUE 1
 #define FALSE 0
@@ -18,33 +21,26 @@
 #define JUGADOR_2_COLOR 2
 
 #define ESPERANDO_INICIO 0
-#define ESPERANDO_TX_FIN_COMANDO_1 1
-#define ESTADO_ESPERANDO_JUGADA 2
-#define ESPERANDO_TX_FIN_COMANDO_2 3
-#define ESPERANDO_DECISION_JUGADA 4
-#define ESPERANDO_TX_FIN_COMANDO_3 5
-#define ESPERANDO_TX_RESULTADOS 6
-#define ESPERANDO_FIN_COMANDO_4 7
-#define ESPERANDO_TX_ERROR 8
-#define ESPERANDO_FIN_COMANDO_5 9
-#define ESPERANDO_TX_ERROR2 10
-#define TERMINAR_JUEGO 11
-#define ESPERANDO_TX_DECISION_JUGADA 12
+#define ESPERANDO_JUGADA 1
+#define ESPERANDO_DECISION 2
 
-static volatile uint8_t cuenta; // Variable que maneja el numero de turnos realizados
-static volatile uint64_t intervalo;
+#define TURNO_JUGADOR_1 1
+#define TURNO_JUGADOR_2 2
+
+
 static TABLERO cuadricula; // Estructura que guarda los datos del tablero
 static int filaJugada = -1;	// Fila de la jugada por confirmar (-1 no se cconfirma ninguna)
 static int columnaJugada = -1; // Columna de la jugada por confirmar (-1 no se cconfirma ninguna)
-static char array[13]; // Array auxiliar para enviar comandos a UART
-static int estado = ESPERANDO_INICIO; // Estado de juego
-static int error = FALSE;	// Variable que confirma si hay un error
-static int errorEstado = COMANDO_NO_RECONOCIDO; // Tipo de error del modulo
+static int estado = ESPERANDO_INICIO;
 static int turno = 1;
-static uint8_t mostrar_tablero = FALSE;
 static uint8_t ganador = VACIO;
 static int primeraPartida = TRUE;
 static uint64_t tiempoInicioPartida;
+static uint64_t tiempoTotalHayLinea;
+static int numVecesHayLinea = 0;
+static uint64_t tiempoInicioJugada;
+static uint64_t tiempoTotalPensarJugada;
+static int numVecesPensarJugada = 0;
 
 static char* errorComandoNoReconocido = " Comando no reconocido\n";
 static char* errorComandoNoValido = " Comando no valido en el contexto actual\n";
@@ -52,6 +48,9 @@ static char* errorJugadaNoValida = " Jugada no valida (los valores tienen que es
 
 extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna);
 extern uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
+
+
+// Funciones Auxiliares
 
 // Función para convertir un entero a una cadena de caracteres (ASCII)
 void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
@@ -69,20 +68,65 @@ void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
     asciiArray[8] = '\0';
 }
 
-// Muestra el tiempo transcurrido en us desde que se inicia el temporizador por UART
-char* conecta_K_visualizar_tiempo(uint32_t tiempo){
-	uint64ToAsciiArray(tiempo, array);
-	array[8] = ' ';
-	array[9] = 'u';
-	array[10] = 's';
-	array[11] = '\n';
-	array[12] = '\0';
-	return array;
+
+
+// Añade el contenido de buffer al final de array
+// Devuelve el índice del último componente añadido al array
+uint8_t appendArray(char array[250], char buffer[50], uint8_t index, uint8_t size) {
+	uint8_t i;
+	for (i = 0; i < size; i++) {
+		array[index + i] = buffer[i];
+	}
+	return index + size;
+}
+
+int juego_turno_jugador(){
+	if(turno == 0 || turno == 1){
+		return TURNO_JUGADOR_1;
+	}
+	return TURNO_JUGADOR_2;
 	
 }
 
+
+void juego_mostrar_turno_jugada(){
+	char array[100];
+	sprintf(array, "Turno jugador %d\n", juego_turno_jugador());
+	
+	linea_serie_drv_enviar_array(array);
+}
+
+// Compara dos vectores 
+int compararVectorConString(char vector[], char cadena[]){
+	int i;
+	for(i = 0; i < 3; i++){
+		if(vector[i] != cadena[i]){
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+
+
+// Comprueba si una jugada introducida es válida
+// La jugada es un array de carácteres de tipo #-#
+// donde # deben ser numeros de 1 al numero especificado de filas o columnas
+int juego_es_jugada_valida(char comando[]){
+	if(comando[1] == '-'){
+		int fila = comando[0] - '0';
+		int columna = comando[2] - '0';
+		
+		if(fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS) {	
+			return celda_vacia(tablero_leer_celda(&cuadricula, fila - 1, columna - 1));
+		}
+	}
+	return FALSE;
+}
+
+
+
 // Carga los datos de un tablero a mitad partida para comprobar que el programa procesa un estado acabado
-void conecta_K_test_cargar_tablero(){
+void juego_cargar_test_tablero(){
 	uint8_t i;
 	uint8_t j;
 	uint8_t 
@@ -104,39 +148,10 @@ tablero_test[7][7] =
 	
 }
 
-// Carga un tablero vacio en memoria
-void conecta_K_vacio_cargar_tablero(){
-	uint8_t i;
-	uint8_t j;
-	for (i = 0; i < NUM_FILAS; i++){
-		for(j = 0; j < NUM_COLUMNAS; j++){
-			tablero_insertar_color(&cuadricula, i, j, VACIO);
-		}
-	}
-}
 
-// Añade el contenido de buffer al final de array
-// Devuelve el índice del último componente añadido al array
-uint8_t appendArray(char array[250], char buffer[50], uint8_t index, uint8_t size) {
-	uint8_t i;
-	for (i = 0; i < size; i++) {
-		array[index + i] = buffer[i];
-	}
-	return index + size;
-}
-
-void mostrar_turno_jugada(){
-	char *array;
-	if(turno == 0 | turno == 1){
-		array = "Turno jugador 1:\n";
-	}else{
-		array = "Turno jugador 2:\n";
-	}
-	linea_serie_drv_enviar_array(array);
-}
 
 // Visualiza el tablero cargado en memoria por pantalla
-void conecta_K_visualizar_tablero(){
+void juego_mostrar_tablero(){
 	static char array[250];
 	int fila;
 	int columna;
@@ -177,12 +192,10 @@ void conecta_K_visualizar_tablero(){
 	}
 	array[indiceArray++] = '\0';
 	linea_serie_drv_enviar_array(array);
-	mostrar_turno_jugada();
 }
 
 // Muestra las intrucciones de tutorial por pantalla
 void juego_mostrar_instrucciones(void) {
-	
 	char* instrucciones = "Instrucciones de juego:\n"\
 		"Escribe $NEW! para una nueva partida\n"\
 		"Escribe $#-#! (fila-columna) para realizar una jugada\n"\
@@ -192,67 +205,34 @@ void juego_mostrar_instrucciones(void) {
 	linea_serie_drv_enviar_array(instrucciones);
 }
 
-// Compara dos vectores 
-int compararVectorConString(char vector[], char cadena[]){
-	int i;
-	for(i = 0; i < 3; i++){
-		if(vector[i] != cadena[i]){
-			return FALSE;
-		}
-	}
-	return TRUE;
+
+void juego_mostrar_estadisticas(){
+		uint64_t tiempoTotalPartida = clock_get_us() - tiempoInicioPartida; 
+		char array[250];
+		sprintf(array, "Tiempo Total CPU: %llu us (~%llu segundos)\n"
+		"Tiempo Total en hacer jugadas: %llu us (~%llu segundos)\n"
+		"Tiempo Medio en hacer jugada: %llu us (~%llu segundos)\n"
+		"Tiempo Total computo hay linea: %llu us (~%llu segundos)\n"
+		"Tiempo Medio computo hay linea: %llu us (~%llu segundos)\n", 
+		tiempoTotalPartida, tiempoTotalPartida/SECS_TO_US,
+		tiempoTotalPensarJugada, tiempoTotalPensarJugada/SECS_TO_US, 
+		tiempoTotalPensarJugada/numVecesPensarJugada, tiempoTotalPensarJugada/(numVecesPensarJugada * SECS_TO_US),
+		tiempoTotalHayLinea, tiempoTotalHayLinea/SECS_TO_US,
+		tiempoTotalHayLinea/numVecesHayLinea, tiempoTotalHayLinea/(numVecesHayLinea * SECS_TO_US));
+		linea_serie_drv_enviar_array(array);
 }
 
-// Comprueba si una jugada introducida es válida
-// La jugada es un array de carácteres de tipo #-#
-// donde # deben ser numeros de 1 al numero especificado de filas o columnas
-int esJugadaValida(char comando[]){
-	if(comando[1] == '-'){
-		int fila = comando[0] - '0';
-		int columna = comando[2] - '0';
-		
-		if(fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS) {	
-			return celda_vacia(tablero_leer_celda(&cuadricula, fila - 1, columna - 1));
-		}
-	}
-	return FALSE;
-}
-
-// Envia un error al modulo
-void enviar_error(uint8_t tipoError) {
-	
-	error = TRUE;
-	errorEstado = tipoError;
-	
-}
-
-void mostrar_resultados(){
-	uint8_t turnoJugador = (turno / 2) + 1;
-	char* buffer;
+void juego_mostrar_resultados(){
+	char array[50];
 	if(ganador == VACIO){
-		char array[27] = "El jugador 1 se ha rendido\n";
-		array[11] = '0' + turnoJugador;
-		linea_serie_drv_enviar_array(array);
+		sprintf(array, "El jugador %d se ha rendido\n",juego_turno_jugador());
 	} else {
-		char array[100] = "Ha ganado jugador 1\n" \
-			"Tiempo CPU: ";
-		array[18] = '0' + turnoJugador;
-		buffer = conecta_K_visualizar_tiempo(clock_get_us() - tiempoInicioPartida);
-		appendArray(array, buffer, 32, 13);
-		linea_serie_drv_enviar_array(array);
+		sprintf(array, "El jugador %d ha ganado\n",juego_turno_jugador());
 	}
+	linea_serie_drv_enviar_array(array);
+	juego_mostrar_estadisticas();
 }
 
-// Cancela una jugada pendiente
-void cancelar_jugada(void) {
-	if (estado != ESPERANDO_DECISION_JUGADA) {
-		return;
-	}
-	filaJugada = -1;
-	columnaJugada = -1;
-	estado = ESPERANDO_TX_DECISION_JUGADA;
-	linea_serie_drv_enviar_array("Jugada cancelada\n");
-}
 
 void juego_inicializar(){
 	tablero_inicializar(&cuadricula);
@@ -268,93 +248,99 @@ void juego_tratar_comando(char comando[3]){
 	if(estado == ESPERANDO_INICIO){
 		if(compararVectorConString(comando, "NEW")){
 			juego_inicializar();
-			if (primeraPartida) {
-				conecta_K_test_cargar_tablero();
+			if(primeraPartida){
+				juego_cargar_test_tablero();
 				primeraPartida = FALSE;
 			}
-			estado = ESPERANDO_TX_FIN_COMANDO_1;
+			
+			juego_mostrar_tablero();
+			juego_mostrar_turno_jugada();
+			tiempoInicioJugada = clock_get_us();
+			tiempoInicioPartida = clock_get_us();
+			estado = ESPERANDO_JUGADA;
 		} else {
-			enviar_error(COMANDO_NO_VALIDO);
+			linea_serie_drv_enviar_array("Comando erroneo se esperaba NEW\n");
 		}
-	}else if(estado == ESTADO_ESPERANDO_JUGADA){
-		if (compararVectorConString(comando, "TAB")) {
-			mostrar_tablero = TRUE;
-		} else if(compararVectorConString(comando, "END")) {
-			estado = ESPERANDO_TX_FIN_COMANDO_3;
-		} else if(esJugadaValida(comando)){
-			filaJugada = comando[0] - '0' - 1;
-			columnaJugada = comando[2] - '0' - 1;
-			alarma_activar(HACER_JUGADA, TIEMPO_JUGADA, 0);
-			estado = ESPERANDO_TX_FIN_COMANDO_2;
-		} else {
-			enviar_error(JUGADA_NO_VALIDA);
+	}else if(estado == ESPERANDO_JUGADA){
+		if(compararVectorConString(comando, "END")){
+			juego_mostrar_resultados();
+			estado = ESPERANDO_INICIO;
+		}else if(juego_es_jugada_valida(comando)){
+			numVecesPensarJugada++;
+			tiempoTotalPensarJugada += clock_get_us() - tiempoInicioJugada;
+			filaJugada = comando[0] - '0' -1;
+			columnaJugada = comando[2] - '0' -1;
+			alarma_activar(HACER_JUGADA, TIEMPO_DECISION_JUGADA, 0);
+			linea_serie_drv_enviar_array("Pulse el boton 1 para cancelar la jugada\n"
+			"Si quiere que la jugada se procese espera 3 segundos\n");
+			juego_mostrar_tablero();
+			estado = ESPERANDO_DECISION;
+		}else {
+			linea_serie_drv_enviar_array("Jugada no válida\n");
 		}
-	}
-}
-
-// Muestra por pantalla los resultados del comando introducido
-void juego_transmision_realizada(void){
-	if (mostrar_tablero == TRUE) {
-		mostrar_tablero = FALSE;
-		conecta_K_visualizar_tablero();
-		return;
-	}
-	
-	if (error == TRUE) {
-		error = FALSE;
-		if (errorEstado == COMANDO_NO_RECONOCIDO) {
-			linea_serie_drv_enviar_array(errorComandoNoReconocido);
-		} else if (errorEstado == COMANDO_NO_VALIDO) {
-			linea_serie_drv_enviar_array(errorComandoNoValido);
-		} else if (errorEstado == JUGADA_NO_VALIDA) {
-			linea_serie_drv_enviar_array(errorJugadaNoValida);
-		}
-		return;
-	}
-	
-	if (estado == ESPERANDO_TX_FIN_COMANDO_1){
-		estado = ESPERANDO_TX_DECISION_JUGADA;
-		conecta_K_visualizar_tablero();
-	}else if(estado == ESPERANDO_TX_FIN_COMANDO_2){
-		estado = ESPERANDO_DECISION_JUGADA;
-		conecta_K_visualizar_tablero();
-	}else if (estado == ESPERANDO_TX_FIN_COMANDO_3){
-		estado = ESPERANDO_INICIO;
-		mostrar_resultados();
-	} else if (estado == ESPERANDO_TX_DECISION_JUGADA){
-		//mostrar_turno_jugada();
-		estado = ESTADO_ESPERANDO_JUGADA;
+	}else if(estado == ESPERANDO_DECISION){
+		linea_serie_drv_enviar_array("Pulse el boton 1 para cancelar la jugada\n"
+			"Si quiere que la jugada se procese espera 3 segundos\n");
 	}
 }
 
 // Realizar la jugada dentro del tablero
 void juego_alarma(void){
-	if(estado == ESPERANDO_DECISION_JUGADA){
+	uint64_t tiempoAntesHayLinea;
+	int hayLinea;
+	if(estado == ESPERANDO_DECISION){
 		uint8_t color = 0;
-		if(turno == 0 || turno == 1){
+		if(juego_turno_jugador() == TURNO_JUGADOR_1){
 			color = JUGADOR_1_COLOR;
 			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_1_COLOR); 
 		}else{
 			color = JUGADOR_2_COLOR;
 			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_2_COLOR); 
 		}
-			
-		if(conecta_K_hay_linea_arm_arm(&cuadricula, filaJugada, columnaJugada, color)) {
-			if(turno == 0 || turno == 1){
+		
+		tiempoAntesHayLinea = clock_get_us();
+		hayLinea = conecta_K_hay_linea_arm_arm(&cuadricula, filaJugada, columnaJugada, color);
+		tiempoTotalHayLinea += clock_get_us() - tiempoAntesHayLinea;
+		numVecesHayLinea++;
+		
+		if(hayLinea) {
+			if(juego_turno_jugador() == TURNO_JUGADOR_1){
 				ganador = JUGADOR_1_COLOR;
 			}else {
 				ganador = JUGADOR_2_COLOR;
 			}
+			filaJugada = -1;
+			columnaJugada = -1;
 			estado = ESPERANDO_INICIO;
-			mostrar_resultados();
+			juego_mostrar_tablero();
+			juego_mostrar_resultados();
 		} else {
 			filaJugada = -1;
 			columnaJugada = -1;
 			turno = (turno + 1) % 4; 
-			estado = ESPERANDO_TX_DECISION_JUGADA;
-			conecta_K_visualizar_tablero();
+			tiempoInicioJugada = clock_get_us();
+			estado = ESPERANDO_JUGADA;
+			juego_mostrar_tablero();
+			juego_mostrar_turno_jugada();
 		}
-		
-		
 	}
 }
+
+void juego_terminar_partida(void){
+	if(estado == ESPERANDO_JUGADA){
+		juego_mostrar_resultados();
+		estado = ESPERANDO_INICIO;
+	}
+}
+
+void juego_cancelar_jugada(void){
+	if(estado == ESPERANDO_DECISION){
+		// Cancelamos la alarma
+		alarma_activar(HACER_JUGADA, 0, 0);
+		filaJugada = -1;
+		columnaJugada= -1;
+		juego_mostrar_tablero();
+	}
+	
+}
+

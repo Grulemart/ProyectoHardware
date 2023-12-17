@@ -46,6 +46,7 @@ void planificador(void) {
 	alarma_activar(POWER_DOWN, USUARIO_AUSENTE + REPEAT_ALARM, 0);
 	
 	juego_mostrar_instrucciones();
+
 	
 	while(overflow != HAY_OVERFLOW) {
 		
@@ -72,13 +73,11 @@ void planificador(void) {
 		} else if (evento == BOTON_PULSADO) {
 				alarma_reprogramar(POWER_DOWN, 0);
 			if (isPowerDown == FALSE) {
-				if (auxData == 1) { // EINT1
-					cancelar_jugada();
-				} else { // EINT2
-					// Equivalente a escribir por comando '$END!'
-					juego_tratar_comando("END");
-					linea_serie_drv_enviar_array("$END!\n");
-					//juego_transmision_realizada();
+				if (auxData == BOTON_1) { 
+					juego_cancelar_jugada();
+				} else { 
+					// Equivalente a escribir por comando '$END!
+					juego_terminar_partida();
 				}
 			} else {
 				isPowerDown = FALSE;
@@ -109,7 +108,6 @@ void planificador(void) {
 			auxData = 0;
 			juego_tratar_comando(comando);
 		}else if (evento == EV_TX_SERIE){
-			juego_transmision_realizada();
 			alarma_reprogramar(POWER_DOWN, 0);
 		}else if (evento == HACER_JUGADA){
 			juego_alarma();

@@ -7,7 +7,7 @@
 #define FALSE 0
 
 #define RECEIVE_BUFFER_SIZE 3
-#define SEND_BUFFER_SIZE 200
+#define SEND_BUFFER_SIZE 300
 
 #define MAX_BUFFERS 5
 

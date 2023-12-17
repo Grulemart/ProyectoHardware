@@ -4,7 +4,7 @@
 
 #include <stdint.h>
 
-#define TICKS_A_US 15;
+#define TICKS_A_US 60;
 
 void temporizador_hal_iniciar(void);
 void temporizador_hal_empezar(void);

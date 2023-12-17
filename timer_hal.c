@@ -50,7 +50,7 @@ void temporizador_hal_reloj(uint32_t periodo, void (*function_callback)()){
 		T1TCR = 3;
 		T1TCR = 0;	// Timer1 Disable and reset
 	}else{
-		T1PR = 14;	// Prescalar para que el timer 1 cuente cuando pase 1us
+		T1PR = 59;	// Prescalar para que el timer 1 cuente cuando pase 1us
 		T1MR0 = periodo;	// Interrumpe cada periodo en us
 		T1MCR = 3;	//// Generates an interrupt and resets the count when the value of MR0 is reached
 		// configuration of the IRQ slot number 1 of the VIC for Timer 1 Interrupt
