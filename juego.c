@@ -42,59 +42,12 @@ static uint64_t tiempoInicioJugada;
 static uint64_t tiempoTotalPensarJugada;
 static int numVecesPensarJugada = 0;
 
-static char* errorComandoNoReconocido = " Comando no reconocido\n";
-static char* errorComandoNoValido = " Comando no valido en el contexto actual\n";
-static char* errorJugadaNoValida = " Jugada no valida (los valores tienen que estar dentro de los limites del tablero)\n";
 
 extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna);
 extern uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
 
 
 // Funciones Auxiliares
-
-// Función para convertir un entero a una cadena de caracteres (ASCII)
-void uint64ToAsciiArray(uint64_t value, char asciiArray[9]){
-    // Assuming a 64-bit unsigned integer and 8 characters for the ASCII representation
-    // (including the null terminator)
-
-    // Convert the digits
-    int i;
-    for (i = 7; i >= 0; --i) {
-        asciiArray[i] = '0' + value % 10;
-        value /= 10;
-    }
-
-    // Null-terminate the string
-    asciiArray[8] = '\0';
-}
-
-
-
-// Añade el contenido de buffer al final de array
-// Devuelve el índice del último componente añadido al array
-uint8_t appendArray(char array[250], char buffer[50], uint8_t index, uint8_t size) {
-	uint8_t i;
-	for (i = 0; i < size; i++) {
-		array[index + i] = buffer[i];
-	}
-	return index + size;
-}
-
-int juego_turno_jugador(){
-	if(turno == 0 || turno == 1){
-		return TURNO_JUGADOR_1;
-	}
-	return TURNO_JUGADOR_2;
-	
-}
-
-
-void juego_mostrar_turno_jugada(){
-	char array[100];
-	sprintf(array, "Turno jugador %d\n", juego_turno_jugador());
-	
-	linea_serie_drv_enviar_array(array);
-}
 
 // Compara dos vectores 
 int compararVectorConString(char vector[], char cadena[]){
@@ -106,6 +59,25 @@ int compararVectorConString(char vector[], char cadena[]){
 	}
 	return TRUE;
 }
+
+
+// Devuelve el turno del jugador actual
+int juego_turno_jugador(){
+	if(turno == 0 || turno == 1){
+		return TURNO_JUGADOR_1;
+	}
+	return TURNO_JUGADOR_2;
+	
+}
+
+// Muestra por la linea serie el turno del jugador
+void juego_mostrar_turno_jugada(){
+	char array[100];
+	sprintf(array, "Turno jugador %d\n", juego_turno_jugador());
+	
+	linea_serie_drv_enviar_array(array);
+}
+
 
 
 // Comprueba si una jugada introducida es válida
@@ -196,16 +168,16 @@ void juego_mostrar_tablero(){
 
 // Muestra las intrucciones de tutorial por pantalla
 void juego_mostrar_instrucciones(void) {
-	char* instrucciones = "Instrucciones de juego:\n"\
+	char instrucciones[200] = "Instrucciones de juego:\n"\
 		"Escribe $NEW! para una nueva partida\n"\
 		"Escribe $#-#! (fila-columna) para realizar una jugada\n"\
-	  "Escribe $TAB! para mostrar el tablero\n"\
-	  "Escribe $END! para rendirse\n\0";
+	  "Escribe $END! o pulsa el boton 2 para rendirse\n\0";
 	
 	linea_serie_drv_enviar_array(instrucciones);
 }
 
 
+// Muestra las estadísticas de la partida actual
 void juego_mostrar_estadisticas(){
 		uint64_t tiempoTotalPartida = clock_get_us() - tiempoInicioPartida; 
 		char array[250];
@@ -222,6 +194,7 @@ void juego_mostrar_estadisticas(){
 		linea_serie_drv_enviar_array(array);
 }
 
+// Muestra los resultados de la partida actual
 void juego_mostrar_resultados(){
 	char array[50];
 	if(ganador == VACIO){
@@ -234,6 +207,7 @@ void juego_mostrar_resultados(){
 }
 
 
+// Inicializa las variables del juego
 void juego_inicializar(){
 	tablero_inicializar(&cuadricula);
 	turno = 1;
@@ -297,7 +271,7 @@ void juego_alarma(void){
 			color = JUGADOR_2_COLOR;
 			tablero_insertar_color(&cuadricula, filaJugada, columnaJugada, JUGADOR_2_COLOR); 
 		}
-		
+		linea_serie_drv_enviar_array("\nJugada procesada\n");
 		tiempoAntesHayLinea = clock_get_us();
 		hayLinea = conecta_K_hay_linea_arm_arm(&cuadricula, filaJugada, columnaJugada, color);
 		tiempoTotalHayLinea += clock_get_us() - tiempoAntesHayLinea;
@@ -326,21 +300,34 @@ void juego_alarma(void){
 	}
 }
 
+// Termina la partida si hay parida en marcha
 void juego_terminar_partida(void){
 	if(estado == ESPERANDO_JUGADA){
 		juego_mostrar_resultados();
 		estado = ESPERANDO_INICIO;
+	}else if(estado == ESPERANDO_DECISION){
+		alarma_activar(HACER_JUGADA, 0, 0);
+		filaJugada = -1;
+		columnaJugada = -1;
+		juego_mostrar_resultados();
+		estado = ESPERANDO_INICIO;
+	} else if(estado == ESPERANDO_INICIO){
+		linea_serie_drv_enviar_array("No se puede terminar la partida ya que no hay partida en marcha\n");
 	}
 }
 
+// Cancela la jugada si hay una jugada
 void juego_cancelar_jugada(void){
 	if(estado == ESPERANDO_DECISION){
 		// Cancelamos la alarma
 		alarma_activar(HACER_JUGADA, 0, 0);
 		filaJugada = -1;
 		columnaJugada= -1;
+		linea_serie_drv_enviar_array("Jugada cancelada\n");
 		juego_mostrar_tablero();
+		juego_mostrar_turno_jugada();
+		estado = ESPERANDO_JUGADA;
+	} else {
+		linea_serie_drv_enviar_array("No hay jugada que cancelar\n");
 	}
-	
 }
-

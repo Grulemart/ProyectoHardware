@@ -4,8 +4,7 @@
 #include "linea_serie_hal.h"
 #include <inttypes.h>
 
-#define ESTADO_ESPERANDO_INICIO 1
-#define ESTADO_RECIBIENDO_TRAMA 2
+
 #define START_DELIMETER '$'
 #define END_DELIMETER '!'
 

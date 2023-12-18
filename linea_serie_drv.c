@@ -8,6 +8,8 @@
 
 #define RECEIVE_BUFFER_SIZE 3
 #define SEND_BUFFER_SIZE 300
+#define ESTADO_ESPERANDO_INICIO 1
+#define ESTADO_RECIBIENDO_TRAMA 2
 
 #define MAX_BUFFERS 5
 
@@ -48,8 +50,7 @@ uint8_t check_command(void){
 		int fila = receive_buffer[0] - '0';
 		int columna = receive_buffer[2] - '0';
 		
-		// Las jugadas son del 1 al 7 (formato humano), no del 0 al 6 (formato pagina)
-		return (fila >= 1 && fila <= NUM_FILAS && columna >= 1 && columna <= NUM_COLUMNAS); 
+		return TRUE;
 	}
 	return FALSE;
 }
