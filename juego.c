@@ -1,4 +1,3 @@
-
 #include "juego.h"
 #include "llamadas_swi.h"
 #include "tablero.h"
@@ -8,7 +7,7 @@
 #include "config_conecta_K.h"
 #include <stdio.h>
 
-#define TIEMPO_DECISION_JUGADA 3000 //ms
+#define TIEMPO_DECISION_JUGADA 3000 // ms
 
 #define SECS_TO_US 1000000
 
@@ -27,10 +26,9 @@
 #define TURNO_JUGADOR_1 1
 #define TURNO_JUGADOR_2 2
 
-
 static TABLERO cuadricula; // Estructura que guarda los datos del tablero
-static int filaJugada = -1;	// Fila de la jugada por confirmar (-1 no se cconfirma ninguna)
-static int columnaJugada = -1; // Columna de la jugada por confirmar (-1 no se cconfirma ninguna)
+static int filaJugada = -1;    // Fila de la jugada por confirmar (-1 no se confirma ninguna)
+static int columnaJugada = -1; // Columna de la jugada por confirmar (-1 no se confirma ninguna)
 static int estado = ESPERANDO_INICIO;
 static int turno = 1;
 static uint8_t ganador = VACIO;
@@ -42,10 +40,9 @@ static uint64_t tiempoInicioJugada;
 static uint64_t tiempoTotalPensarJugada;
 static int numVecesPensarJugada = 0;
 
-
+// Declaraciones de funciones externas
 extern uint8_t conecta_K_buscar_alineamiento_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color, int8_t delta_fila, int8_t delta_columna);
 extern uint8_t conecta_K_hay_linea_arm_arm(TABLERO *t, uint8_t fila, uint8_t columna, uint8_t color);
-
 
 // Funciones Auxiliares
 
@@ -215,6 +212,10 @@ void juego_inicializar(){
 	filaJugada = -1;
 	columnaJugada = -1;
 	tiempoInicioPartida = clock_get_us();
+	tiempoTotalHayLinea = 0;
+	tiempoTotalPensarJugada = 0;
+	numVecesHayLinea = 0;
+	numVecesPensarJugada = 0;
 }
 
 // Trata los comandos llegados de la terminal y actualiza el estado

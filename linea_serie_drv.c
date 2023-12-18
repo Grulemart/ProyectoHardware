@@ -11,7 +11,7 @@
 #define ESTADO_ESPERANDO_INICIO 1
 #define ESTADO_RECIBIENDO_TRAMA 2
 
-#define MAX_BUFFERS 5
+#define MAX_BUFFERS 8
 
 static volatile int estado = ESTADO_ESPERANDO_INICIO; // Estado de la UART para enviar caracteres
 
