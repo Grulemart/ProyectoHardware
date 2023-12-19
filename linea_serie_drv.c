@@ -26,7 +26,6 @@ static volatile uint8_t is_waiting[MAX_BUFFERS] = { FALSE };
 static volatile uint8_t current_send_index = 0;
 static volatile uint8_t queue_send_index = 0;
 
-//static volatile uint8_t mandando_serie = FALSE;
 
 static void (*funcionEncolarEvento)(uint8_t, uint32_t); // Funcion callback FIFO_encolar
 
